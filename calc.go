@@ -26,6 +26,9 @@ func main() {
 		resultado = primeiroNumero * segundoNumero
 	case "/":
 		resultado = primeiroNumero / segundoNumero
+	default:
+		fmt.Println("Nenhum operador foi digitado")
+		return
 	}
 
 	fmt.Println(primeiroNumero,operação,segundoNumero,"=",resultado)
