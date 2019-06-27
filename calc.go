@@ -2,34 +2,48 @@ package main
 
 import (
 	"fmt"
+	"strconv"
 )
 
 func main() {
-	var primeiroNumero , segundoNumero , resultado float64
-	var operação string
+	var primeiroDigito , segundoDigito string
+	var operador string
+	var resultado int
 
 	fmt.Print("digite um numero:")
-	fmt.Scan(&primeiroNumero)
+	fmt.Scan(&primeiroDigito)
 
 	fmt.Print("digite a operação:")
-	fmt.Scan(&operação)
+	fmt.Scan(&operador)
 
 	fmt.Print("digite outro numero:")
-	fmt.Scan(&segundoNumero)
+	fmt.Scan(&segundoDigito)
 
-	switch operação {
+	primeiroValor, err := strconv.Atoi(primeiroDigito)
+	if err != nil {
+		fmt.Println("Erro !", err)
+		return
+	}
+
+	segundoValor, err := strconv.Atoi(segundoDigito)
+	if err != nil {
+		fmt.Println("Erro !", err)
+		return
+	}
+
+	switch operador {
 	case "+":
-		resultado = primeiroNumero + segundoNumero
+		resultado = primeiroValor + segundoValor
 	case "-":
-		resultado = primeiroNumero - segundoNumero
+		resultado = primeiroValor - segundoValor
 	case "*":
-		resultado = primeiroNumero * segundoNumero
+		resultado = primeiroValor * segundoValor
 	case "/":
-		resultado = primeiroNumero / segundoNumero
+		resultado = primeiroValor / segundoValor
 	default:
 		fmt.Println("Nenhum operador foi digitado")
 		return
 	}
 
-	fmt.Println(primeiroNumero,operação,segundoNumero,"=",resultado)
+	fmt.Println(primeiroValor,operador,segundoValor,"=",resultado)
 }
