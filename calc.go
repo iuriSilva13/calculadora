@@ -5,7 +5,7 @@ import (
 )
 
 func main() {
-	var primeiroNumero , segundoNumero float64
+	var primeiroNumero , segundoNumero , resultado float64
 	var operação string
 
 	fmt.Print("digite um numero:")
@@ -16,4 +16,17 @@ func main() {
 
 	fmt.Print("digite outro numero:")
 	fmt.Scan(&segundoNumero)
+
+	switch operação {
+	case "+":
+		resultado = primeiroNumero + segundoNumero
+	case "-":
+		resultado = primeiroNumero - segundoNumero
+	case "*":
+		resultado = primeiroNumero * segundoNumero
+	case "/":
+		resultado = primeiroNumero / segundoNumero
+	}
+
+	fmt.Println(primeiroNumero,operação,segundoNumero,"=",resultado)
 }
