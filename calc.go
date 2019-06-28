@@ -8,21 +8,15 @@ import (
 )
 
 func main() {
-	var primeiroDigito, operador, segundoDigito string
-	var resultado float64
-
-	fmt.Print("digite um numero:")
-	fmt.Scan(&primeiroDigito)
-
-	fmt.Print("digite a operação:")
-	fmt.Scan(&operador)
-
-	fmt.Print("digite outro numero:")
-	fmt.Scan(&segundoDigito)
+	primeiroDigito := os.Args[1]
+	operador := os.Args[2]
+	segundoDigito := os.Args[3]
 
 	primeiroValor := tratarValor(primeiroDigito, "primeiro")
 
 	segundoValor := tratarValor(segundoDigito, "segundo")
+
+	var resultado float64
 
 	switch operador {
 	case "+":
