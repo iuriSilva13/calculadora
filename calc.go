@@ -8,41 +8,62 @@ import (
 )
 
 func main() {
-	primeiroDigito := os.Args[1]
-	operador := os.Args[2]
-	segundoDigito := os.Args[3]
+	var numeros []string
+	var operadores []string
 
-	primeiroValor := tratarValor(primeiroDigito, "primeiro")
+	for i, _ := range os.Args {
+		if i == 0 {
+			continue
+		}
 
-	segundoValor := tratarValor(segundoDigito, "segundo")
+		if i%2 == 1 {
+			numeros = append(numeros, os.Args[i])
+		} else {
+			operadores = append(operadores, os.Args[i])
+		}
+	}
 
+	if len(numeros)-1 != len(operadores) {
+		exibeErro("Argumentos invalidos")
+	}
+
+	resultado := float64(0)
+	operador := "+"
+	for i, num := range numeros {
+		numeros := tratarValor(num, i)
+		resultado = calcularValores(resultado, numeros, operador, i)
+		if len(operadores) > i {
+			operador = operadores[i]
+		}
+	}
+	fmt.Println(resultado)
+
+}
+func calcularValores(primeiroValor, segundoValor float64, operador string, digito int) float64 {
 	var resultado float64
-
 	switch operador {
 	case "+":
 		resultado = primeiroValor + segundoValor
 	case "-":
 		resultado = primeiroValor - segundoValor
-	case "*":
-		resultado = primeiroValor * segundoValor
 	case "/":
 		resultado = primeiroValor / segundoValor
+	case "*":
+		resultado = primeiroValor * segundoValor
 	default:
-		fmt.Println("Nenhum operador foi digitado")
-		return
+		exibeErro(fmt.Sprintf("O argumento %d deve ser um operador. Passado: %s", digito, operador))
 	}
-
-	fmt.Println(primeiroValor, operador, segundoValor, "=", resultado)
+	return resultado
 }
 func exibeErro(textoErro string) {
 	fmt.Println("###", textoErro, "###")
 	os.Exit(1)
 }
-func tratarValor(valorDigitado string, digito string) float64 {
+func tratarValor(valorDigitado string, digito int) float64 {
 	valorDigitado = strings.Replace(valorDigitado, ",", ".", -1)
 	valorTratado, err := strconv.ParseFloat(valorDigitado, 64)
 	if err != nil {
-		exibeErro(digito + " digito é invalido")
+		exibeErro(fmt.Sprintf("O argumento %d deve ser um número", digito))
 	}
 
 	return valorTratado
