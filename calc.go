@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"os"
 	"strconv"
 	"strings"
 )
@@ -19,17 +20,9 @@ func main() {
 	fmt.Print("digite outro numero:")
 	fmt.Scan(&segundoDigito)
 
-	primeiroValor, err := tratarValor(primeiroDigito)
-	if err != nil {
-		fmt.Println("Primeiro digito invalido")
-		return
-	}
+	primeiroValor := tratarValor(primeiroDigito, "primeiro")
 
-	segundoValor, err := tratarValor(segundoDigito)
-	if err != nil {
-		fmt.Println("Segundo digito invalido")
-		return
-	}
+	segundoValor := tratarValor(segundoDigito, "segundo")
 
 	switch operador {
 	case "+":
@@ -47,12 +40,16 @@ func main() {
 
 	fmt.Println(primeiroValor, operador, segundoValor, "=", resultado)
 }
-func tratarValor(valorDigitado string) (float64, error) {
+func exibeErro(textoErro string) {
+	fmt.Println("###", textoErro, "###")
+	os.Exit(1)
+}
+func tratarValor(valorDigitado string, digito string) float64 {
 	valorDigitado = strings.Replace(valorDigitado, ",", ".", -1)
 	valorTratado, err := strconv.ParseFloat(valorDigitado, 64)
 	if err != nil {
-		return 0, err
+		exibeErro(digito + " digito é invalido")
 	}
 
-	return valorTratado, err
+	return valorTratado
 }
