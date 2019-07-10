@@ -35,7 +35,8 @@ func main() {
 
 		tratarPrimeiroDigito := tratarValor(primeiroDigito,"primeiro digito")
 		tratarSegundoDigito := tratarValor(segundoDigito,"segundo digito")
-		fmt.Println(tratarPrimeiroDigito,operador,tratarSegundoDigito)
+		resultado := calcularValores(tratarPrimeiroDigito,tratarSegundoDigito,operador)
+		fmt.Println(tratarPrimeiroDigito,operador,tratarSegundoDigito,"=",resultado)
 		return
 	}
 
