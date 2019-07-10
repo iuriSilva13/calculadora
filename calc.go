@@ -32,6 +32,10 @@ func main() {
 		fmt.Scan(&operador)
 		fmt.Print("Digite outro numero:")
 		fmt.Scan(&segundoDigito)
+
+		tratarPrimeiroDigito := tratarValor(primeiroDigito,"primeiro digito")
+		tratarSegundoDigito := tratarValor(segundoDigito,"segundo digito")
+		fmt.Println(tratarPrimeiroDigito,operador,tratarSegundoDigito)
 		return
 	}
 
