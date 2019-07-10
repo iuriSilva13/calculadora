@@ -24,7 +24,15 @@ func main() {
 	}
 
 	if len(numeros)-1 != len(operadores) {
-		exibeErro("Argumentos invalidos")
+		var primeiroDigito,operador,segundoDigito string
+
+		fmt.Print("Digite o primeiro numero:")
+		fmt.Scan(&primeiroDigito)
+		fmt.Print("Digite o operador:")
+		fmt.Scan(&operador)
+		fmt.Print("Digite outro numero:")
+		fmt.Scan(&segundoDigito)
+		return
 	}
 
 	resultado := float64(0)
