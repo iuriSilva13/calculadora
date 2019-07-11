@@ -27,25 +27,26 @@ func main() {
 		var primeiroDigito,segundoDigito,novoCalculo,operador string
 		primeiroResultado := calcularValoresDoInput(primeiroDigito,operador,segundoDigito)
 
-		fmt.Print("Deseja fazer um novo calculo?")
-		fmt.Scan(&novoCalculo)
+		for{
+			fmt.Print("Deseja fazer um novo calculo?")
+			fmt.Scan(&novoCalculo)
 
-		if novoCalculo == "sim"{
-			fmt.Print("Digite o operador:")
-			fmt.Scan(&operador)
+			if novoCalculo == "sim"{
+				fmt.Print("Digite o operador:")
+				fmt.Scan(&operador)
 
-			fmt.Print("Digite outro numero:")
-			fmt.Scan(&segundoDigito)
+				fmt.Print("Digite outro numero:")
+				fmt.Scan(&segundoDigito)
 
-			segundoValor := tratarValor(segundoDigito,"segundo digito")
-			segundoResultado := calcularValores(primeiroResultado,segundoValor,operador)
-			fmt.Println(primeiroResultado,operador,segundoDigito,"=",segundoResultado)
-			return
-		}else{
-			exibeErro("programa foi encerrado")
-			return
+				segundoValor := tratarValor(segundoDigito,"segundo digito")
+				segundoResultado := calcularValores(primeiroResultado,segundoValor,operador)
+				fmt.Println(primeiroResultado,operador,segundoDigito,"=",segundoResultado)
+			}else{
+				exibeErro("programa foi encerrado")
+				return
 		}
 	}
+}
 
 	resultado := float64(0)
 	operador := "+"
