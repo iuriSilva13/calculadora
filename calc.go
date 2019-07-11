@@ -24,43 +24,43 @@ func main() {
 	}
 
 	if len(numeros)-1 != len(operadores) {
-		var primeiroDigito,segundoDigito,novoCalculo,operador string
-		primeiroResultado := calcularValoresDoInput(primeiroDigito,operador,segundoDigito)
+		var primeiroDigito, segundoDigito, novoCalculo, operador string
+		primeiroResultado := calcularValoresDoInput(primeiroDigito, operador, segundoDigito)
 
-		for{
-			fmt.Print("Deseja fazer um novo calculo?")
-			fmt.Scan(&novoCalculo)
+		fmt.Print("Deseja fazer um novo calculo?")
+		fmt.Scan(&novoCalculo)
 
-			if novoCalculo == "sim"{
-				fmt.Print("Digite o operador:")
-				fmt.Scan(&operador)
+		if novoCalculo == "sim" {
+			fmt.Print("Digite o operador:")
+			fmt.Scan(&operador)
 
-				fmt.Print("Digite outro numero:")
-				fmt.Scan(&segundoDigito)
+			fmt.Print("Digite outro numero:")
+			fmt.Scan(&segundoDigito)
 
-				segundoValor := tratarValor(segundoDigito,"segundo digito")
-				segundoResultado := calcularValores(primeiroResultado,segundoValor,operador)
-				fmt.Println(primeiroResultado,operador,segundoDigito,"=",segundoResultado)
-			}else{
-				exibeErro("programa foi encerrado")
-				return
+			segundoValor := tratarValor(segundoDigito, "segundo digito")
+			segundoResultado := calcularValores(primeiroResultado, segundoValor, operador)
+			fmt.Println(primeiroResultado, operador, segundoDigito, "=", segundoResultado)
+			for {
+				segundoResultado = calcularMaisValores(primeiroDigito, operador, segundoResultado)
+			}
+		} else {
+			exibeErro("programa foi encerrado")
+			return
 		}
 	}
-}
 
 	resultado := float64(0)
 	operador := "+"
 	for i, num := range numeros {
-		numeros := tratarValor(num,"Calculo")
+		numeros := tratarValor(num, "Calculo")
 		resultado = calcularValores(resultado, numeros, operador)
 		if len(operadores) > i {
 			operador = operadores[i]
 		}
 	}
 	fmt.Println("O resultado é:", resultado)
-
 }
-func calcularValoresDoInput(primeiroDigito,operador,segundoDigito string)float64{
+func calcularValoresDoInput(primeiroDigito, operador, segundoDigito string) float64 {
 	fmt.Print("Digite o primeiro numero:")
 	fmt.Scan(&primeiroDigito)
 	fmt.Print("Digite o operador:")
@@ -68,11 +68,33 @@ func calcularValoresDoInput(primeiroDigito,operador,segundoDigito string)float64
 	fmt.Print("Digite outro numero:")
 	fmt.Scan(&segundoDigito)
 
-	primTratamento := tratarValor(primeiroDigito,"primeiro digito")
-	segunTratamento := tratarValor(segundoDigito,"segundo digito")
-	resultado := calcularValores(primTratamento,segunTratamento,operador)
-	fmt.Println(primTratamento,operador,segunTratamento,"=",resultado)
+	primTratamento := tratarValor(primeiroDigito, "primeiro digito")
+	segunTratamento := tratarValor(segundoDigito, "segundo digito")
+	resultado := calcularValores(primTratamento, segunTratamento, operador)
+	fmt.Println(primTratamento, operador, segunTratamento, "=", resultado)
 	return resultado
+}
+func calcularMaisValores(segundoDigito, operador string, resultadoAnterior float64) float64 {
+	var novoCalculo string
+
+	fmt.Print("Deseja fazer um novo calculo?")
+	fmt.Scan(&novoCalculo)
+	for {
+		if novoCalculo == "sim" {
+			fmt.Print("Digite o operador:")
+			fmt.Scan(&operador)
+
+			fmt.Print("Digite outro numero:")
+			fmt.Scan(&segundoDigito)
+
+			segundoValor := tratarValor(segundoDigito, "segundo digito")
+			resultado := calcularValores(resultadoAnterior, segundoValor, operador)
+			fmt.Println(resultadoAnterior, operador, segundoDigito, "=", resultado)
+			return resultado
+		} else {
+			exibeErro("programa foi encerrado")
+		}
+	}
 }
 func calcularValores(primeiroValor, segundoValor float64, operador string) float64 {
 	var resultado float64
@@ -98,7 +120,7 @@ func tratarValor(valorDigitado string, digito string) float64 {
 	valorDigitado = strings.Replace(valorDigitado, ",", ".", -1)
 	valorTratado, err := strconv.ParseFloat(valorDigitado, 64)
 	if err != nil {
-		exibeErro(digito+ " invalido")
+		exibeErro(digito + " invalido")
 	}
 
 	return valorTratado
