@@ -24,19 +24,8 @@ func main() {
 	}
 
 	if len(numeros)-1 != len(operadores) {
-		var primeiroDigito,operador,segundoDigito string
-
-		fmt.Print("Digite o primeiro numero:")
-		fmt.Scan(&primeiroDigito)
-		fmt.Print("Digite o operador:")
-		fmt.Scan(&operador)
-		fmt.Print("Digite outro numero:")
-		fmt.Scan(&segundoDigito)
-
-		tratarPrimeiroDigito := tratarValor(primeiroDigito,"primeiro digito")
-		tratarSegundoDigito := tratarValor(segundoDigito,"segundo digito")
-		resultado := calcularValores(tratarPrimeiroDigito,tratarSegundoDigito,operador)
-		fmt.Println(tratarPrimeiroDigito,operador,tratarSegundoDigito,"=",resultado)
+		var primeiroDigito,segundoDigito,operador string
+		calcularValoresDoInput(primeiroDigito,operador,segundoDigito)
 		return
 	}
 
@@ -49,8 +38,22 @@ func main() {
 			operador = operadores[i]
 		}
 	}
-	fmt.Println(resultado)
+	fmt.Println("O resultado é:", resultado)
 
+}
+func calcularValoresDoInput(primeiroDigito,operador,segundoDigito string)float64{
+	fmt.Print("Digite o primeiro numero:")
+	fmt.Scan(&primeiroDigito)
+	fmt.Print("Digite o operador:")
+	fmt.Scan(&operador)
+	fmt.Print("Digite outro numero:")
+	fmt.Scan(&segundoDigito)
+
+	primTratamento := tratarValor(primeiroDigito,"primeiro digito")
+	segunTratamento := tratarValor(segundoDigito,"segundo digito")
+	resultado := calcularValores(primTratamento,segunTratamento,operador)
+	fmt.Println(primTratamento,operador,segunTratamento,"=",resultado)
+	return resultado
 }
 func calcularValores(primeiroValor, segundoValor float64, operador string) float64 {
 	var resultado float64
