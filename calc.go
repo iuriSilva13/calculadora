@@ -43,8 +43,8 @@ func main() {
 	resultado := float64(0)
 	operador := "+"
 	for i, num := range numeros {
-		numeros := tratarValor(num, i)
-		resultado = calcularValores(resultado, numeros, operador, i)
+		numeros := tratarValor(num,"Calculo")
+		resultado = calcularValores(resultado, numeros, operador)
 		if len(operadores) > i {
 			operador = operadores[i]
 		}
@@ -52,7 +52,7 @@ func main() {
 	fmt.Println(resultado)
 
 }
-func calcularValores(primeiroValor, segundoValor float64, operador string, digito int) float64 {
+func calcularValores(primeiroValor, segundoValor float64, operador string) float64 {
 	var resultado float64
 	switch operador {
 	case "+":
@@ -64,7 +64,7 @@ func calcularValores(primeiroValor, segundoValor float64, operador string, digit
 	case "*":
 		resultado = primeiroValor * segundoValor
 	default:
-		exibeErro(fmt.Sprintf("O argumento %d deve ser um operador. Passado: %s", digito, operador))
+		exibeErro("Argumento invalido")
 	}
 	return resultado
 }
@@ -72,11 +72,11 @@ func exibeErro(textoErro string) {
 	fmt.Println("###", textoErro, "###")
 	os.Exit(1)
 }
-func tratarValor(valorDigitado string, digito int) float64 {
+func tratarValor(valorDigitado string, digito string) float64 {
 	valorDigitado = strings.Replace(valorDigitado, ",", ".", -1)
 	valorTratado, err := strconv.ParseFloat(valorDigitado, 64)
 	if err != nil {
-		exibeErro(fmt.Sprintf("O argumento %d deve ser um número", digito))
+		exibeErro(digito+ " invalido")
 	}
 
 	return valorTratado
