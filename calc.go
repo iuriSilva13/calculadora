@@ -60,6 +60,9 @@ func main() {
 	}
 	fmt.Println("O resultado é:", resultado)
 }
+func modoInterativo(){
+
+}
 func calcularValoresDoInput(primeiroDigito, operador, segundoDigito string) float64 {
 	fmt.Print("Digite o primeiro numero:")
 	fmt.Scan(&primeiroDigito)
