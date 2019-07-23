@@ -60,6 +60,9 @@ func main() {
 	}
 	fmt.Println("O resultado é:", resultado)
 }
+func modoExecução(){
+	
+}
 func modoInterativo(){
 
 }
