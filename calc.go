@@ -24,29 +24,8 @@ func main() {
 	}
 
 	if len(numeros)-1 != len(operadores) {
-		var primeiroDigito, segundoDigito, novoCalculo, operador string
-		primeiroResultado := calcularValoresDoInput(primeiroDigito, operador, segundoDigito)
-
-		fmt.Print("Deseja fazer um novo calculo?")
-		fmt.Scan(&novoCalculo)
-
-		if novoCalculo == "sim" {
-			fmt.Print("Digite o operador:")
-			fmt.Scan(&operador)
-
-			fmt.Print("Digite outro numero:")
-			fmt.Scan(&segundoDigito)
-
-			segundoValor := tratarValor(segundoDigito, "segundo digito")
-			segundoResultado := calcularValores(primeiroResultado, segundoValor, operador)
-			fmt.Println(primeiroResultado, operador, segundoDigito, "=", segundoResultado)
-			for {
-				segundoResultado = calcularMaisValores(primeiroDigito, operador, segundoResultado)
-			}
-		} else {
-			exibeErro("programa foi encerrado")
-			return
-		}
+		fmt.Println("Você pode usar a calculadora usando os comandos\n-i e -e, para saber mais detalhes sobre estes\ncomandos digite -help.")
+		return
 	}
 
 	resultado := float64(0)
