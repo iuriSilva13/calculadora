@@ -5,11 +5,16 @@ import (
 	"os"
 	"strconv"
 	"strings"
+	"flag"
 )
 
 func main() {
 	var numeros []string
 	var operadores []string
+	flag.Bool("e",false,"calcula na linha de comando")
+	flag.Bool("i",false,"calcula no modo interativo")
+	flag.Bool("help",false,"mostra uma descrição dos comandos")
+	flag.Parse()
 
 	for i, _ := range os.Args {
 		if i == 0 {
