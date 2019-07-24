@@ -9,6 +9,7 @@ import (
 )
 
 func main() {
+	var primeiroDigito, segundoDigito, novoCalculo, operador string
 	var numeros []string
 	var operadores []string
 	execução := flag.Bool("e",false,"calcula na linha de comando")
@@ -35,7 +36,7 @@ func main() {
 		fmt.Println("-i:Entra no modo interativo\n-e:Você pode fazer o calculo na linha de comando digitando -e (seu calculo)\n-help:comando de ajuda")
 		return
 	}
-	
+
 	if *execução == true{
 		modoExecução(numeros,operadores)
 		return
