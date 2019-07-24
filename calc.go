@@ -13,7 +13,7 @@ func main() {
 	var numeros []string
 	var operadores []string
 	execução := flag.Bool("e",false,"calcula na linha de comando")
-	flag.Bool("i",false,"calcula no modo interativo")
+	interativo := flag.Bool("i",false,"calcula no modo interativo")
 	help := flag.Bool("help",false,"mostra uma descrição dos comandos")
 	flag.Parse()
 
@@ -34,6 +34,11 @@ func main() {
 
 	if *help == true{
 		fmt.Println("-i:Entra no modo interativo\n-e:Você pode fazer o calculo na linha de comando digitando -e (seu calculo)\n-help:comando de ajuda")
+		return
+	}
+
+	if *interativo == true{
+		modoInterativo(primeiroDigito,segundoDigito,novoCalculo,operador)
 		return
 	}
 
@@ -60,8 +65,29 @@ func modoExecução(numeros,operadores []string)float64{
 	fmt.Println("O resultado é:", resultado)
 	return resultado
 }
-func modoInterativo(){
+func modoInterativo(primeiroDigito,segundoDigito,novoCalculo,operador string)float64{
+	primeiroResultado := calcularValoresDoInput(primeiroDigito, operador, segundoDigito)
 
+	fmt.Print("Deseja fazer um novo calculo?")
+	fmt.Scan(&novoCalculo)
+
+	if novoCalculo == "sim" {
+		fmt.Print("Digite o operador:")
+		fmt.Scan(&operador)
+
+		fmt.Print("Digite outro numero:")
+		fmt.Scan(&segundoDigito)
+
+		segundoValor := tratarValor(segundoDigito, "segundo digito")
+		segundoResultado := calcularValores(primeiroResultado, segundoValor, operador)
+		fmt.Println(primeiroResultado, operador, segundoDigito, "=", segundoResultado)
+		for {
+			segundoResultado = calcularMaisValores(primeiroDigito, operador, segundoResultado)
+		}
+	} else {
+		exibeErro("programa foi encerrado")
+		return primeiroResultado
+	}
 }
 func calcularValoresDoInput(primeiroDigito, operador, segundoDigito string) float64 {
 	fmt.Print("Digite o primeiro numero:")
