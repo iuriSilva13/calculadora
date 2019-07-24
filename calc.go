@@ -11,7 +11,7 @@ import (
 func main() {
 	var numeros []string
 	var operadores []string
-	flag.Bool("e",false,"calcula na linha de comando")
+	execução := flag.Bool("e",false,"calcula na linha de comando")
 	flag.Bool("i",false,"calcula no modo interativo")
 	flag.Bool("help",false,"mostra uma descrição dos comandos")
 	flag.Parse()
@@ -20,19 +20,28 @@ func main() {
 		if i == 0 {
 			continue
 		}
+		if i == 1{
+			continue
+		}
 
 		if i%2 == 1 {
-			numeros = append(numeros, os.Args[i])
-		} else {
 			operadores = append(operadores, os.Args[i])
+		} else {
+			numeros = append(numeros, os.Args[i])
 		}
+	}
+
+	if *execução == true{
+		modoExecução(numeros,operadores)
+		return
 	}
 
 	if len(numeros)-1 != len(operadores) {
 		fmt.Println("Você pode usar a calculadora usando os comandos\n-i e -e, para saber mais detalhes sobre estes\ncomandos digite -help.")
 		return
 	}
-
+}
+func modoExecução(numeros,operadores []string)float64{
 	resultado := float64(0)
 	operador := "+"
 	for i, num := range numeros {
@@ -43,9 +52,7 @@ func main() {
 		}
 	}
 	fmt.Println("O resultado é:", resultado)
-}
-func modoExecução(){
-	
+	return resultado
 }
 func modoInterativo(){
 
