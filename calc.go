@@ -13,7 +13,7 @@ func main() {
 	var operadores []string
 	execução := flag.Bool("e",false,"calcula na linha de comando")
 	flag.Bool("i",false,"calcula no modo interativo")
-	flag.Bool("help",false,"mostra uma descrição dos comandos")
+	help := flag.Bool("help",false,"mostra uma descrição dos comandos")
 	flag.Parse()
 
 	for i, _ := range os.Args {
@@ -31,6 +31,11 @@ func main() {
 		}
 	}
 
+	if *help == true{
+		fmt.Println("-i:Entra no modo interativo\n-e:Você pode fazer o calculo na linha de comando digitando -e (seu calculo)\n-help:comando de ajuda")
+		return
+	}
+	
 	if *execução == true{
 		modoExecução(numeros,operadores)
 		return
