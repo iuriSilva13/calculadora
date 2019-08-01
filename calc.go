@@ -1,27 +1,27 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"os"
 	"strconv"
 	"strings"
-	"flag"
 )
 
 func main() {
 	var primeiroDigito, segundoDigito, novoCalculo, operador string
 	var numeros []string
 	var operadores []string
-	execução := flag.Bool("e",false,"calcula na linha de comando")
-	interativo := flag.Bool("i",false,"calcula no modo interativo")
-	help := flag.Bool("help",false,"mostra uma descrição dos comandos")
+	execução := flag.Bool("e", false, "calcula na linha de comando")
+	interativo := flag.Bool("i", false, "calcula no modo interativo")
+	help := flag.Bool("help", false, "mostra uma descrição dos comandos")
 	flag.Parse()
 
 	for i, _ := range os.Args {
 		if i == 0 {
 			continue
 		}
-		if i == 1{
+		if i == 1 {
 			continue
 		}
 
@@ -32,18 +32,18 @@ func main() {
 		}
 	}
 
-	if *help == true{
+	if *help == true {
 		fmt.Println("-i:Entra no modo interativo\n-e:Você pode fazer o calculo na linha de comando digitando -e (seu calculo)\n-help:comando de ajuda")
 		return
 	}
 
-	if *interativo == true{
-		modoInterativo(primeiroDigito,segundoDigito,novoCalculo,operador)
+	if *interativo == true {
+		modoInterativo(primeiroDigito, segundoDigito, novoCalculo, operador)
 		return
 	}
 
-	if *execução == true{
-		modoExecução(numeros,operadores)
+	if *execução == true {
+		modoExecução(numeros, operadores)
 		return
 	}
 
@@ -52,11 +52,14 @@ func main() {
 		return
 	}
 }
-func modoExecução(numeros,operadores []string)float64{
+func modoExecução(numeros, operadores []string) float64 {
 	resultado := float64(0)
 	operador := "+"
 	for i, num := range numeros {
-		numeros := tratarValor(num, "Calculo")
+		numeros,err := tratarValor(num, "Calculo")
+		if err != nil{
+			return numeros
+		}
 		resultado = calcularValores(resultado, numeros, operador)
 		if len(operadores) > i {
 			operador = operadores[i]
@@ -65,7 +68,7 @@ func modoExecução(numeros,operadores []string)float64{
 	fmt.Println("O resultado é:", resultado)
 	return resultado
 }
-func modoInterativo(primeiroDigito,segundoDigito,novoCalculo,operador string)float64{
+func modoInterativo(primeiroDigito, segundoDigito, novoCalculo, operador string) float64 {
 	primeiroResultado := calcularValoresDoInput(primeiroDigito, operador, segundoDigito)
 
 	fmt.Print("Deseja fazer um novo calculo?")
@@ -78,7 +81,10 @@ func modoInterativo(primeiroDigito,segundoDigito,novoCalculo,operador string)flo
 		fmt.Print("Digite outro numero:")
 		fmt.Scan(&segundoDigito)
 
-		segundoValor := tratarValor(segundoDigito, "segundo digito")
+		segundoValor,err := tratarValor(segundoDigito, "segundo digito")
+		if err != nil{
+			return segundoValor
+		}
 		segundoResultado := calcularValores(primeiroResultado, segundoValor, operador)
 		fmt.Println(primeiroResultado, operador, segundoDigito, "=", segundoResultado)
 		for {
@@ -97,8 +103,14 @@ func calcularValoresDoInput(primeiroDigito, operador, segundoDigito string) floa
 	fmt.Print("Digite outro numero:")
 	fmt.Scan(&segundoDigito)
 
-	primTratamento := tratarValor(primeiroDigito, "primeiro digito")
-	segunTratamento := tratarValor(segundoDigito, "segundo digito")
+	primTratamento,err := tratarValor(primeiroDigito, "primeiro digito")
+	if err != nil{
+		return primTratamento
+	}
+	segunTratamento,err := tratarValor(segundoDigito, "segundo digito")
+	if err != nil{
+		return segunTratamento
+	}
 	resultado := calcularValores(primTratamento, segunTratamento, operador)
 	fmt.Println(primTratamento, operador, segunTratamento, "=", resultado)
 	return resultado
@@ -116,7 +128,10 @@ func calcularMaisValores(segundoDigito, operador string, resultadoAnterior float
 			fmt.Print("Digite outro numero:")
 			fmt.Scan(&segundoDigito)
 
-			segundoValor := tratarValor(segundoDigito, "segundo digito")
+			segundoValor,err := tratarValor(segundoDigito, "segundo digito")
+			if err != nil{
+				return segundoValor
+			}
 			resultado := calcularValores(resultadoAnterior, segundoValor, operador)
 			fmt.Println(resultadoAnterior, operador, segundoDigito, "=", resultado)
 			return resultado
@@ -145,12 +160,12 @@ func exibeErro(textoErro string) {
 	fmt.Println("###", textoErro, "###")
 	os.Exit(1)
 }
-func tratarValor(valorDigitado string, digito string) float64 {
+func tratarValor(valorDigitado string, digito string) (float64,error) {
 	valorDigitado = strings.Replace(valorDigitado, ",", ".", -1)
 	valorTratado, err := strconv.ParseFloat(valorDigitado, 64)
 	if err != nil {
-		exibeErro(digito + " invalido")
+		fmt.Println(digito + " invalido")
 	}
 
-	return valorTratado
+	return valorTratado,err
 }
