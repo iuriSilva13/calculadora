@@ -55,12 +55,16 @@ func main() {
 func modoExecução(numeros, operadores []string) float64 {
 	resultado := float64(0)
 	operador := "+"
+	var operadorInvalido string
 	for i, num := range numeros {
 		numeros,err := tratarValor(num, "Calculo")
 		if err != nil{
 			return numeros
 		}
-		resultado = calcularValores(resultado, numeros, operador)
+		resultado,operadorInvalido = calcularValores(resultado, numeros, operador)
+		if operadorInvalido == "Argumento inválido"{
+			return resultado
+		}
 		if len(operadores) > i {
 			operador = operadores[i]
 		}
@@ -85,7 +89,10 @@ func modoInterativo(primeiroDigito, segundoDigito, novoCalculo, operador string)
 		if err != nil{
 			return segundoValor
 		}
-		segundoResultado := calcularValores(primeiroResultado, segundoValor, operador)
+		segundoResultado,operadorInvalido := calcularValores(primeiroResultado, segundoValor, operador)
+		if operadorInvalido == "Argumento inválido"{
+			return segundoResultado
+		}
 		fmt.Println(primeiroResultado, operador, segundoDigito, "=", segundoResultado)
 		for {
 			segundoResultado = calcularMaisValores(primeiroDigito, operador, segundoResultado)
@@ -111,7 +118,10 @@ func calcularValoresDoInput(primeiroDigito, operador, segundoDigito string) floa
 	if err != nil{
 		return segunTratamento
 	}
-	resultado := calcularValores(primTratamento, segunTratamento, operador)
+	resultado,operadorInvalido := calcularValores(primTratamento, segunTratamento, operador)
+	if operadorInvalido == "Argumento inválido"{
+		return resultado
+	}
 	fmt.Println(primTratamento, operador, segunTratamento, "=", resultado)
 	return resultado
 }
@@ -132,7 +142,10 @@ func calcularMaisValores(segundoDigito, operador string, resultadoAnterior float
 			if err != nil{
 				return segundoValor
 			}
-			resultado := calcularValores(resultadoAnterior, segundoValor, operador)
+			resultado,operadorInvalido := calcularValores(resultadoAnterior, segundoValor, operador)
+			if operadorInvalido == "Argumento inválido"{
+				return resultado
+			}
 			fmt.Println(resultadoAnterior, operador, segundoDigito, "=", resultado)
 			return resultado
 		} else {
@@ -140,7 +153,7 @@ func calcularMaisValores(segundoDigito, operador string, resultadoAnterior float
 		}
 	}
 }
-func calcularValores(primeiroValor, segundoValor float64, operador string) float64 {
+func calcularValores(primeiroValor, segundoValor float64, operador string) (float64,string) {
 	var resultado float64
 	switch operador {
 	case "+":
@@ -152,13 +165,14 @@ func calcularValores(primeiroValor, segundoValor float64, operador string) float
 	case "*":
 		resultado = primeiroValor * segundoValor
 	default:
-		exibeErro("Argumento invalido")
+		mensagemErro := exibeErro("Argumento inválido")
+		return resultado,mensagemErro
 	}
-	return resultado
+	return resultado,operador
 }
-func exibeErro(textoErro string) {
+func exibeErro(textoErro string) string{
 	fmt.Println("###", textoErro, "###")
-	os.Exit(1)
+	return textoErro
 }
 func tratarValor(valorDigitado string, digito string) (float64,error) {
 	valorDigitado = strings.Replace(valorDigitado, ",", ".", -1)
