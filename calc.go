@@ -73,7 +73,15 @@ func modoExecução(numeros, operadores []string) float64 {
 	return resultado
 }
 func modoInterativo(primeiroDigito, segundoDigito, novoCalculo, operador string) float64 {
-	primeiroResultado := calcularValoresDoInput(primeiroDigito, operador, segundoDigito)
+	primeiroResultado,inputInvalido := calcularValoresDoInput(primeiroDigito, operador, segundoDigito)
+	switch inputInvalido {
+	case "Argumento inválido":
+		return primeiroResultado
+	case "segundo digito inválido":
+		return primeiroResultado
+	case "primeiro digito inválido":
+		return primeiroResultado		
+	}
 
 	fmt.Print("Deseja fazer um novo calculo?")
 	fmt.Scan(&novoCalculo)
@@ -94,15 +102,14 @@ func modoInterativo(primeiroDigito, segundoDigito, novoCalculo, operador string)
 			return segundoResultado
 		}
 		fmt.Println(primeiroResultado, operador, segundoDigito, "=", segundoResultado)
-		for {
-			segundoResultado = calcularMaisValores(primeiroDigito, operador, segundoResultado)
-		}
+		segundoResultado = calcularMaisValores(primeiroDigito, operador, segundoResultado)
 	} else {
-		exibeErro("programa foi encerrado")
+		fmt.Println("programa foi encerrado")
 		return primeiroResultado
 	}
+		return primeiroResultado
 }
-func calcularValoresDoInput(primeiroDigito, operador, segundoDigito string) float64 {
+func calcularValoresDoInput(primeiroDigito, operador, segundoDigito string) (float64,string) {
 	fmt.Print("Digite o primeiro numero:")
 	fmt.Scan(&primeiroDigito)
 	fmt.Print("Digite o operador:")
@@ -110,48 +117,52 @@ func calcularValoresDoInput(primeiroDigito, operador, segundoDigito string) floa
 	fmt.Print("Digite outro numero:")
 	fmt.Scan(&segundoDigito)
 
+	primeiroErro := "primeiro digito inválido"
+	segundoErro := "segundo digito inválido"
+
 	primTratamento,err := tratarValor(primeiroDigito, "primeiro digito")
 	if err != nil{
-		return primTratamento
+		return primTratamento,primeiroErro
 	}
 	segunTratamento,err := tratarValor(segundoDigito, "segundo digito")
 	if err != nil{
-		return segunTratamento
+		return segunTratamento,segundoErro
 	}
 	resultado,operadorInvalido := calcularValores(primTratamento, segunTratamento, operador)
 	if operadorInvalido == "Argumento inválido"{
-		return resultado
+		return resultado,operadorInvalido
 	}
 	fmt.Println(primTratamento, operador, segunTratamento, "=", resultado)
-	return resultado
+	return resultado,primeiroDigito
 }
 func calcularMaisValores(segundoDigito, operador string, resultadoAnterior float64) float64 {
 	var novoCalculo string
 
 	fmt.Print("Deseja fazer um novo calculo?")
 	fmt.Scan(&novoCalculo)
-	for {
-		if novoCalculo == "sim" {
-			fmt.Print("Digite o operador:")
-			fmt.Scan(&operador)
 
-			fmt.Print("Digite outro numero:")
-			fmt.Scan(&segundoDigito)
+	if novoCalculo == "sim" {
+		fmt.Print("Digite o operador:")
+		fmt.Scan(&operador)
 
-			segundoValor,err := tratarValor(segundoDigito, "segundo digito")
-			if err != nil{
-				return segundoValor
-			}
-			resultado,operadorInvalido := calcularValores(resultadoAnterior, segundoValor, operador)
-			if operadorInvalido == "Argumento inválido"{
-				return resultado
-			}
-			fmt.Println(resultadoAnterior, operador, segundoDigito, "=", resultado)
-			return resultado
-		} else {
-			exibeErro("programa foi encerrado")
+		fmt.Print("Digite outro numero:")
+		fmt.Scan(&segundoDigito)
+
+		segundoValor,err := tratarValor(segundoDigito, "segundo digito")
+		if err != nil{
+			return segundoValor
 		}
+		resultado,operadorInvalido := calcularValores(resultadoAnterior, segundoValor, operador)
+		if operadorInvalido == "Argumento inválido"{
+			return resultado
+		}
+		fmt.Println(resultadoAnterior, operador, segundoDigito, "=", resultado)
+		calcularMaisValores(segundoDigito, operador, resultado)
+	} else {
+		fmt.Println("Programa foi encerrado")
+		return resultadoAnterior
 	}
+		return resultadoAnterior
 }
 func calcularValores(primeiroValor, segundoValor float64, operador string) (float64,string) {
 	var resultado float64
@@ -180,6 +191,5 @@ func tratarValor(valorDigitado string, digito string) (float64,error) {
 	if err != nil {
 		fmt.Println(digito + " invalido")
 	}
-
 	return valorTratado,err
 }
