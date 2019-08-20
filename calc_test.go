@@ -32,8 +32,8 @@ func Test_calcularValores(teste *testing.T) {
                         mensagemDeIdentificação: "Float com . deve ser identificado corretamente",
                         parâmetrosRecebidos: func(*testing.T) parâmetrosRecebidos {
                               return parâmetrosRecebidos{
-                                      primeiroValor: 10.520,
-                                      segundoValor:  5.200,
+                                      primeiroValor: -10.520,
+                                      segundoValor:  -5.200,
                                       operador:      "*",
                               }
                         },
