@@ -21,23 +21,23 @@ func Test_calcularValores(teste *testing.T) {
                         mensagemDeIdentificação: "Inteiro deve ser identificado corretamente",
                         parâmetrosRecebidos: func(*testing.T) parâmetrosRecebidos {
                                 return parâmetrosRecebidos{
-                                        primeiroValor: 0,
-                                        segundoValor:  10,
-                                        operador:      "+",
+                                        primeiroValor: 10,
+                                        segundoValor:  5,
+                                        operador:      "-",
                                 }
                         },
-                        valorEsperado: 10.0,
+                        valorEsperado: 5.0,
                 },
                 {
                         mensagemDeIdentificação: "Float com . deve ser identificado corretamente",
                         parâmetrosRecebidos: func(*testing.T) parâmetrosRecebidos {
                               return parâmetrosRecebidos{
-                                      primeiroValor: 0.5,
-                                      segundoValor:  10.1,
-                                      operador:      "+",
+                                      primeiroValor: 10.5,
+                                      segundoValor:  7.1,
+                                      operador:      "-",
                               }
                         },
-                        valorEsperado: 10.6,
+                        valorEsperado: 3.4000000000000004,
               },
         }
 
