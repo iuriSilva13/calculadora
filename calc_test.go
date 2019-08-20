@@ -21,12 +21,12 @@ func Test_calcularValores(teste *testing.T) {
                         mensagemDeIdentificação: "Inteiro deve ser identificado corretamente",
                         parâmetrosRecebidos: func(*testing.T) parâmetrosRecebidos {
                                 return parâmetrosRecebidos{
-                                        primeiroValor: 10,
+                                        primeiroValor: -10,
                                         segundoValor:  5,
-                                        operador:      "/",
+                                        operador:      "+",
                                 }
                         },
-                        valorEsperado: 2.0,
+                        valorEsperado: -5.0,
                 },
                 {
                         mensagemDeIdentificação: "Float com . deve ser identificado corretamente",
