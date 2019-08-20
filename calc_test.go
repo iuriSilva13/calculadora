@@ -74,6 +74,16 @@ func Test_tratarValor(teste *testing.T) {
                         },
                         valorEsperado: 10.0,
                 },
+                {
+                        mensagemDeIdentificação: "Float com , deve ser identificado corretamente",
+                        parâmetrosRecebidos: func(*testing.T) parâmetrosRecebidos {
+                                return parâmetrosRecebidos{
+                                        valorDigitado: "10,1",
+                                        digito:        "primeiro",
+                                }
+                        },
+                        valorEsperado: 10.1,
+                },
         }
 
         for _, valorTeste := range testes {
