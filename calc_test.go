@@ -23,10 +23,10 @@ func Test_calcularValores(teste *testing.T) {
                                 return parâmetrosRecebidos{
                                         primeiroValor: 10,
                                         segundoValor:  5,
-                                        operador:      "-",
+                                        operador:      "*",
                                 }
                         },
-                        valorEsperado: 5.0,
+                        valorEsperado: 50.0,
                 },
                 {
                         mensagemDeIdentificação: "Float com . deve ser identificado corretamente",
@@ -34,10 +34,10 @@ func Test_calcularValores(teste *testing.T) {
                               return parâmetrosRecebidos{
                                       primeiroValor: 10.5,
                                       segundoValor:  7.1,
-                                      operador:      "-",
+                                      operador:      "*",
                               }
                         },
-                        valorEsperado: 3.4000000000000004,
+                        valorEsperado: 74.55,
               },
         }
 
