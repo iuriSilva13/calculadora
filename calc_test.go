@@ -32,12 +32,12 @@ func Test_calcularValores(teste *testing.T) {
                         mensagemDeIdentificação: "Float com . deve ser identificado corretamente",
                         parâmetrosRecebidos: func(*testing.T) parâmetrosRecebidos {
                               return parâmetrosRecebidos{
-                                      primeiroValor: -520,
-                                      segundoValor:  -600,
-                                      operador:      "-",
+                                      primeiroValor: -80,
+                                      segundoValor:  -4,
+                                      operador:      "/",
                               }
                         },
-                        valorEsperado: 80.0,
+                        valorEsperado: 20.0,
               },
         }
 
