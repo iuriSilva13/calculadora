@@ -97,13 +97,12 @@ func modoInterativo(primeiroDigito,segundoDigito,novoCalculo,operador string)flo
 			return segundoResultado
 		}
 		fmt.Println(primeiroResultado, operador, segundoDigito, "=", segundoResultado)
-		for {
-			segundoResultado = calcularMaisValores(primeiroDigito, operador, segundoResultado)
-		}
+		segundoResultado = calcularMaisValores(primeiroDigito, operador, segundoResultado)
 	} else {
-		exibeErro("programa foi encerrado")
+		fmt.Println("programa foi encerrado")
 		return primeiroResultado
 	}
+		return primeiroResultado
 }
 func calcularValoresDoInput(primeiroDigito, operador, segundoDigito string) float64 {
 	fmt.Print("Digite o primeiro numero:")
@@ -133,29 +132,30 @@ func calcularMaisValores(segundoDigito, operador string, resultadoAnterior float
 
 	fmt.Print("Deseja fazer um novo calculo?")
 	fmt.Scan(&novoCalculo)
-	for {
-		if novoCalculo == "sim" {
-			fmt.Print("Digite o operador:")
-			fmt.Scan(&operador)
 
-			fmt.Print("Digite outro numero:")
-			fmt.Scan(&segundoDigito)
+	if novoCalculo == "sim" {
+		fmt.Print("Digite o operador:")
+		fmt.Scan(&operador)
 
-			segundoValor,err := tratarValor(segundoDigito, "segundo digito")
-			if err != nil{
-				return segundoValor
-			}
-			resultado,operadorInvalido := calcularValores(resultadoAnterior, segundoValor, operador)
-			if operadorInvalido == "Argumento inválido"{
-				return resultado
-			}
-			fmt.Println(resultadoAnterior, operador, segundoDigito, "=", resultado)
-			return resultado
-		} else {
-			exibeErro("programa foi encerrado")
+		fmt.Print("Digite outro numero:")
+		fmt.Scan(&segundoDigito)
+
+		segundoValor,err := tratarValor(segundoDigito, "segundo digito")
+		if err != nil{
+			return segundoValor
 		}
+		resultado,operadorInvalido := calcularValores(resultadoAnterior, segundoValor, operador)
+		if operadorInvalido == "Argumento inválido"{
+			return resultado
+		}
+		fmt.Println(resultadoAnterior, operador, segundoDigito, "=", resultado)
+		calcularMaisValores(segundoDigito, operador, resultado)
+		} else {
+			fmt.Println("Programa foi encerrado")
+			return resultadoAnterior
+		}
+			return resultadoAnterior
 	}
-}
 func calcularValores(primeiroValor, segundoValor float64, operador string) (float64,string) {
 	var resultado float64
 	switch operador {
