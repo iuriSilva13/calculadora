@@ -16,6 +16,7 @@ func Test_calcularValores(teste *testing.T) {
                 parâmetrosRecebidos func(teste *testing.T) parâmetrosRecebidos
 
                 valorEsperado float64
+                erroEsperado string
         }{
                 {
                         mensagemDeIdentificação: "Inteiro deve ser identificado corretamente",
@@ -27,6 +28,7 @@ func Test_calcularValores(teste *testing.T) {
                                 }
                         },
                         valorEsperado: -15.0,
+                        erroEsperado: "primeiro digito invalido",
                 },
                 {
                         mensagemDeIdentificação: "Float com . deve ser identificado corretamente",
@@ -38,6 +40,7 @@ func Test_calcularValores(teste *testing.T) {
                               }
                         },
                         valorEsperado: 19.119047619047617,
+                        erroEsperado: "primeiro digito invalido",
               },
         }
 
@@ -45,10 +48,10 @@ func Test_calcularValores(teste *testing.T) {
                 teste.Run(valorTeste.mensagemDeIdentificação, func(teste *testing.T) {
                         testeCalcularValores := valorTeste.parâmetrosRecebidos(teste)
 
-                        valorRecebido := calcularValores(testeCalcularValores.primeiroValor, testeCalcularValores.segundoValor,testeCalcularValores.operador)
+                        valorRecebido,err := calcularValores(testeCalcularValores.primeiroValor, testeCalcularValores.segundoValor,testeCalcularValores.operador)
 
                         if !reflect.DeepEqual(valorRecebido, valorTeste.valorEsperado) {
-                                teste.Errorf("calcularValores valorRecebido = %v, valorEsperado: %v", valorRecebido, valorTeste.valorEsperado)
+                                teste.Errorf("calcularValores erro = %v, valorRecebido = %v, valorEsperado: %v", err, valorRecebido, valorTeste.valorEsperado)
                         }
                 })
         }
@@ -63,36 +66,51 @@ func Test_tratarValor(teste *testing.T) {
                 parâmetrosRecebidos func(teste *testing.T) parâmetrosRecebidos
 
                 valorEsperado float64
+                erroEsperado error
         }{
                 {
                         mensagemDeIdentificação: "Inteiro deve ser identificado corretamente",
                         parâmetrosRecebidos: func(*testing.T) parâmetrosRecebidos {
                                 return parâmetrosRecebidos{
                                         valorDigitado: "10",
-                                        digito:        "primeiro",
+                                        digito:        "primeiro digito",
                                 }
                         },
                         valorEsperado: 10.0,
+                        erroEsperado: nil,
                 },
                 {
                         mensagemDeIdentificação: "Float com , deve ser identificado corretamente",
                         parâmetrosRecebidos: func(*testing.T) parâmetrosRecebidos {
                                 return parâmetrosRecebidos{
                                         valorDigitado: "10,1",
-                                        digito:        "primeiro",
+                                        digito:        "primeiro digito",
                                 }
                         },
                         valorEsperado: 10.1,
+                        erroEsperado: nil,
                 },
                 {
                         mensagemDeIdentificação: "Float com . deve ser identificado corretamente",
                         parâmetrosRecebidos: func(*testing.T) parâmetrosRecebidos {
                                 return parâmetrosRecebidos{
                                         valorDigitado: "10.1",
-                                        digito:        "primeiro",
+                                        digito:        "primeiro digito",
                                 }
                         },
                         valorEsperado: 10.1,
+                        erroEsperado: nil,
+                },
+                {
+                        mensagemDeIdentificação: "Valores devem ser identificados corretamente",
+                        parâmetrosRecebidos: func(*testing.T) parâmetrosRecebidos {
+                                return parâmetrosRecebidos{
+                                        valorDigitado: "asdfasdfd2wqafdaq",
+                                        digito:        "primeiro digito",
+                                }
+                        },
+                        valorEsperado: 0.0,
+                        erroEsperado:nil,
                 },
         }
 
@@ -100,10 +118,10 @@ func Test_tratarValor(teste *testing.T) {
                 teste.Run(valorTeste.mensagemDeIdentificação, func(teste *testing.T) {
                         testeTratarValor := valorTeste.parâmetrosRecebidos(teste)
 
-                        valorRecebido := tratarValor(testeTratarValor.valorDigitado, testeTratarValor.digito)
+                        valorRecebido,err := tratarValor(testeTratarValor.valorDigitado, testeTratarValor.digito)
 
                         if !reflect.DeepEqual(valorRecebido, valorTeste.valorEsperado) {
-                                teste.Errorf("tratarValor valorRecebido = %v, valorEsperado: %v", valorRecebido, valorTeste.valorEsperado)
+                                teste.Errorf("tratarValor erro = %v, valorRecebido = %v, valorEsperado: %v", err, valorRecebido, valorTeste.valorEsperado)
                         }
                 })
         }
