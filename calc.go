@@ -108,12 +108,13 @@ func obterDadosDosInputs(primeiraVez bool) (float64, float64, string){
 	if err != nil {
 	 	return 0.0, segundoTratamento, operador
 	}
-  	return 0.0, 0.0, operador
+  	return 0.0, segundoTratamento, operador
 }
 func modoInterativo(primeiroDigito, segundoDigito float64, operador string) float64 {
 	var primeiroResultado float64
 	var operadorInvalido,novoCalculo string
 	primeiraVez := true
+	contador := 0
 
 	for{
 		primeiroDigito, segundoDigito, operador = obterDadosDosInputs(primeiraVez)
@@ -126,6 +127,16 @@ func modoInterativo(primeiroDigito, segundoDigito float64, operador string) floa
 		if operadorInvalido == "Argumento inválido" {
 			return primeiroResultado
 		}
+
+		if contador == 0 {
+			fmt.Println(primeiroDigito, operador, segundoDigito, "=", primeiroResultado)
+		}
+		if contador >= 1 {
+		 	fmt.Println(primeiroResultado, operador, segundoDigito, "=", primeiroDigito)
+		 	primeiroResultado = primeiroDigito
+		}
+
+		contador = contador + 1
 
 		fmt.Print("Deseja fazer um novo calculo?")
 		fmt.Scan(&novoCalculo)
