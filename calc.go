@@ -76,7 +76,7 @@ func modoExecução(numeros, operadores []string) float64 {
 	fmt.Println("O resultado é:", resultado)
 	return resultado
 }
-func obterDadosDosInputs(primeiraVez bool) (float64, float64, string){
+func obterDadosDosInputs(primeiraVez bool) (float64, float64, string, error){
 	var primeiroDigito, segundoDigito, operador string
 
 	if primeiraVez {
@@ -89,14 +89,14 @@ func obterDadosDosInputs(primeiraVez bool) (float64, float64, string){
 
 		primeiroTratamento, err := tratarValor(primeiroDigito, "primeiro digito")
 	 	if err != nil {
-	 		return 0.0, primeiroTratamento, operador
+	 		return 0.0, 0.0, operador,err
 	 	}
 
 	 	segundoTratamento, err := tratarValor(segundoDigito, "segundo digito")
 	 	if err != nil {
-	 		return 0.0, primeiroTratamento, operador
+	 		return 0.0, 0.0, operador,err
 	 	}
-	 	return primeiroTratamento, segundoTratamento, operador
+	 	return primeiroTratamento, segundoTratamento, operador,err
 	}
 
 	fmt.Print("Digite o operador:")
@@ -106,18 +106,22 @@ func obterDadosDosInputs(primeiraVez bool) (float64, float64, string){
 
 	segundoTratamento, err := tratarValor(segundoDigito, "segundo digito")
 	if err != nil {
-	 	return 0.0, segundoTratamento, operador
+	 	return 0.0, 0.0, operador,err
 	}
-  	return 0.0, segundoTratamento, operador
+  	return 0.0, segundoTratamento, operador,err
 }
-func modoInterativo(primeiroDigito, segundoDigito float64, operador string) float64 {
+func modoInterativo(primeiroDigito, segundoDigito float64, operador string) (float64,error) {
 	var primeiroResultado float64
 	var operadorInvalido,novoCalculo string
+	var err error
 	primeiraVez := true
 	contador := 0
 
 	for{
-		primeiroDigito, segundoDigito, operador = obterDadosDosInputs(primeiraVez)
+		primeiroDigito, segundoDigito, operador,err = obterDadosDosInputs(primeiraVez)
+		if err != nil{
+			return 0.0,err
+		}
 		if primeiraVez {
 			primeiroResultado, operadorInvalido = calcularValores(primeiroDigito, segundoDigito, operador)
 		}else{
@@ -125,7 +129,7 @@ func modoInterativo(primeiroDigito, segundoDigito float64, operador string) floa
 		}
 
 		if operadorInvalido == "Argumento inválido" {
-			return primeiroResultado
+			return 0.0,err
 		}
 
 		if contador == 0 {
@@ -146,7 +150,7 @@ func modoInterativo(primeiroDigito, segundoDigito float64, operador string) floa
 		}
 		primeiraVez = false
 	}
-	return primeiroResultado
+	return primeiroResultado,err
 }
 func calcularValores(primeiroValor, segundoValor float64, operador string) (float64,string) {
 	var resultado float64
