@@ -98,7 +98,17 @@ func obterDadosDosInputs(primeiraVez bool) (float64, float64, string){
 	 	}
 	 	return primeiroTratamento, segundoTratamento, operador
 	}
-  		return 0.0, 0.0, operador
+
+	fmt.Print("Digite o operador:")
+	fmt.Scan(&operador)
+	fmt.Print("Digite outro numero:")
+	fmt.Scan(&segundoDigito)
+
+	segundoTratamento, err := tratarValor(segundoDigito, "segundo digito")
+	if err != nil {
+	 	return 0.0, segundoTratamento, operador
+	}
+  	return 0.0, 0.0, operador
 }
 func modoInterativo(primeiroDigito, segundoDigito float64, operador string) float64 {
 	var primeiroResultado float64
