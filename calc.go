@@ -79,61 +79,6 @@ func modoExecução(numeros, operadores []string) float64 {
 func modoInterativo(primeiroDigito, segundoDigito float64, operador string){
 	
 }
-func calcularValoresDoInput(primeiroDigito, operador, segundoDigito string) (float64,string) {
-	fmt.Print("Digite o primeiro numero:")
-	fmt.Scan(&primeiroDigito)
-	fmt.Print("Digite o operador:")
-	fmt.Scan(&operador)
-	fmt.Print("Digite outro numero:")
-	fmt.Scan(&segundoDigito)
-
-	primeiroErro := "primeiro digito inválido"
-	segundoErro := "segundo digito inválido"
-
-	primTratamento,err := tratarValor(primeiroDigito, "primeiro digito")
-	if err != nil{
-		return primTratamento,primeiroErro
-	}
-	segunTratamento,err := tratarValor(segundoDigito, "segundo digito")
-	if err != nil{
-		return segunTratamento,segundoErro
-	}
-	resultado,operadorInvalido := calcularValores(primTratamento, segunTratamento, operador)
-	if operadorInvalido == "Argumento inválido"{
-		return resultado,operadorInvalido
-	}
-	fmt.Println(primTratamento, operador, segunTratamento, "=", resultado)
-	return resultado,primeiroDigito
-}
-func calcularMaisValores(segundoDigito, operador string, resultadoAnterior float64) float64 {
-	var novoCalculo string
-
-	fmt.Print("Deseja fazer um novo calculo?")
-	fmt.Scan(&novoCalculo)
-
-	if novoCalculo == "sim" {
-		fmt.Print("Digite o operador:")
-		fmt.Scan(&operador)
-
-		fmt.Print("Digite outro numero:")
-		fmt.Scan(&segundoDigito)
-
-		segundoValor,err := tratarValor(segundoDigito, "segundo digito")
-		if err != nil{
-			return segundoValor
-		}
-		resultado,operadorInvalido := calcularValores(resultadoAnterior, segundoValor, operador)
-		if operadorInvalido == "Argumento inválido"{
-			return resultado
-		}
-		fmt.Println(resultadoAnterior, operador, segundoDigito, "=", resultado)
-		calcularMaisValores(segundoDigito, operador, resultado)
-	} else {
-		fmt.Println("Programa foi encerrado")
-		return resultadoAnterior
-	}
-		return resultadoAnterior
-}
 func calcularValores(primeiroValor, segundoValor float64, operador string) (float64,string) {
 	var resultado float64
 	switch operador {
