@@ -9,7 +9,8 @@ import (
 )
 
 func main() {
-	var primeiroDigito, segundoDigito, novoCalculo, operador string
+	var primeiroDigito, segundoDigito float64
+	var operador string
 	var numeros []string
 	var operadores []string
 	execução := flag.Bool("e", false, "calcula na linha de comando")
@@ -41,7 +42,7 @@ func main() {
 	}
 
 	if *interativo == true {
-		modoInterativo(primeiroDigito, segundoDigito, novoCalculo, operador)
+		modoInterativo(primeiroDigito, segundoDigito, operador)
 		return
 	}
 
@@ -75,42 +76,8 @@ func modoExecução(numeros, operadores []string) float64 {
 	fmt.Println("O resultado é:", resultado)
 	return resultado
 }
-func modoInterativo(primeiroDigito, segundoDigito, novoCalculo, operador string) float64 {
-	primeiroResultado,inputInvalido := calcularValoresDoInput(primeiroDigito, operador, segundoDigito)
-	switch inputInvalido {
-	case "Argumento inválido":
-		return primeiroResultado
-	case "segundo digito inválido":
-		return primeiroResultado
-	case "primeiro digito inválido":
-		return primeiroResultado		
-	}
-
-	fmt.Print("Deseja fazer um novo calculo?")
-	fmt.Scan(&novoCalculo)
-
-	if novoCalculo == "sim" {
-		fmt.Print("Digite o operador:")
-		fmt.Scan(&operador)
-
-		fmt.Print("Digite outro numero:")
-		fmt.Scan(&segundoDigito)
-
-		segundoValor,err := tratarValor(segundoDigito, "segundo digito")
-		if err != nil{
-			return segundoValor
-		}
-		segundoResultado,operadorInvalido := calcularValores(primeiroResultado, segundoValor, operador)
-		if operadorInvalido == "Argumento inválido"{
-			return segundoResultado
-		}
-		fmt.Println(primeiroResultado, operador, segundoDigito, "=", segundoResultado)
-		segundoResultado = calcularMaisValores(primeiroDigito, operador, segundoResultado)
-	} else {
-		fmt.Println("programa foi encerrado")
-		return primeiroResultado
-	}
-		return primeiroResultado
+func modoInterativo(primeiroDigito, segundoDigito float64, operador string){
+	
 }
 func calcularValoresDoInput(primeiroDigito, operador, segundoDigito string) (float64,string) {
 	fmt.Print("Digite o primeiro numero:")
