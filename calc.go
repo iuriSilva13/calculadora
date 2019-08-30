@@ -76,10 +76,22 @@ func modoExecução(numeros, operadores []string) float64 {
 	fmt.Println("O resultado é:", resultado)
 	return resultado
 }
-func obterDadosDosInputs(){
+func obterDadosDosInputs(primeiraVez bool) (float64, float64, string){
+	var primeiroDigito, segundoDigito, operador string
 
+		fmt.Print("Digite o primeiro numero:")
+		fmt.Scan(&primeiroDigito)
+		fmt.Print("Digite o operador:")
+		fmt.Scan(&operador)
+		fmt.Print("Digite outro numero:")
+		fmt.Scan(&segundoDigito)
+
+  		return 0.0, 0.0, operador
 }
-func modoInterativo(primeiroDigito, segundoDigito float64, operador string){
+func modoInterativo(primeiroDigito, segundoDigito float64, operador string) {
+	primeiraVez := true
+
+	primeiroDigito, segundoDigito, operador = obterDadosDosInputs(primeiraVez)
 
 }
 func calcularValores(primeiroValor, segundoValor float64, operador string) (float64,string) {
