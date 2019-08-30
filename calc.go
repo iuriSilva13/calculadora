@@ -88,11 +88,25 @@ func obterDadosDosInputs(primeiraVez bool) (float64, float64, string){
 
   		return 0.0, 0.0, operador
 }
-func modoInterativo(primeiroDigito, segundoDigito float64, operador string) {
+func modoInterativo(primeiroDigito, segundoDigito float64, operador string) float64 {
+	var primeiroResultado float64
+	var operadorInvalido string
 	primeiraVez := true
 
-	primeiroDigito, segundoDigito, operador = obterDadosDosInputs(primeiraVez)
+	for{
+		primeiroDigito, segundoDigito, operador = obterDadosDosInputs(primeiraVez)
+		if primeiraVez {
+			primeiroResultado, operadorInvalido = calcularValores(primeiroDigito, segundoDigito, operador)
+		}else{
+			primeiroDigito, operadorInvalido = calcularValores(primeiroResultado, segundoDigito, operador)
+		}
 
+		if operadorInvalido == "Argumento inválido" {
+			return primeiroResultado
+		}
+	}
+
+	return primeiroResultado
 }
 func calcularValores(primeiroValor, segundoValor float64, operador string) (float64,string) {
 	var resultado float64
