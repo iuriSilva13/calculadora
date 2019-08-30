@@ -76,8 +76,11 @@ func modoExecução(numeros, operadores []string) float64 {
 	fmt.Println("O resultado é:", resultado)
 	return resultado
 }
+func obterDadosDosInputs(){
+
+}
 func modoInterativo(primeiroDigito, segundoDigito float64, operador string){
-	
+
 }
 func calcularValores(primeiroValor, segundoValor float64, operador string) (float64,string) {
 	var resultado float64
