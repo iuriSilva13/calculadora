@@ -165,7 +165,7 @@ func calcularValores(primeiroValor, segundoValor float64, operador string) (floa
 		resultado = primeiroValor * segundoValor
 	default:
 		mensagemErro := exibeErro("Argumento inválido")
-		return resultado,mensagemErro
+		return 0.0,mensagemErro
 	}
 	return resultado,operador
 }
