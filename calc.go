@@ -9,7 +9,8 @@ import (
 )
 
 func main() {
-	var primeiroDigito, segundoDigito, novoCalculo, operador string
+	var primeiroDigito, segundoDigito float64
+	var operador string
 	var numeros []string
 	var operadores []string
 	execução := flag.Bool("e",false,"calcula na linha de comando")
@@ -38,7 +39,7 @@ func main() {
 	}
 
 	if *interativo == true{
-		modoInterativo(primeiroDigito,segundoDigito,novoCalculo,operador)
+		modoInterativo(primeiroDigito,segundoDigito,operador)
 		return
 	}
 
@@ -71,6 +72,40 @@ func modoExecução(numeros,operadores []string)float64{
 	}
 	fmt.Println("O resultado é:", resultado)
 	return resultado
+}
+func obterDadosDosInputs(primeiraVez bool) (float64, float64, string, error){
+	var primeiroDigito, segundoDigito, operador string
+
+	if primeiraVez {
+		fmt.Print("Digite o primeiro numero:")
+		fmt.Scan(&primeiroDigito)
+		fmt.Print("Digite o operador:")
+		fmt.Scan(&operador)
+		fmt.Print("Digite outro numero:")
+		fmt.Scan(&segundoDigito)
+
+		primeiroTratamento, err := tratarValor(primeiroDigito, "primeiro digito")
+	 	if err != nil {
+	 		return 0.0, 0.0, operador,err
+	 	}
+
+	 	segundoTratamento, err := tratarValor(segundoDigito, "segundo digito")
+	 	if err != nil {
+	 		return 0.0, 0.0, operador,err
+	 	}
+	 	return primeiroTratamento, segundoTratamento, operador,err
+	}
+
+	fmt.Print("Digite o operador:")
+	fmt.Scan(&operador)
+	fmt.Print("Digite outro numero:")
+	fmt.Scan(&segundoDigito)
+
+	segundoTratamento, err := tratarValor(segundoDigito, "segundo digito")
+	if err != nil {
+	 	return 0.0, 0.0, operador,err
+	}
+  	return 0.0, segundoTratamento, operador,err
 }
 func modoInterativo(primeiroDigito,segundoDigito float64,operador string)(float64,error){
 	var primeiroResultado float64
