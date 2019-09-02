@@ -104,29 +104,6 @@ func modoInterativo(primeiroDigito,segundoDigito,novoCalculo,operador string)flo
 	}
 		return primeiroResultado
 }
-func calcularValoresDoInput(primeiroDigito, operador, segundoDigito string) float64 {
-	fmt.Print("Digite o primeiro numero:")
-	fmt.Scan(&primeiroDigito)
-	fmt.Print("Digite o operador:")
-	fmt.Scan(&operador)
-	fmt.Print("Digite outro numero:")
-	fmt.Scan(&segundoDigito)
-
-	primTratamento,err := tratarValor(primeiroDigito, "primeiro digito")
-	if err != nil{
-		return primTratamento
-	}
-	segunTratamento,err := tratarValor(segundoDigito, "segundo digito")
-	if err != nil{
-		return segunTratamento
-	}
-	resultado,operadorInvalido := calcularValores(primTratamento, segunTratamento, operador)
-	if operadorInvalido == "Argumento inválido"{
-		return resultado
-	}
-	fmt.Println(primTratamento, operador, segunTratamento, "=", resultado)
-	return resultado
-}
 func calcularValores(primeiroValor, segundoValor float64, operador string) (float64,string) {
 	var resultado float64
 	switch operador {
