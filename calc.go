@@ -25,16 +25,19 @@ func main() {
 		if i == 1{
 			continue
 		}
+		if i == 2{
+			continue
+		}
 
 		if i%2 == 1 {
-			operadores = append(operadores, os.Args[i])
-		} else {
 			numeros = append(numeros, os.Args[i])
+		} else {
+			operadores = append(operadores, os.Args[i])
 		}
 	}
 
 	if *help == true{
-		fmt.Println("-i:Entra no modo interativo\n-e:Você pode fazer o calculo na linha de comando digitando -e (seu calculo)\n-help:comando de ajuda")
+		fmt.Println("-i:Entra no modo interativo\n-e =:Você pode fazer o calculo na linha de comando digitando -e =(seu calculo)\n-help:comando de ajuda")
 		return
 	}
 
@@ -49,7 +52,7 @@ func main() {
 	}
 
 	if len(numeros)-1 != len(operadores) {
-		fmt.Println("Você pode usar a calculadora usando os comandos\n-i e -e, para saber mais detalhes sobre estes\ncomandos digite -help.")
+		fmt.Println("Você pode usar a calculadora usando os comandos\n-i e -e =, para saber mais detalhes sobre estes\ncomandos digite -help.")
 		return
 	}
 }
