@@ -72,37 +72,47 @@ func modoExecução(numeros,operadores []string)float64{
 	fmt.Println("O resultado é:", resultado)
 	return resultado
 }
-func modoInterativo(primeiroDigito,segundoDigito,novoCalculo,operador string)float64{
-	primeiroResultado := calcularValoresDoInput(primeiroDigito, operador, segundoDigito)
-	if primeiroResultado == 0{
-		return primeiroResultado
-	}
+func modoInterativo(primeiroDigito,segundoDigito float64,operador string)(float64,error){
+	var primeiroResultado float64
+	var operadorInvalido,novoCalculo string
+	var err error
+	primeiraVez := true
+	contador := 0
 
-	fmt.Print("Deseja fazer um novo calculo?")
-	fmt.Scan(&novoCalculo)
-
-	if novoCalculo == "sim" {
-		fmt.Print("Digite o operador:")
-		fmt.Scan(&operador)
-
-		fmt.Print("Digite outro numero:")
-		fmt.Scan(&segundoDigito)
-
-		segundoValor,err := tratarValor(segundoDigito, "segundo digito")
+	for{
+		primeiroDigito, segundoDigito, operador,err = obterDadosDosInputs(primeiraVez)
 		if err != nil{
-			return segundoValor
+			return 0.0,err
 		}
-		segundoResultado,operadorInvalido := calcularValores(primeiroResultado, segundoValor, operador)
-		if operadorInvalido == "Argumento inválido"{
-			return segundoResultado
+		if primeiraVez {
+			primeiroResultado, operadorInvalido = calcularValores(primeiroDigito, segundoDigito, operador)
+		}else{
+			primeiroDigito, operadorInvalido = calcularValores(primeiroResultado, segundoDigito, operador)
 		}
-		fmt.Println(primeiroResultado, operador, segundoDigito, "=", segundoResultado)
-		segundoResultado = calcularMaisValores(primeiroDigito, operador, segundoResultado)
-	} else {
-		fmt.Println("programa foi encerrado")
-		return primeiroResultado
+
+		if operadorInvalido == "Argumento inválido" {
+			return 0.0,err
+		}
+
+		if contador == 0 {
+			fmt.Println(primeiroDigito, operador, segundoDigito, "=", primeiroResultado)
+		}
+		if contador >= 1 {
+		 	fmt.Println(primeiroResultado, operador, segundoDigito, "=", primeiroDigito)
+		 	primeiroResultado = primeiroDigito
+		}
+
+		contador = contador + 1
+
+		fmt.Print("Deseja fazer um novo calculo?")
+		fmt.Scan(&novoCalculo)
+
+		if novoCalculo != "sim" {
+			break
+		}
+		primeiraVez = false
 	}
-		return primeiroResultado
+	return primeiroResultado,err
 }
 func calcularValores(primeiroValor, segundoValor float64, operador string) (float64,string) {
 	var resultado float64
