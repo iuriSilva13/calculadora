@@ -29,6 +29,11 @@ func main() {
 			continue
 		}
 
+		if len(os.Args)%2 == 1{
+			fmt.Println("Calculo invalido")
+			return
+		}
+
 		if i%2 == 1 {
 			numeros = append(numeros, os.Args[i])
 		} else {
