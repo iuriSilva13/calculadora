@@ -42,6 +42,18 @@ func Test_calcularValores(teste *testing.T) {
                         valorEsperado: 19.119047619047617,
                         erroEsperado: "primeiro digito invalido",
               },
+              {
+                mensagemDeIdentificação: "Operador de subtração deve ser identificado corretamente",
+                parâmetrosRecebidos: func(*testing.T) parâmetrosRecebidos {
+                      return parâmetrosRecebidos{
+                              primeiroValor: 45,
+                              segundoValor:  35,
+                              operador:      "-",
+                      }
+                },
+                valorEsperado: 10.0,
+                erroEsperado: "primeiro digito invalido",
+             },
         }
 
         for _, valorTeste := range testes {
