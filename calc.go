@@ -28,6 +28,14 @@ func main() {
 		if i == 2{
 			continue
 		}
+		if i == 2{
+			continue
+		}
+
+		if len(os.Args)%2 == 1{
+			fmt.Println("Calculo invalido")
+			return
+		}
 
 		if i%2 == 1 {
 			numeros = append(numeros, os.Args[i])
@@ -36,13 +44,13 @@ func main() {
 		}
 	}
 
-	if *help == true {
+	if *help == true{
 		fmt.Println("-i:Entra no modo interativo\n-e =:Você pode fazer o calculo na linha de comando digitando -e =(seu calculo)\n-help:comando de ajuda")
 		return
 	}
 
-	if *interativo == true {
-		modoInterativo(primeiroDigito, segundoDigito, operador)
+	if *interativo == true{
+		modoInterativo(primeiroDigito,segundoDigito,operador)
 		return
 	}
 
@@ -63,11 +71,11 @@ func modoExecução(numeros, operadores []string) float64 {
 	for i, num := range numeros {
 		numeros,err := tratarValor(num, "Calculo")
 		if err != nil{
-			return numeros
+			return 0.0
 		}
 		resultado,operadorInvalido = calcularValores(resultado, numeros, operador)
 		if operadorInvalido == "Argumento inválido"{
-			return resultado
+			return 0.0
 		}
 		if len(operadores) > i {
 			operador = operadores[i]
@@ -110,7 +118,7 @@ func obterDadosDosInputs(primeiraVez bool) (float64, float64, string, error){
 	}
   	return 0.0, segundoTratamento, operador,err
 }
-func modoInterativo(primeiroDigito, segundoDigito float64, operador string) (float64,error) {
+func modoInterativo(primeiroDigito,segundoDigito float64,operador string)(float64,error){
 	var primeiroResultado float64
 	var operadorInvalido,novoCalculo string
 	var err error
