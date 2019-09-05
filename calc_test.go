@@ -81,6 +81,18 @@ func Test_obterDadosDosInputs(teste *testing.T) {
                         operador: "",
                         erroEsperado: nil,
                 },
+                {
+                        mensagemDeIdentificação: "False deve ser identificado corretamente",
+                        parâmetrosRecebidos: func(*testing.T) parâmetrosRecebidos {
+                                return parâmetrosRecebidos{
+                                        primeiraVez: false,
+                                }
+                        },
+                        primeiroValorEsperado: 0.0,
+                        segundoValorEsperado: 0.0,
+                        operador: "",
+                        erroEsperado: nil,
+                },
         }
 
         for _, valorTeste := range testes {
