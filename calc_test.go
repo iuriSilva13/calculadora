@@ -56,6 +56,41 @@ func Test_calcularValores(teste *testing.T) {
                 })
         }
 }
+func Test_modoExecução(teste *testing.T) {
+        type parâmetrosRecebidos struct {
+                numeros []string
+                operadores []string
+        }
+        testes := []struct {
+                mensagemDeIdentificação string
+                parâmetrosRecebidos func(teste *testing.T) parâmetrosRecebidos
+
+                resultado float64
+        }{
+                {
+                        mensagemDeIdentificação: "Inteiro deve ser identificado corretamente",
+                        parâmetrosRecebidos: func(*testing.T) parâmetrosRecebidos {
+                                return parâmetrosRecebidos{
+                                        numeros: []string{"10"},
+                                        operadores: []string{"+"},
+                                }
+                        },
+                       resultado: 10.0,
+                },
+        }
+
+        for _, valorTeste := range testes {
+                teste.Run(valorTeste.mensagemDeIdentificação, func(teste *testing.T) {
+                        testeCalcularValores := valorTeste.parâmetrosRecebidos(teste)
+
+                        valorRecebido := modoExecução(testeCalcularValores.numeros,testeCalcularValores.operadores)
+
+                        if !reflect.DeepEqual(valorRecebido,valorTeste.resultado) {
+                                teste.Errorf("modoExecução valorRecebido = %v,valorEsperado = %v",valorRecebido,valorTeste.resultado)
+                        }
+                })
+        }
+}
 func Test_exibeErro(teste *testing.T) {
         type parâmetrosRecebidos struct {
                 textoErro string
