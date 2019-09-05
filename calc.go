@@ -68,11 +68,11 @@ func modoExecução(numeros,operadores []string)float64{
 	for i, num := range numeros {
 		numeros,err := tratarValor(num, "Calculo")
 		if err != nil{
-			return numeros
+			return 0.0
 		}
 		resultado,operadorInvalido = calcularValores(resultado, numeros, operador)
 		if operadorInvalido == "Argumento inválido"{
-			return resultado
+			return 0.0
 		}
 		if len(operadores) > i {
 			operador = operadores[i]
@@ -170,7 +170,7 @@ func calcularValores(primeiroValor, segundoValor float64, operador string) (floa
 		resultado = primeiroValor * segundoValor
 	default:
 		mensagemErro := exibeErro("Argumento inválido")
-		return resultado,mensagemErro
+		return 0.0,mensagemErro
 	}
 	return resultado,operador
 }
