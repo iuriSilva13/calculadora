@@ -56,6 +56,45 @@ func Test_calcularValores(teste *testing.T) {
                 })
         }
 }
+func Test_modoInterativo(teste *testing.T) {
+        type parâmetrosRecebidos struct {
+                primeiroDigito float64
+                segundoDigito float64
+                operador string
+        }
+        testes := []struct {
+                mensagemDeIdentificação string
+                parâmetrosRecebidos func(teste *testing.T) parâmetrosRecebidos
+
+                valorEsperado float64
+                erroEsperado error
+        }{
+                {
+                        mensagemDeIdentificação: "Inteiro deve ser identificado corretamente",
+                        parâmetrosRecebidos: func(*testing.T) parâmetrosRecebidos {
+                                return parâmetrosRecebidos{
+                                        primeiroDigito: 0,
+                                        segundoDigito: 0,
+                                        operador: "",
+                                }
+                        },
+                       valorEsperado: 0.0,
+                       erroEsperado: nil,
+                },
+        }
+
+        for _, valorTeste := range testes {
+                teste.Run(valorTeste.mensagemDeIdentificação, func(teste *testing.T) {
+                        testeCalcularValores := valorTeste.parâmetrosRecebidos(teste)
+
+                        valorRecebido,err := modoInterativo(testeCalcularValores.primeiroDigito,testeCalcularValores.segundoDigito,testeCalcularValores.operador)
+
+                        if !reflect.DeepEqual(valorRecebido,valorTeste.valorEsperado) {
+                                teste.Errorf("modoInterativo erro = %v,valorRecebido = %v,valorEsperado = %v",err,valorRecebido,valorTeste.valorEsperado)
+                        }
+                })
+        }
+}
 func Test_modoExecução(teste *testing.T) {
         type parâmetrosRecebidos struct {
                 numeros []string
