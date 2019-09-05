@@ -259,7 +259,7 @@ func Test_modoExecução(teste *testing.T) {
                         mensagemDeIdentificação: "Digitos inválidos devem ser identificados corretamente",
                         parâmetrosRecebidos: func(*testing.T) parâmetrosRecebidos {
                                 return parâmetrosRecebidos{
-                                        numeros: []string{"dsjfjsdfhfd"},
+                                        numeros: []string{"dsjfjshgfhgdfhfd"},
                                         operadores: []string{"+"},
                                 }
                         },
