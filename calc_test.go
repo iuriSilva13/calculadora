@@ -77,6 +77,16 @@ func Test_modoExecução(teste *testing.T) {
                         },
                        resultado: 10.0,
                 },
+                {
+                        mensagemDeIdentificação: "Valor inteiro e negativo deve ser identificado corretamente",
+                        parâmetrosRecebidos: func(*testing.T) parâmetrosRecebidos {
+                                return parâmetrosRecebidos{
+                                        numeros: []string{"-10"},
+                                        operadores: []string{"+"},
+                                }
+                        },
+                       resultado: -10.0,
+                },
         }
 
         for _, valorTeste := range testes {
