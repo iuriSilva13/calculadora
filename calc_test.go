@@ -56,6 +56,45 @@ func Test_calcularValores(teste *testing.T) {
                 })
         }
 }
+func Test_obterDadosDosInputs(teste *testing.T) {
+        type parâmetrosRecebidos struct {
+				primeiraVez bool
+        }
+        testes := []struct {
+                mensagemDeIdentificação string
+                parâmetrosRecebidos func(teste *testing.T) parâmetrosRecebidos
+
+                primeiroValorEsperado float64
+                segundoValorEsperado float64
+                operador string
+                erroEsperado error
+        }{
+                {
+                        mensagemDeIdentificação: "True deve ser identificado corretamente",
+                        parâmetrosRecebidos: func(*testing.T) parâmetrosRecebidos {
+                                return parâmetrosRecebidos{
+                                        primeiraVez: true,
+                                }
+                        },
+                        primeiroValorEsperado: 0.0,
+                        segundoValorEsperado: 0.0,
+                        operador: "",
+                        erroEsperado: nil,
+                },
+        }
+
+        for _, valorTeste := range testes {
+                teste.Run(valorTeste.mensagemDeIdentificação, func(teste *testing.T) {
+                        testeCalcularValores := valorTeste.parâmetrosRecebidos(teste)
+
+                        primeiroValor,segundoValor,operator,err := obterDadosDosInputs(testeCalcularValores.primeiraVez)
+
+                        if !reflect.DeepEqual(primeiroValor,valorTeste.primeiroValorEsperado) {
+        teste.Errorf("obterDadosDosInputs primeiroValorRecebido = %v,segundoValorRecebido = %v,operadorRecebido = %v,erroRecebido = %v,primeiroValorEsperado = %v,segundoValorEsperado = %v,operadorEsperado = %v,erroEsperado = %v", primeiroValor,segundoValor,operator,err,valorTeste.primeiroValorEsperado,valorTeste.segundoValorEsperado,valorTeste.operador,valorTeste.erroEsperado)
+                        }
+                })
+        }
+}
 func Test_modoInterativo(teste *testing.T) {
         type parâmetrosRecebidos struct {
                 primeiroDigito float64
