@@ -265,6 +265,16 @@ func Test_modoExecução(teste *testing.T) {
                         },
                        resultado: 0.0,
                 },
+                {
+                        mensagemDeIdentificação: "Operador inválido deve ser identificado corretamente",
+                        parâmetrosRecebidos: func(*testing.T) parâmetrosRecebidos {
+                                return parâmetrosRecebidos{
+                                        numeros: []string{"0.0","0,0"},
+                                        operadores: []string{"fdgfgdfg"},
+                                }
+                        },
+                       resultado: 0.0,
+                },
         }
 
         for _, valorTeste := range testes {
