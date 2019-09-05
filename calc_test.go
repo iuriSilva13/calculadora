@@ -66,6 +66,18 @@ func Test_calcularValores(teste *testing.T) {
                 valorEsperado: 50.0,
                 erroEsperado: "primeiro digito invalido",
              },
+             {
+                mensagemDeIdentificação: "Operador deve ser identificado corretamente",
+                parâmetrosRecebidos: func(*testing.T) parâmetrosRecebidos {
+                      return parâmetrosRecebidos{
+                              primeiroValor: 10,
+                              segundoValor:  45,
+                              operador:      "gfdgfdgfd",
+                      }
+                },
+                valorEsperado: 0.0,
+                erroEsperado: "Argumento inválido",
+             },
         }
 
         for _, valorTeste := range testes {
