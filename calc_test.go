@@ -81,6 +81,18 @@ func Test_modoInterativo(teste *testing.T) {
                        valorEsperado: 0.0,
                        erroEsperado: nil,
                 },
+                {
+                        mensagemDeIdentificação: "Float deve ser identificado corretamente",
+                        parâmetrosRecebidos: func(*testing.T) parâmetrosRecebidos {
+                                return parâmetrosRecebidos{
+                                        primeiroDigito: 0.0,
+                                        segundoDigito: 0.0,
+                                        operador: "",
+                                }
+                        },
+                       valorEsperado: 0.0,
+                       erroEsperado: nil,
+                },
         }
 
         for _, valorTeste := range testes {
