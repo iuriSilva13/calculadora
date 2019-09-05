@@ -117,6 +117,16 @@ func Test_modoExecução(teste *testing.T) {
                         },
                        resultado: 10.1,
                 },
+                {
+                        mensagemDeIdentificação: "Digitos inválidos devem ser identificados corretamente",
+                        parâmetrosRecebidos: func(*testing.T) parâmetrosRecebidos {
+                                return parâmetrosRecebidos{
+                                        numeros: []string{"dsjfjsdfhfd"},
+                                        operadores: []string{"+"},
+                                }
+                        },
+                       resultado: 0.0,
+                },
         }
 
         for _, valorTeste := range testes {
