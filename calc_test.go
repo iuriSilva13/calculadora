@@ -107,6 +107,16 @@ func Test_modoExecução(teste *testing.T) {
                         },
                        resultado: -10.1,
                 },
+                {
+                        mensagemDeIdentificação: "Float com , deve ser identificado corretamente",
+                        parâmetrosRecebidos: func(*testing.T) parâmetrosRecebidos {
+                                return parâmetrosRecebidos{
+                                        numeros: []string{"10,1"},
+                                        operadores: []string{"+"},
+                                }
+                        },
+                       resultado: 10.1,
+                },
         }
 
         for _, valorTeste := range testes {
