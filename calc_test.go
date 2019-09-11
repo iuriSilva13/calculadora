@@ -133,9 +133,9 @@ func Test_obterDadosDosInputs(teste *testing.T) {
 
         for _, valorTeste := range testes {
                 teste.Run(valorTeste.mensagemDeIdentificação, func(teste *testing.T) {
-                        testeCalcularValores := valorTeste.parâmetrosRecebidos(teste)
+                        testeObterDadosDosInputs := valorTeste.parâmetrosRecebidos(teste)
 
-                        primeiroValor,segundoValor,operator,err := obterDadosDosInputs(testeCalcularValores.primeiraVez)
+                        primeiroValor,segundoValor,operator,err := obterDadosDosInputs(testeObterDadosDosInputs.primeiraVez)
 
                         if !reflect.DeepEqual(primeiroValor,valorTeste.primeiroValorEsperado) {
         teste.Errorf("obterDadosDosInputs primeiroValorRecebido = %v,segundoValorRecebido = %v,operadorRecebido = %v,erroRecebido = %v,primeiroValorEsperado = %v,segundoValorEsperado = %v,operadorEsperado = %v,erroEsperado = %v", primeiroValor,segundoValor,operator,err,valorTeste.primeiroValorEsperado,valorTeste.segundoValorEsperado,valorTeste.operador,valorTeste.erroEsperado)
@@ -184,9 +184,9 @@ func Test_modoInterativo(teste *testing.T) {
 
         for _, valorTeste := range testes {
                 teste.Run(valorTeste.mensagemDeIdentificação, func(teste *testing.T) {
-                        testeCalcularValores := valorTeste.parâmetrosRecebidos(teste)
+                        testeModoInterativo := valorTeste.parâmetrosRecebidos(teste)
 
-                        valorRecebido,err := modoInterativo(testeCalcularValores.primeiroDigito,testeCalcularValores.segundoDigito,testeCalcularValores.operador)
+                        valorRecebido,err := modoInterativo(testeModoInterativo.primeiroDigito,testeModoInterativo.segundoDigito,testeModoInterativo.operador)
 
                         if !reflect.DeepEqual(valorRecebido,valorTeste.valorEsperado) {
                                 teste.Errorf("modoInterativo erro = %v,valorRecebido = %v,valorEsperado = %v",err,valorRecebido,valorTeste.valorEsperado)
@@ -279,9 +279,9 @@ func Test_modoExecução(teste *testing.T) {
 
         for _, valorTeste := range testes {
                 teste.Run(valorTeste.mensagemDeIdentificação, func(teste *testing.T) {
-                        testeCalcularValores := valorTeste.parâmetrosRecebidos(teste)
+                        testeModoExecução := valorTeste.parâmetrosRecebidos(teste)
 
-                        valorRecebido := modoExecução(testeCalcularValores.numeros,testeCalcularValores.operadores)
+                        valorRecebido := modoExecução(testeModoExecução.numeros,testeModoExecução.operadores)
 
                         if !reflect.DeepEqual(valorRecebido,valorTeste.resultado) {
                                 teste.Errorf("modoExecução valorRecebido = %v,valorEsperado = %v",valorRecebido,valorTeste.resultado)
@@ -312,9 +312,9 @@ func Test_exibeErro(teste *testing.T) {
 
         for _, valorTeste := range testes {
                 teste.Run(valorTeste.mensagemDeIdentificação, func(teste *testing.T) {
-                        testeMensagmErro := valorTeste.parâmetrosRecebidos(teste)
+                        testeExibeErro := valorTeste.parâmetrosRecebidos(teste)
 
-                        mensagemRecebida := exibeErro(testeMensagmErro.textoErro)
+                        mensagemRecebida := exibeErro(testeExibeErro.textoErro)
 
                         if !reflect.DeepEqual(mensagemRecebida,valorTeste.mensagemDeErroEsperada) {
                                 teste.Errorf("exibeErro mensagemRecebida = %v,mensagemEsperada = %v",mensagemRecebida,valorTeste.mensagemDeErroEsperada)
