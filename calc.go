@@ -76,6 +76,12 @@ func modoExecução(numeros, operadores []string) float64 {
 	fmt.Println("O resultado é:", resultado)
 	return resultado
 }
+func lerInputs(digito string)string{
+	var texto string
+	fmt.Print(digito)
+	fmt.Scan(&texto)
+	return texto
+}
 func validarEntradas(primeiroDigito,segundoDigito string,primeiraVez bool)(float64,float64,error){
 	var primeiroTratamento,segundoTratamento float64
 	var err error
