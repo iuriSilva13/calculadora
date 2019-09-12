@@ -92,6 +92,47 @@ func Test_calcularValores(teste *testing.T) {
                 })
         }
 }
+func Test_validarEntradas(teste *testing.T) {
+        type parâmetrosRecebidos struct {
+                primeiroDigito string
+                segundoDigito string
+                primeiraVez bool
+        }
+        testes := []struct {
+                mensagemDeIdentificação string
+                parâmetrosRecebidos func(teste *testing.T) parâmetrosRecebidos
+
+                primeiroValorEsperado float64
+                segundoValorEsperado float64
+                erroEsperado error
+        }{
+                {
+                        mensagemDeIdentificação: "mensagem de erro deve ser identificada corretamente",
+                        parâmetrosRecebidos: func(*testing.T) parâmetrosRecebidos {
+                                return parâmetrosRecebidos{
+                                        primeiroDigito: "",
+                                        segundoDigito: "",
+                                        primeiraVez: false,
+                                }
+                        },
+                       primeiroValorEsperado: 0.0,
+                       segundoValorEsperado: 0.0,
+                       erroEsperado: nil,
+                },
+        }
+
+        for _, valorTeste := range testes {
+                teste.Run(valorTeste.mensagemDeIdentificação, func(teste *testing.T) {
+                        testeValidarEntradas := valorTeste.parâmetrosRecebidos(teste)
+
+                        primeiroValor,segundoValor,err := validarEntradas(testeValidarEntradas.primeiroDigito,testeValidarEntradas.segundoDigito,testeValidarEntradas.primeiraVez)
+
+                        if !reflect.DeepEqual(segundoValor,valorTeste.segundoValorEsperado) {
+                                teste.Errorf("validarEntradas primeiroValorRecebido = %v,segundoValorRecebido = %v,primeiroCalculoRecebido = %v,primeiroValorEsperado = %v,segundoValorEsperado = %v, erroEsperado = %v",primeiroValor,segundoValor,err, valorTeste.primeiroValorEsperado,valorTeste.segundoValorEsperado,valorTeste.erroEsperado)
+                        }
+                })
+        }
+}
 func Test_modoInterativo(teste *testing.T) {
         type parâmetrosRecebidos struct {
                 primeiroDigito float64
