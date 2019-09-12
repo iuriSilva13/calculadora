@@ -28,9 +28,6 @@ func main() {
 		if i == 2{
 			continue
 		}
-		if i == 2{
-			continue
-		}
 
 		if len(os.Args)%2 == 1{
 			fmt.Println("Calculo invalido")
