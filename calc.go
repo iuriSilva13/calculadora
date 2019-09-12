@@ -84,39 +84,41 @@ func modoExecução(numeros, operadores []string) float64 {
 	fmt.Println("O resultado é:", resultado)
 	return resultado
 }
-func obterDadosDosInputs(primeiraVez bool) (float64, float64, string, error){
-	var primeiroDigito, segundoDigito, operador string
+func lerInputs(digito string)string{
+	var texto string
+	fmt.Print(digito)
+	fmt.Scan(&texto)
+	return texto
+}
+func validarEntradas(primeiroDigito,segundoDigito string,primeiraVez bool)(float64,float64,error){
+	var primeiroTratamento,segundoTratamento float64
+	var err error
 
-	if primeiraVez {
-		fmt.Print("Digite o primeiro numero:")
-		fmt.Scan(&primeiroDigito)
-		fmt.Print("Digite o operador:")
-		fmt.Scan(&operador)
-		fmt.Print("Digite outro numero:")
-		fmt.Scan(&segundoDigito)
-
-		primeiroTratamento, err := tratarValor(primeiroDigito, "primeiro digito")
-	 	if err != nil {
-	 		return 0.0, 0.0, operador,err
-	 	}
-
-	 	segundoTratamento, err := tratarValor(segundoDigito, "segundo digito")
-	 	if err != nil {
-	 		return 0.0, 0.0, operador,err
-	 	}
-	 	return primeiroTratamento, segundoTratamento, operador,err
+	if primeiraVez{
+		primeiroTratamento, err = tratarValor(primeiroDigito, "primeiro digito")
+		if err != nil {
+			return 0.0, 0.0,err
+		}
 	}
 
-	fmt.Print("Digite o operador:")
-	fmt.Scan(&operador)
-	fmt.Print("Digite outro numero:")
-	fmt.Scan(&segundoDigito)
-
-	segundoTratamento, err := tratarValor(segundoDigito, "segundo digito")
+	segundoTratamento, err = tratarValor(segundoDigito, "segundo digito")
 	if err != nil {
-	 	return 0.0, 0.0, operador,err
+		return 0.0, 0.0,err
 	}
-  	return 0.0, segundoTratamento, operador,err
+	return primeiroTratamento,segundoTratamento,err
+}
+func obterDadosDosInputs(primeiraVez bool)(float64,float64,string,error){
+	var primeiroDigito,segundoDigito,operador string
+	var err error
+	
+	if primeiraVez {
+		primeiroDigito = lerInputs("Digite o primeiro numero:")
+	}
+
+	operador = lerInputs("Digite o operador:")
+	segundoDigito = lerInputs("Digite outro numero:")
+	primeiroValorTratado,segundoValorTratado,err := validarEntradas(primeiroDigito, segundoDigito,primeiraVez)
+	return primeiroValorTratado,segundoValorTratado,operador,err
 }
 func modoInterativo(primeiroDigito,segundoDigito float64,operador string)(float64,error){
 	var primeiroResultado float64
