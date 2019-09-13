@@ -123,7 +123,7 @@ func obterDadosDosInputs(primeiraVez bool)(float64,float64,string,error){
 }
 func modoInterativo(primeiroDigito,segundoDigito float64,operador string)(float64,error){
 	var primeiroResultado float64
-	var operadorInvalido,novoCalculo string
+	var operadorInvalido string
 	var err error
 	primeiraVez := true
 	contador := 0
@@ -152,9 +152,7 @@ func modoInterativo(primeiroDigito,segundoDigito float64,operador string)(float6
 		}
 
 		contador = contador + 1
-
-		fmt.Print("Deseja fazer um novo calculo?")
-		fmt.Scan(&novoCalculo)
+		novoCalculo := lerInputs("Deseja fazer um novo calculo?")
 
 		if novoCalculo != "sim" {
 			break
