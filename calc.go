@@ -82,9 +82,12 @@ func modoExecução(numeros,operadores []string)float64{
 	fmt.Println("O resultado é:", resultado)
 	return resultado
 }
-func lerInputs(digito string)string{
+func lerInputs(file *os.File,digito string)string{
+	if file == nil{
+		file = os.Stdin
+	}
 	var texto string
-	input := bufio.NewScanner(os.Stdin)
+	input := bufio.NewScanner(file)
 	fmt.Print(digito)
 	if input.Scan(){
 		texto = input.Text()
@@ -113,11 +116,11 @@ func obterDadosDosInputs(primeiraVez bool)(float64,float64,string,error){
 	var err error
 
 	if primeiraVez {
-		primeiroDigito = lerInputs("Digite o primeiro numero:")
+		primeiroDigito = lerInputs(nil,"Digite o primeiro numero:")
 	}
 
-	operador = lerInputs("Digite o operador:")
-	segundoDigito = lerInputs("Digite outro numero:")
+	operador = lerInputs(nil,"Digite o operador:")
+	segundoDigito = lerInputs(nil,"Digite o segundo numero:")
 	primeiroValorTratado,segundoValorTratado,err := validarEntradas(primeiroDigito, segundoDigito,primeiraVez)
 	return primeiroValorTratado,segundoValorTratado,operador,err
 }
@@ -152,7 +155,7 @@ func modoInterativo(primeiroDigito,segundoDigito float64,operador string)(float6
 		}
 
 		contador = contador + 1
-		novoCalculo := lerInputs("Deseja fazer um novo calculo?")
+		novoCalculo := lerInputs(nil,"Deseja fazer um novo calculo?")
 
 		if novoCalculo != "sim" {
 			break
