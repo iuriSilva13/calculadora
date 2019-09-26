@@ -1,12 +1,12 @@
 package main
 
 import (
+	"bufio"
+	"flag"
 	"fmt"
 	"os"
 	"strconv"
 	"strings"
-	"flag"
-	"bufio"
 )
 
 func main() {
@@ -14,23 +14,23 @@ func main() {
 	var operador string
 	var numeros []string
 	var operadores []string
-	execução := flag.Bool("e",false,"calcula na linha de comando")
-	interativo := flag.Bool("i",false,"calcula no modo interativo")
-	help := flag.Bool("help",false,"mostra uma descrição dos comandos")
+	execução := flag.Bool("e", false, "calcula na linha de comando")
+	interativo := flag.Bool("i", false, "calcula no modo interativo")
+	help := flag.Bool("help", false, "mostra uma descrição dos comandos")
 	flag.Parse()
 
 	for i, _ := range os.Args {
 		if i == 0 {
 			continue
 		}
-		if i == 1{
+		if i == 1 {
 			continue
 		}
-		if i == 2{
+		if i == 2 {
 			continue
 		}
 
-		if len(os.Args)%2 == 1{
+		if len(os.Args)%2 == 1 {
 			fmt.Println("Calculo invalido")
 			return
 		}
@@ -42,18 +42,18 @@ func main() {
 		}
 	}
 
-	if *help == true{
+	if *help == true {
 		fmt.Println("-i:Entra no modo interativo\n-e =:Você pode fazer o calculo na linha de comando digitando -e =(seu calculo)\n-help:comando de ajuda")
 		return
 	}
 
-	if *interativo == true{
-		modoInterativo(primeiroDigito,segundoDigito,operador)
+	if *interativo == true {
+		modoInterativo(primeiroDigito, segundoDigito, operador)
 		return
 	}
 
-	if *execução == true{
-		modoExecução(numeros,operadores)
+	if *execução == true {
+		modoExecução(numeros, operadores)
 		return
 	}
 
@@ -62,17 +62,17 @@ func main() {
 		return
 	}
 }
-func modoExecução(numeros,operadores []string)float64{
+func modoExecução(numeros, operadores []string) float64 {
 	resultado := float64(0)
 	operador := "+"
 	var operadorInvalido string
 	for i, num := range numeros {
-		numeros,err := tratarValor(num, "Calculo")
-		if err != nil{
+		numeros, err := tratarValor(num, "Calculo")
+		if err != nil {
 			return 0.0
 		}
-		resultado,operadorInvalido = calcularValores(resultado, numeros, operador)
-		if operadorInvalido == "Argumento inválido"{
+		resultado, operadorInvalido = calcularValores(resultado, numeros, operador)
+		if operadorInvalido == "Argumento inválido" {
 			return 0.0
 		}
 		if len(operadores) > i {
@@ -82,89 +82,86 @@ func modoExecução(numeros,operadores []string)float64{
 	fmt.Println("O resultado é:", resultado)
 	return resultado
 }
-func lerInputs(file *os.File,digito string)string{
-	if file == nil{
-		file = os.Stdin
-	}
-	var texto string
-	input := bufio.NewScanner(file)
+func lerInputs(file *bufio.Scanner, digito string) string {
 	fmt.Print(digito)
-	if input.Scan(){
-		texto = input.Text()
+	if file.Scan() {
+		return file.Text()
 	}
-	return texto
+	return ""
 }
-func validarEntradas(primeiroDigito,segundoDigito string,primeiraVez bool)(float64,float64,error){
-	var primeiroTratamento,segundoTratamento float64
+func validarEntradas(primeiroDigito, segundoDigito string, primeiraVez bool) (float64, float64, error) {
+	var primeiroTratamento, segundoTratamento float64
 	var err error
 
-	if primeiraVez{
+	if primeiraVez {
 		primeiroTratamento, err = tratarValor(primeiroDigito, "primeiro digito")
 		if err != nil {
-			return 0.0, 0.0,err
+			return 0.0, 0.0, err
 		}
 	}
 
 	segundoTratamento, err = tratarValor(segundoDigito, "segundo digito")
 	if err != nil {
-		return 0.0, 0.0,err
+		return 0.0, 0.0, err
 	}
-	return primeiroTratamento,segundoTratamento,err
+	return primeiroTratamento, segundoTratamento, err
 }
-func obterDadosDosInputs(primeiraVez bool)(float64,float64,string,error){
-	var primeiroDigito,segundoDigito,operador string
+func obterDadosDosInputs(primeiraVez bool) (float64, float64, string, error) {
+	var primeiroDigito, segundoDigito, operador string
 	var err error
+	file := bufio.NewScanner(os.Stdin)
 
 	if primeiraVez {
-		primeiroDigito = lerInputs(nil,"Digite o primeiro numero:")
+		primeiroDigito = lerInputs(file, "Digite o primeiro numero:")
 	}
 
-	operador = lerInputs(nil,"Digite o operador:")
-	segundoDigito = lerInputs(nil,"Digite o segundo numero:")
-	primeiroValorTratado,segundoValorTratado,err := validarEntradas(primeiroDigito, segundoDigito,primeiraVez)
-	return primeiroValorTratado,segundoValorTratado,operador,err
+	operador = lerInputs(file, "Digite o operador:")
+	segundoDigito = lerInputs(file, "Digite o segundo numero:")
+	primeiroValorTratado, segundoValorTratado, err := validarEntradas(primeiroDigito, segundoDigito, primeiraVez)
+	return primeiroValorTratado, segundoValorTratado, operador, err
 }
-func modoInterativo(primeiroDigito,segundoDigito float64,operador string)(float64,error){
+func modoInterativo(primeiroDigito, segundoDigito float64, operador string) (float64, error) {
 	var primeiroResultado float64
 	var operadorInvalido string
 	var err error
 	primeiraVez := true
 	contador := 0
+	file := bufio.NewScanner(os.Stdin)
 
-	for{
-		primeiroDigito, segundoDigito, operador,err = obterDadosDosInputs(primeiraVez)
-		if err != nil{
-			return 0.0,err
+	for {
+		primeiroDigito, segundoDigito, operador, err = obterDadosDosInputs(primeiraVez)
+		if err != nil {
+			return 0.0, err
 		}
 		if primeiraVez {
 			primeiroResultado, operadorInvalido = calcularValores(primeiroDigito, segundoDigito, operador)
-		}else{
+		} else {
 			primeiroDigito, operadorInvalido = calcularValores(primeiroResultado, segundoDigito, operador)
 		}
 
 		if operadorInvalido == "Argumento inválido" {
-			return 0.0,err
+			return 0.0, err
 		}
 
 		if contador == 0 {
 			fmt.Println(primeiroDigito, operador, segundoDigito, "=", primeiroResultado)
 		}
 		if contador >= 1 {
-		 	fmt.Println(primeiroResultado, operador, segundoDigito, "=", primeiroDigito)
-		 	primeiroResultado = primeiroDigito
+			fmt.Println(primeiroResultado, operador, segundoDigito, "=", primeiroDigito)
+			primeiroResultado = primeiroDigito
 		}
 
 		contador = contador + 1
-		novoCalculo := lerInputs(nil,"Deseja fazer um novo calculo?")
+		novoCalculo := lerInputs(file, "Deseja fazer um novo calculo?")
 
 		if novoCalculo != "sim" {
 			break
 		}
 		primeiraVez = false
 	}
-	return primeiroResultado,err
+	return primeiroResultado, err
 }
-func calcularValores(primeiroValor, segundoValor float64, operador string) (float64,string) {
+func calcularValores(primeiroValor, segundoValor float64, operador string) (float64, string) {
 	var resultado float64
 	switch operador {
 	case "+":
@@ -177,20 +174,20 @@ func calcularValores(primeiroValor, segundoValor float64, operador string) (floa
 		resultado = primeiroValor * segundoValor
 	default:
 		mensagemErro := exibeErro("Argumento inválido")
-		return 0.0,mensagemErro
+		return 0.0, mensagemErro
 	}
-	return resultado,operador
+	return resultado, operador
 }
 func exibeErro(textoErro string) string {
 	fmt.Println("###", textoErro, "###")
 	return textoErro
 }
-func tratarValor(valorDigitado string, digito string) (float64,error) {
+func tratarValor(valorDigitado string, digito string) (float64, error) {
 	valorDigitado = strings.Replace(valorDigitado, ",", ".", -1)
 	valorTratado, err := strconv.ParseFloat(valorDigitado, 64)
 	if err != nil {
 		fmt.Println(digito + " invalido")
 	}
 
-	return valorTratado,err
+	return valorTratado, err
 }
