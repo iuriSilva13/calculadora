@@ -42,13 +42,15 @@ func main() {
 		}
 	}
 
+	file := bufio.NewScanner(os.Stdin)
+
 	if *help == true {
 		fmt.Println("-i:Entra no modo interativo\n-e =:Você pode fazer o calculo na linha de comando digitando -e =(seu calculo)\n-help:comando de ajuda")
 		return
 	}
 
 	if *interativo == true {
-		modoInterativo(primeiroDigito, segundoDigito, operador)
+		modoInterativo(primeiroDigito, segundoDigito, operador,file)
 		return
 	}
 
@@ -106,10 +108,9 @@ func validarEntradas(primeiroDigito, segundoDigito string, primeiraVez bool) (fl
 	}
 	return primeiroTratamento, segundoTratamento, err
 }
-func obterDadosDosInputs(primeiraVez bool) (float64, float64, string, error) {
+func obterDadosDosInputs(primeiraVez bool,file *bufio.Scanner) (float64, float64, string, error) {
 	var primeiroDigito, segundoDigito, operador string
 	var err error
-	file := bufio.NewScanner(os.Stdin)
 
 	if primeiraVez {
 		primeiroDigito = lerInputs(file, "Digite o primeiro numero:")
@@ -120,16 +121,15 @@ func obterDadosDosInputs(primeiraVez bool) (float64, float64, string, error) {
 	primeiroValorTratado, segundoValorTratado, err := validarEntradas(primeiroDigito, segundoDigito, primeiraVez)
 	return primeiroValorTratado, segundoValorTratado, operador, err
 }
-func modoInterativo(primeiroDigito, segundoDigito float64, operador string) (float64, error) {
+func modoInterativo(primeiroDigito, segundoDigito float64, operador string,file *bufio.Scanner) (float64, error) {
 	var primeiroResultado float64
 	var operadorInvalido string
 	var err error
 	primeiraVez := true
 	contador := 0
-	file := bufio.NewScanner(os.Stdin)
 
 	for {
-		primeiroDigito, segundoDigito, operador, err = obterDadosDosInputs(primeiraVez)
+		primeiroDigito, segundoDigito, operador, err = obterDadosDosInputs(primeiraVez,file)
 		if err != nil {
 			return 0.0, err
 		}
