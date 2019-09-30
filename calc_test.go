@@ -229,6 +229,13 @@ func Test_modoInterativo(teste *testing.T) {
 			operador:				 "+",
 			input:                   "10.0\n+\n20.0\nsim\n+\n20\nnao\n",
 		},
+		{
+			mensagemDeIdentificação: "Digitos inválidos devem ser identificados corretamente",
+			primeiroDigito:          0.0,
+			segundoDigito:           0.0,
+			operador:				"",
+			input:                   "0.0\nfdgdfg\n0.0\n",
+		},
 	}
 
 	for _, valorTeste := range testes {
