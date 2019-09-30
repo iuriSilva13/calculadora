@@ -111,7 +111,7 @@ func Test_validarEntradas(teste *testing.T) {
 		erroEsperado          error
 	}{
 		{
-			mensagemDeIdentificação: "mensagem de erro deve ser identificada corretamente",
+			mensagemDeIdentificação: "False deve ser identificada corretamente",
 			parâmetrosRecebidos: func(*testing.T) parâmetrosRecebidos {
 				return parâmetrosRecebidos{
 					primeiroDigito: "",
@@ -124,7 +124,7 @@ func Test_validarEntradas(teste *testing.T) {
 			erroEsperado:          nil,
 		},
 		{
-			mensagemDeIdentificação: "mensagem de erro deve ser identificada corretamente",
+			mensagemDeIdentificação: "True deve ser identificada corretamente",
 			parâmetrosRecebidos: func(*testing.T) parâmetrosRecebidos {
 				return parâmetrosRecebidos{
 					primeiroDigito: "4",
