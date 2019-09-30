@@ -398,7 +398,7 @@ func Test_lerInputs(teste *testing.T) {
 			primeiroDigito:          "8",
 			segundoDigito:           "2",
 			operador:                "+",
-			input:                   "8\n+\n2\n",
+			input:                   "8\n+\n2\nnao\n",
 		},
 	}
 
@@ -438,6 +438,12 @@ func Test_lerInputs(teste *testing.T) {
 
 			if segundoDigito != valorTeste.segundoDigito {
 				teste.Errorf("digito recebido = %v ,digito esperado = %v ", segundoDigito, valorTeste.segundoDigito)
+			}
+
+			novoCalculo := lerInputs(input, "Deseja fazer um novo calculo?")
+
+			if novoCalculo != "nao" {
+				teste.Errorf("digito recebido = %v ,digito esperado = %v ", novoCalculo, "nao")
 			}
 		})
 	}
