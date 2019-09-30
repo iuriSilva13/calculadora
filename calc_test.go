@@ -207,50 +207,60 @@ func Test_obterDadosDosInputs(teste *testing.T) {
 func Test_modoInterativo(teste *testing.T) {
 	type parâmetrosRecebidos struct {
 		primeiroDigito float64
-		segundoDigito  float64
-		operador       string
+		segundoDigito float64
+		operador string
+		file *bufio.Scanner
 	}
+
 	testes := []struct {
 		mensagemDeIdentificação string
-		parâmetrosRecebidos     func(teste *testing.T) parâmetrosRecebidos
-
-		valorEsperado float64
-		erroEsperado  error
+		resultado				float64
+		primeiroDigito          float64
+		segundoDigito           float64
+		operador 				string
+		file                    *bufio.Scanner					
+		input                   string
 	}{
 		{
-			mensagemDeIdentificação: "Inteiro deve ser identificado corretamente",
-			parâmetrosRecebidos: func(*testing.T) parâmetrosRecebidos {
-				return parâmetrosRecebidos{
-					primeiroDigito: 0,
-					segundoDigito:  0,
-					operador:       "",
-				}
-			},
-			valorEsperado: 0.0,
-			erroEsperado:  nil,
-		},
-		{
-			mensagemDeIdentificação: "Float deve ser identificado corretamente",
-			parâmetrosRecebidos: func(*testing.T) parâmetrosRecebidos {
-				return parâmetrosRecebidos{
-					primeiroDigito: 0.0,
-					segundoDigito:  0.0,
-					operador:       "",
-				}
-			},
-			valorEsperado: 0.0,
-			erroEsperado:  nil,
+			mensagemDeIdentificação: "Float64 deve ser identificado corretamente",
+			resultado:				 50.0,
+			primeiroDigito:          10.0,
+			segundoDigito:           20.0,
+			operador:				 "+",
+			input:                   "10.0\n+\n20.0\nsim\n+\n20\nnao\n",
 		},
 	}
 
 	for _, valorTeste := range testes {
 		teste.Run(valorTeste.mensagemDeIdentificação, func(teste *testing.T) {
-			testeModoInterativo := valorTeste.parâmetrosRecebidos(teste)
+			file, err := ioutil.TempFile("", "")
+			if err != nil {
+				teste.Fatal(err)
+			}
 
-			valorRecebido, err := modoInterativo(testeModoInterativo.primeiroDigito, testeModoInterativo.segundoDigito, testeModoInterativo.operador)
+			defer file.Close()
 
-			if !reflect.DeepEqual(valorRecebido, valorTeste.valorEsperado) {
-				teste.Errorf("modoInterativo erro = %v,valorRecebido = %v,valorEsperado = %v", err, valorRecebido, valorTeste.valorEsperado)
+			_, err = io.WriteString(file, valorTeste.input)
+			if err != nil {
+				teste.Fatal(err)
+			}
+
+			_, err = file.Seek(0, os.SEEK_SET)
+			if err != nil {
+				teste.Fatal(err)
+			}
+			input := bufio.NewScanner(file)
+
+			resultado,err := modoInterativo(valorTeste.primeiroDigito,valorTeste.segundoDigito,valorTeste.operador,input)
+
+			if resultado != valorTeste.resultado{
+				teste.Errorf("resultado recebido = %v , resultado esperado = %v", resultado, 50.0)
+			}
+
+			_,erro := modoInterativo(valorTeste.primeiroDigito,valorTeste.segundoDigito,valorTeste.operador,input)
+
+			if erro == nil {
+				teste.Errorf("erro recebido = %v , erro esperado = %v", erro, nil)
 			}
 		})
 	}
