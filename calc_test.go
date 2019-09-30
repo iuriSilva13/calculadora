@@ -136,6 +136,19 @@ func Test_validarEntradas(teste *testing.T) {
 			segundoValorEsperado:  5.0,
 			erroEsperado:          nil,
 		},
+		{
+			mensagemDeIdentificação: "mensagem de erro deve ser identificada corretamente",
+			parâmetrosRecebidos: func(*testing.T) parâmetrosRecebidos {
+				return parâmetrosRecebidos{
+					primeiroDigito: "",
+					segundoDigito:  "",
+					primeiraVez:    true,
+				}
+			},
+			primeiroValorEsperado: 0.0,
+			segundoValorEsperado:  0.0,
+			erroEsperado:          nil,
+		},
 	}
 
 	for _, valorTeste := range testes {
