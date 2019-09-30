@@ -179,7 +179,7 @@ func Test_obterDadosDosInputs(teste *testing.T) {
 		input                   string
 	}{
 		{
-			mensagemDeIdentificação: "",
+			mensagemDeIdentificação: "Valores Float64,string e false devem ser identificados corretamente",
 			primeiraVez:			false,
 			primeiroDigito:          25.0,
 			segundoDigito:           4.0,
