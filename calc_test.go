@@ -150,6 +150,60 @@ func Test_validarEntradas(teste *testing.T) {
 		})
 	}
 }
+func Test_obterDadosDosInputs(teste *testing.T) {
+	type parâmetrosRecebidos struct {
+		primeiraVez bool
+		file       *bufio.Scanner
+	}
+
+	testes := []struct {
+		mensagemDeIdentificação string
+		primeiraVez				bool
+		primeiroDigito          float64
+		segundoDigito           float64
+		operador 				string
+		err                		error
+		input                   string
+	}{
+		{
+			mensagemDeIdentificação: "",
+			primeiraVez:			false,
+			primeiroDigito:          25.0,
+			segundoDigito:           4.0,
+			operador:				"+",
+			err:                	 nil,
+			input:                   "25.0\n+\n4.0\n",
+		},
+	}
+
+	for _, valorTeste := range testes {
+		teste.Run(valorTeste.mensagemDeIdentificação, func(teste *testing.T) {
+			file, err := ioutil.TempFile("", "")
+			if err != nil {
+				teste.Fatal(err)
+			}
+
+			defer file.Close()
+
+			_, err = io.WriteString(file, valorTeste.input)
+			if err != nil {
+				teste.Fatal(err)
+			}
+
+			_, err = file.Seek(0, os.SEEK_SET)
+			if err != nil {
+				teste.Fatal(err)
+			}
+			input := bufio.NewScanner(file)
+
+			primeiroDigito,segundoDigito,operador,err := obterDadosDosInputs(valorTeste.primeiraVez, input)
+
+			if valorTeste.primeiraVez != false {
+				teste.Errorf("primeiro digito recebido = %v ,segundo digito recebido = %v,operador recebido = %v, primeiro digito esperado = %v, segundo digito esperado = %v,operador esperado = %v ", primeiroDigito,segundoDigito,operador, valorTeste.primeiroDigito,valorTeste.segundoDigito,valorTeste.operador)
+			}
+		})
+	}
+}
 func Test_modoInterativo(teste *testing.T) {
 	type parâmetrosRecebidos struct {
 		primeiroDigito float64
