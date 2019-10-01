@@ -14,7 +14,9 @@ func Test_calcularValores(teste *testing.T) {
 		primeiroValor float64
 		segundoValor  float64
 		operador      string
+		print         *os.File
 	}
+
 	testes := []struct {
 		mensagemDeIdentificação string
 		parâmetrosRecebidos     func(teste *testing.T) parâmetrosRecebidos
@@ -88,7 +90,7 @@ func Test_calcularValores(teste *testing.T) {
 		teste.Run(valorTeste.mensagemDeIdentificação, func(teste *testing.T) {
 			testeCalcularValores := valorTeste.parâmetrosRecebidos(teste)
 
-			valorRecebido, err := calcularValores(testeCalcularValores.primeiroValor, testeCalcularValores.segundoValor, testeCalcularValores.operador)
+			valorRecebido, err := calcularValores(testeCalcularValores.primeiroValor, testeCalcularValores.segundoValor, testeCalcularValores.operador, testeCalcularValores.print)
 
 			if !reflect.DeepEqual(valorRecebido, valorTeste.valorEsperado) {
 				teste.Errorf("calcularValores erro = %v, valorRecebido = %v, valorEsperado: %v", err, valorRecebido, valorTeste.valorEsperado)
@@ -101,6 +103,7 @@ func Test_validarEntradas(teste *testing.T) {
 		primeiroDigito string
 		segundoDigito  string
 		primeiraVez    bool
+		print          *os.File
 	}
 	testes := []struct {
 		mensagemDeIdentificação string
@@ -155,7 +158,7 @@ func Test_validarEntradas(teste *testing.T) {
 		teste.Run(valorTeste.mensagemDeIdentificação, func(teste *testing.T) {
 			testeValidarEntradas := valorTeste.parâmetrosRecebidos(teste)
 
-			primeiroValor, segundoValor, err := validarEntradas(testeValidarEntradas.primeiroDigito, testeValidarEntradas.segundoDigito, testeValidarEntradas.primeiraVez)
+			primeiroValor, segundoValor, err := validarEntradas(testeValidarEntradas.primeiroDigito, testeValidarEntradas.segundoDigito, testeValidarEntradas.primeiraVez, testeValidarEntradas.print)
 
 			if !reflect.DeepEqual(segundoValor, valorTeste.segundoValorEsperado) {
 				teste.Errorf("validarEntradas primeiroValorRecebido = %v,segundoValorRecebido = %v,primeiroCalculoRecebido = %v,primeiroValorEsperado = %v,segundoValorEsperado = %v, erroEsperado = %v", primeiroValor, segundoValor, err, valorTeste.primeiroValorEsperado, valorTeste.segundoValorEsperado, valorTeste.erroEsperado)
@@ -166,25 +169,26 @@ func Test_validarEntradas(teste *testing.T) {
 func Test_obterDadosDosInputs(teste *testing.T) {
 	type parâmetrosRecebidos struct {
 		primeiraVez bool
-		file       *bufio.Scanner
+		file        *bufio.Scanner
 	}
 
 	testes := []struct {
 		mensagemDeIdentificação string
-		primeiraVez				bool
+		primeiraVez             bool
 		primeiroDigito          float64
 		segundoDigito           float64
-		operador 				string
-		err                		error
+		operador                string
+		err                     error
 		input                   string
+		print                   *os.File
 	}{
 		{
 			mensagemDeIdentificação: "Valores Float64,string e false devem ser identificados corretamente",
-			primeiraVez:			false,
+			primeiraVez:             false,
 			primeiroDigito:          25.0,
 			segundoDigito:           4.0,
-			operador:				"+",
-			err:                	 nil,
+			operador:                "+",
+			err:                     nil,
 			input:                   "25.0\n+\n4.0\n",
 		},
 	}
@@ -209,10 +213,10 @@ func Test_obterDadosDosInputs(teste *testing.T) {
 			}
 			input := bufio.NewScanner(file)
 
-			primeiroDigito,segundoDigito,operador,err := obterDadosDosInputs(valorTeste.primeiraVez, input)
+			primeiroDigito, segundoDigito, operador, err := obterDadosDosInputs(valorTeste.primeiraVez, input, valorTeste.print)
 
 			if valorTeste.primeiraVez != false {
-				teste.Errorf("primeiro digito recebido = %v ,segundo digito recebido = %v,operador recebido = %v, primeiro digito esperado = %v, segundo digito esperado = %v,operador esperado = %v ", primeiroDigito,segundoDigito,operador, valorTeste.primeiroDigito,valorTeste.segundoDigito,valorTeste.operador)
+				teste.Errorf("primeiro digito recebido = %v ,segundo digito recebido = %v,operador recebido = %v, primeiro digito esperado = %v, segundo digito esperado = %v,operador esperado = %v ", primeiroDigito, segundoDigito, operador, valorTeste.primeiroDigito, valorTeste.segundoDigito, valorTeste.operador)
 			}
 		})
 	}
@@ -220,33 +224,34 @@ func Test_obterDadosDosInputs(teste *testing.T) {
 func Test_modoInterativo(teste *testing.T) {
 	type parâmetrosRecebidos struct {
 		primeiroDigito float64
-		segundoDigito float64
-		operador string
-		file *bufio.Scanner
+		segundoDigito  float64
+		operador       string
+		file           *bufio.Scanner
 	}
 
 	testes := []struct {
 		mensagemDeIdentificação string
-		resultado				float64
+		resultado               float64
 		primeiroDigito          float64
 		segundoDigito           float64
-		operador 				string
-		file                    *bufio.Scanner					
+		operador                string
 		input                   string
+		file                    *bufio.Scanner
+		print                   *os.File
 	}{
 		{
 			mensagemDeIdentificação: "Float64 deve ser identificado corretamente",
-			resultado:				 50.0,
+			resultado:               50.0,
 			primeiroDigito:          10.0,
 			segundoDigito:           20.0,
-			operador:				 "+",
+			operador:                "+",
 			input:                   "10.0\n+\n20.0\nsim\n+\n20\nnao\n",
 		},
 		{
 			mensagemDeIdentificação: "Digitos inválidos devem ser identificados corretamente",
 			primeiroDigito:          0.0,
 			segundoDigito:           0.0,
-			operador:				"",
+			operador:                "",
 			input:                   "0.0\nfdgdfg\n0.0\n",
 		},
 	}
@@ -271,13 +276,13 @@ func Test_modoInterativo(teste *testing.T) {
 			}
 			input := bufio.NewScanner(file)
 
-			resultado,err := modoInterativo(valorTeste.primeiroDigito,valorTeste.segundoDigito,valorTeste.operador,input)
+			resultado, err := modoInterativo(valorTeste.primeiroDigito, valorTeste.segundoDigito, valorTeste.operador, input, valorTeste.print)
 
-			if resultado != valorTeste.resultado{
+			if resultado != valorTeste.resultado {
 				teste.Errorf("resultado recebido = %v , resultado esperado = %v", resultado, 50.0)
 			}
 
-			_,erro := modoInterativo(valorTeste.primeiroDigito,valorTeste.segundoDigito,valorTeste.operador,input)
+			_, erro := modoInterativo(valorTeste.primeiroDigito, valorTeste.segundoDigito, valorTeste.operador, input, valorTeste.print)
 
 			if erro == nil {
 				teste.Errorf("erro recebido = %v , erro esperado = %v", erro, nil)
@@ -289,12 +294,12 @@ func Test_modoExecução(teste *testing.T) {
 	type parâmetrosRecebidos struct {
 		numeros    []string
 		operadores []string
+		print      *os.File
 	}
 	testes := []struct {
 		mensagemDeIdentificação string
 		parâmetrosRecebidos     func(teste *testing.T) parâmetrosRecebidos
-
-		resultado float64
+		resultado               float64
 	}{
 		{
 			mensagemDeIdentificação: "Inteiro deve ser identificado corretamente",
@@ -372,7 +377,7 @@ func Test_modoExecução(teste *testing.T) {
 		teste.Run(valorTeste.mensagemDeIdentificação, func(teste *testing.T) {
 			testeModoExecução := valorTeste.parâmetrosRecebidos(teste)
 
-			valorRecebido := modoExecução(testeModoExecução.numeros, testeModoExecução.operadores)
+			valorRecebido := modoExecução(testeModoExecução.numeros, testeModoExecução.operadores, testeModoExecução.print)
 
 			if !reflect.DeepEqual(valorRecebido, valorTeste.resultado) {
 				teste.Errorf("modoExecução valorRecebido = %v,valorEsperado = %v", valorRecebido, valorTeste.resultado)
@@ -392,6 +397,7 @@ func Test_lerInputs(teste *testing.T) {
 		segundoDigito           string
 		operador                string
 		input                   string
+		print                   *os.File
 	}{
 		{
 			mensagemDeIdentificação: "",
@@ -422,25 +428,25 @@ func Test_lerInputs(teste *testing.T) {
 			}
 			input := bufio.NewScanner(file)
 
-			primeiroDigito := lerInputs(input, "Digite o primeiro numero:")
+			primeiroDigito := lerInputs(input, "Digite o primeiro numero:", valorTeste.print)
 
 			if primeiroDigito != valorTeste.primeiroDigito {
 				teste.Errorf("digito recebido = %v ,digito esperado = %v ", primeiroDigito, valorTeste.primeiroDigito)
 			}
 
-			operador := lerInputs(input, "Digite o operador:")
+			operador := lerInputs(input, "Digite o operador:", valorTeste.print)
 
 			if operador != valorTeste.operador {
 				teste.Errorf("digito recebido = %v ,digito esperado = %v ", operador, valorTeste.operador)
 			}
 
-			segundoDigito := lerInputs(input, "Digite o segundo numero:")
+			segundoDigito := lerInputs(input, "Digite o segundo numero:", valorTeste.print)
 
 			if segundoDigito != valorTeste.segundoDigito {
 				teste.Errorf("digito recebido = %v ,digito esperado = %v ", segundoDigito, valorTeste.segundoDigito)
 			}
 
-			novoCalculo := lerInputs(input, "Deseja fazer um novo calculo?")
+			novoCalculo := lerInputs(input, "Deseja fazer um novo calculo?", valorTeste.print)
 
 			if novoCalculo != "nao" {
 				teste.Errorf("digito recebido = %v ,digito esperado = %v ", novoCalculo, "nao")
@@ -451,6 +457,7 @@ func Test_lerInputs(teste *testing.T) {
 func Test_exibeErro(teste *testing.T) {
 	type parâmetrosRecebidos struct {
 		textoErro string
+		print     *os.File
 	}
 	testes := []struct {
 		mensagemDeIdentificação string
@@ -473,7 +480,7 @@ func Test_exibeErro(teste *testing.T) {
 		teste.Run(valorTeste.mensagemDeIdentificação, func(teste *testing.T) {
 			testeExibeErro := valorTeste.parâmetrosRecebidos(teste)
 
-			mensagemRecebida := exibeErro(testeExibeErro.textoErro)
+			mensagemRecebida := exibeErro(testeExibeErro.textoErro, testeExibeErro.print)
 
 			if !reflect.DeepEqual(mensagemRecebida, valorTeste.mensagemDeErroEsperada) {
 				teste.Errorf("exibeErro mensagemRecebida = %v,mensagemEsperada = %v", mensagemRecebida, valorTeste.mensagemDeErroEsperada)
@@ -485,6 +492,7 @@ func Test_tratarValor(teste *testing.T) {
 	type parâmetrosRecebidos struct {
 		valorDigitado string
 		digito        string
+		print         *os.File
 	}
 	testes := []struct {
 		mensagemDeIdentificação string
@@ -543,7 +551,7 @@ func Test_tratarValor(teste *testing.T) {
 		teste.Run(valorTeste.mensagemDeIdentificação, func(teste *testing.T) {
 			testeTratarValor := valorTeste.parâmetrosRecebidos(teste)
 
-			valorRecebido, err := tratarValor(testeTratarValor.valorDigitado, testeTratarValor.digito)
+			valorRecebido, err := tratarValor(testeTratarValor.valorDigitado, testeTratarValor.digito, testeTratarValor.print)
 
 			if !reflect.DeepEqual(valorRecebido, valorTeste.valorEsperado) {
 				teste.Errorf("tratarValor erro = %v, valorRecebido = %v, valorEsperado: %v", err, valorRecebido, valorTeste.valorEsperado)
