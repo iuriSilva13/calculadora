@@ -14,13 +14,18 @@ func Test_calcularValores(teste *testing.T) {
 		primeiroValor float64
 		segundoValor  float64
 		operador      string
-		print         *os.File
+	}
+
+	casosDeTestes,err := os.Create("casos de teste da funcao calcularValores")
+	if err != nil{
+		teste.Fatal(err)
 	}
 
 	testes := []struct {
 		mensagemDeIdentificação string
 		parâmetrosRecebidos     func(teste *testing.T) parâmetrosRecebidos
 
+		print         *os.File
 		valorEsperado float64
 		erroEsperado  string
 	}{
@@ -35,6 +40,7 @@ func Test_calcularValores(teste *testing.T) {
 			},
 			valorEsperado: -15.0,
 			erroEsperado:  "primeiro digito invalido",
+			print: casosDeTestes,
 		},
 		{
 			mensagemDeIdentificação: "Float com . deve ser identificado corretamente",
@@ -47,6 +53,7 @@ func Test_calcularValores(teste *testing.T) {
 			},
 			valorEsperado: 19.119047619047617,
 			erroEsperado:  "primeiro digito invalido",
+			print: casosDeTestes,
 		},
 		{
 			mensagemDeIdentificação: "Operador de subtração deve ser identificado corretamente",
@@ -59,6 +66,7 @@ func Test_calcularValores(teste *testing.T) {
 			},
 			valorEsperado: 10.0,
 			erroEsperado:  "primeiro digito invalido",
+			print: casosDeTestes,
 		},
 		{
 			mensagemDeIdentificação: "Operador de multiplicação deve ser identificado corretamente",
@@ -71,6 +79,7 @@ func Test_calcularValores(teste *testing.T) {
 			},
 			valorEsperado: 50.0,
 			erroEsperado:  "primeiro digito invalido",
+			print: casosDeTestes,
 		},
 		{
 			mensagemDeIdentificação: "Operador deve ser identificado corretamente",
@@ -83,6 +92,7 @@ func Test_calcularValores(teste *testing.T) {
 			},
 			valorEsperado: 0.0,
 			erroEsperado:  "Argumento inválido",
+			print: casosDeTestes,
 		},
 	}
 
@@ -90,7 +100,7 @@ func Test_calcularValores(teste *testing.T) {
 		teste.Run(valorTeste.mensagemDeIdentificação, func(teste *testing.T) {
 			testeCalcularValores := valorTeste.parâmetrosRecebidos(teste)
 
-			valorRecebido, err := calcularValores(testeCalcularValores.primeiroValor, testeCalcularValores.segundoValor, testeCalcularValores.operador, testeCalcularValores.print)
+			valorRecebido, err := calcularValores(testeCalcularValores.primeiroValor, testeCalcularValores.segundoValor, testeCalcularValores.operador, valorTeste.print)
 
 			if !reflect.DeepEqual(valorRecebido, valorTeste.valorEsperado) {
 				teste.Errorf("calcularValores erro = %v, valorRecebido = %v, valorEsperado: %v", err, valorRecebido, valorTeste.valorEsperado)
@@ -105,10 +115,17 @@ func Test_validarEntradas(teste *testing.T) {
 		primeiraVez    bool
 		print          *os.File
 	}
+
+	casosDeTestes,err := os.Create("casos de teste da funcao validarEntradas")
+	if err != nil{
+		teste.Fatal(err)
+	}
+
 	testes := []struct {
 		mensagemDeIdentificação string
 		parâmetrosRecebidos     func(teste *testing.T) parâmetrosRecebidos
 
+		print                 *os.File
 		primeiroValorEsperado float64
 		segundoValorEsperado  float64
 		erroEsperado          error
@@ -125,6 +142,7 @@ func Test_validarEntradas(teste *testing.T) {
 			primeiroValorEsperado: 0.0,
 			segundoValorEsperado:  0.0,
 			erroEsperado:          nil,
+			print: casosDeTestes,
 		},
 		{
 			mensagemDeIdentificação: "True deve ser identificada corretamente",
@@ -138,6 +156,7 @@ func Test_validarEntradas(teste *testing.T) {
 			primeiroValorEsperado: 4.0,
 			segundoValorEsperado:  5.0,
 			erroEsperado:          nil,
+			print: casosDeTestes,
 		},
 		{
 			mensagemDeIdentificação: "mensagem de erro deve ser identificada corretamente",
@@ -151,6 +170,7 @@ func Test_validarEntradas(teste *testing.T) {
 			primeiroValorEsperado: 0.0,
 			segundoValorEsperado:  0.0,
 			erroEsperado:          nil,
+			print: casosDeTestes,
 		},
 	}
 
@@ -170,6 +190,12 @@ func Test_obterDadosDosInputs(teste *testing.T) {
 	type parâmetrosRecebidos struct {
 		primeiraVez bool
 		file        *bufio.Scanner
+		print       *os.File
+	}
+
+	casosDeTestes,err := os.Create("casos de teste da funcao obterDadosDosInputs")
+	if err != nil{
+		teste.Fatal(err)
 	}
 
 	testes := []struct {
@@ -190,6 +216,7 @@ func Test_obterDadosDosInputs(teste *testing.T) {
 			operador:                "+",
 			err:                     nil,
 			input:                   "25.0\n+\n4.0\n",
+			print: casosDeTestes,
 		},
 	}
 
@@ -227,6 +254,12 @@ func Test_modoInterativo(teste *testing.T) {
 		segundoDigito  float64
 		operador       string
 		file           *bufio.Scanner
+		print          *os.File
+	}
+
+	casosDeTestes,err := os.Create("casos de teste da funcao modoInterativo")
+	if err != nil{
+		teste.Fatal(err)
 	}
 
 	testes := []struct {
@@ -246,6 +279,7 @@ func Test_modoInterativo(teste *testing.T) {
 			segundoDigito:           20.0,
 			operador:                "+",
 			input:                   "10.0\n+\n20.0\nsim\n+\n20\nnao\n",
+			print: 					 casosDeTestes,
 		},
 		{
 			mensagemDeIdentificação: "Digitos inválidos devem ser identificados corretamente",
@@ -253,6 +287,7 @@ func Test_modoInterativo(teste *testing.T) {
 			segundoDigito:           0.0,
 			operador:                "",
 			input:                   "0.0\nfdgdfg\n0.0\n",
+			print:			         casosDeTestes,
 		},
 	}
 
@@ -296,9 +331,16 @@ func Test_modoExecução(teste *testing.T) {
 		operadores []string
 		print      *os.File
 	}
+
+	casosDeTestes,err := os.Create("casos de teste da funcao modoEcecução")
+	if err != nil{
+		teste.Fatal(err)
+	}
+
 	testes := []struct {
 		mensagemDeIdentificação string
 		parâmetrosRecebidos     func(teste *testing.T) parâmetrosRecebidos
+		print                   *os.File
 		resultado               float64
 	}{
 		{
@@ -310,6 +352,7 @@ func Test_modoExecução(teste *testing.T) {
 				}
 			},
 			resultado: 10.0,
+			print: casosDeTestes,
 		},
 		{
 			mensagemDeIdentificação: "Valor inteiro e negativo deve ser identificado corretamente",
@@ -320,6 +363,7 @@ func Test_modoExecução(teste *testing.T) {
 				}
 			},
 			resultado: -10.0,
+			print: casosDeTestes,
 		},
 		{
 			mensagemDeIdentificação: "Float com . deve ser identificado corretamente",
@@ -330,6 +374,7 @@ func Test_modoExecução(teste *testing.T) {
 				}
 			},
 			resultado: 10.1,
+			print: casosDeTestes,
 		},
 		{
 			mensagemDeIdentificação: "Float com . e negativo deve ser identificado corretamente",
@@ -340,6 +385,7 @@ func Test_modoExecução(teste *testing.T) {
 				}
 			},
 			resultado: -10.1,
+			print: casosDeTestes,
 		},
 		{
 			mensagemDeIdentificação: "Float com , deve ser identificado corretamente",
@@ -350,6 +396,7 @@ func Test_modoExecução(teste *testing.T) {
 				}
 			},
 			resultado: 10.1,
+			print: casosDeTestes,
 		},
 		{
 			mensagemDeIdentificação: "Digitos inválidos devem ser identificados corretamente",
@@ -360,6 +407,7 @@ func Test_modoExecução(teste *testing.T) {
 				}
 			},
 			resultado: 0.0,
+			print: casosDeTestes,
 		},
 		{
 			mensagemDeIdentificação: "Operador inválido deve ser identificado corretamente",
@@ -370,6 +418,7 @@ func Test_modoExecução(teste *testing.T) {
 				}
 			},
 			resultado: 0.0,
+			print: casosDeTestes,
 		},
 	}
 
@@ -389,6 +438,12 @@ func Test_lerInputs(teste *testing.T) {
 	type parâmetrosRecebidos struct {
 		digito string
 		file   *os.File
+		print  *os.File
+	}
+
+	casosDeTestes,err := os.Create("casos de teste da funcao lerInputs")
+	if err != nil{
+		teste.Fatal(err)
 	}
 
 	testes := []struct {
@@ -405,6 +460,7 @@ func Test_lerInputs(teste *testing.T) {
 			segundoDigito:           "2",
 			operador:                "+",
 			input:                   "8\n+\n2\nnao\n",
+			print:					 casosDeTestes,
 		},
 	}
 
@@ -459,10 +515,17 @@ func Test_exibeErro(teste *testing.T) {
 		textoErro string
 		print     *os.File
 	}
+
+	casosDeTestes,err := os.Create("casos de teste da funcao exibeErro")
+	if err != nil{
+		teste.Fatal(err)
+	}
+
 	testes := []struct {
 		mensagemDeIdentificação string
 		parâmetrosRecebidos     func(teste *testing.T) parâmetrosRecebidos
 
+		print                  *os.File
 		mensagemDeErroEsperada string
 	}{
 		{
@@ -473,6 +536,7 @@ func Test_exibeErro(teste *testing.T) {
 				}
 			},
 			mensagemDeErroEsperada: "Argumento inválido",
+			print: casosDeTestes,
 		},
 	}
 
@@ -494,10 +558,17 @@ func Test_tratarValor(teste *testing.T) {
 		digito        string
 		print         *os.File
 	}
+
+	casosDeTestes,err := os.Create("casos de teste da funcao tratarValor")
+	if err != nil{
+		teste.Fatal(err)
+	}
+
 	testes := []struct {
 		mensagemDeIdentificação string
 		parâmetrosRecebidos     func(teste *testing.T) parâmetrosRecebidos
 
+		print         *os.File
 		valorEsperado float64
 		erroEsperado  error
 	}{
@@ -511,6 +582,7 @@ func Test_tratarValor(teste *testing.T) {
 			},
 			valorEsperado: 10.0,
 			erroEsperado:  nil,
+			print: casosDeTestes,
 		},
 		{
 			mensagemDeIdentificação: "Float com , deve ser identificado corretamente",
@@ -522,6 +594,7 @@ func Test_tratarValor(teste *testing.T) {
 			},
 			valorEsperado: 10.1,
 			erroEsperado:  nil,
+			print: casosDeTestes,
 		},
 		{
 			mensagemDeIdentificação: "Float com . deve ser identificado corretamente",
@@ -533,6 +606,7 @@ func Test_tratarValor(teste *testing.T) {
 			},
 			valorEsperado: 10.1,
 			erroEsperado:  nil,
+			print: casosDeTestes,
 		},
 		{
 			mensagemDeIdentificação: "Valores devem ser identificados corretamente",
@@ -544,6 +618,7 @@ func Test_tratarValor(teste *testing.T) {
 			},
 			valorEsperado: 0.0,
 			erroEsperado:  nil,
+			print: casosDeTestes,
 		},
 	}
 
