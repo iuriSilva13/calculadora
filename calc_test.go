@@ -16,7 +16,7 @@ func Test_calcularValores(teste *testing.T) {
 		operador      string
 	}
 
-	casosDeTestes,err := os.Create("casos de teste da funcao calcularValores")
+	casosDeTestes,err := os.Create("./testes/casos de teste da funcao calcularValores.txt")
 	if err != nil{
 		teste.Fatal(err)
 	}
@@ -39,7 +39,6 @@ func Test_calcularValores(teste *testing.T) {
 				}
 			},
 			valorEsperado: -15.0,
-			erroEsperado:  "primeiro digito invalido",
 			print: casosDeTestes,
 		},
 		{
@@ -52,7 +51,6 @@ func Test_calcularValores(teste *testing.T) {
 				}
 			},
 			valorEsperado: 19.119047619047617,
-			erroEsperado:  "primeiro digito invalido",
 			print: casosDeTestes,
 		},
 		{
@@ -65,7 +63,6 @@ func Test_calcularValores(teste *testing.T) {
 				}
 			},
 			valorEsperado: 10.0,
-			erroEsperado:  "primeiro digito invalido",
 			print: casosDeTestes,
 		},
 		{
@@ -78,7 +75,6 @@ func Test_calcularValores(teste *testing.T) {
 				}
 			},
 			valorEsperado: 50.0,
-			erroEsperado:  "primeiro digito invalido",
 			print: casosDeTestes,
 		},
 		{
