@@ -421,13 +421,7 @@ func Test_modoExecução(teste *testing.T) {
 	}
 }
 func Test_lerInputs(teste *testing.T) {
-	type parâmetrosRecebidos struct {
-		digito string
-		file   *os.File
-		print  *os.File
-	}
-
-	casosDeTestes,err := os.Create("casos de teste da funcao lerInputs")
+	casosDeTestes,err := os.Create("./testes/casos de teste da funcao lerInputs.txt")
 	if err != nil{
 		teste.Fatal(err)
 	}
@@ -441,7 +435,7 @@ func Test_lerInputs(teste *testing.T) {
 		print                   *os.File
 	}{
 		{
-			mensagemDeIdentificação: "",
+			mensagemDeIdentificação: "Float64 deve ser identificado corretamente",
 			primeiroDigito:          "8",
 			segundoDigito:           "2",
 			operador:                "+",
