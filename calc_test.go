@@ -451,7 +451,7 @@ func Test_lerInputs(teste *testing.T) {
 		print                   *os.File
 	}{
 		{
-			mensagemDeIdentificação: "Float64 deve ser identificado corretamente",
+			mensagemDeIdentificação: "Inteiro deve ser identificado corretamente",
 			primeiroDigito:          "8",
 			segundoDigito:           "2",
 			operador:                "+",
