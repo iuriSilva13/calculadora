@@ -159,6 +159,22 @@ func Test_validarEntradas(teste *testing.T) {
 			print: casosDeTestes,
 		},
 		{
+			mensagemDeIdentificação: "Inteiro deve ser identificado corretamente",
+			parâmetrosRecebidos: func(*testing.T) parâmetrosRecebidos {
+				return parâmetrosRecebidos{
+					primeiroDigito: "4",
+					segundoDigito:  "5",
+					primeiraVez:    false,
+					erro: nil,
+				}
+			},
+			primeiroValorEsperado: 4.0,
+			segundoValorEsperado:  5.0,
+			primeiraVez: false,
+			erroEsperado: nil,
+			print: casosDeTestes,
+		},
+		{
 			mensagemDeIdentificação: "caso de erro com valor true deve ser identificado corretamente",
 			parâmetrosRecebidos: func(*testing.T) parâmetrosRecebidos {
 				return parâmetrosRecebidos{
