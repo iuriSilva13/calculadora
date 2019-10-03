@@ -318,7 +318,7 @@ func Test_modoExecução(teste *testing.T) {
 		print      *os.File
 	}
 
-	casosDeTestes,err := os.Create("casos de teste da funcao modoEcecução")
+	casosDeTestes,err := os.Create("./testes/casos de teste da funcao modoExecução.txt")
 	if err != nil{
 		teste.Fatal(err)
 	}
