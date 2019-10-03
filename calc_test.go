@@ -496,7 +496,7 @@ func Test_exibeErro(teste *testing.T) {
 		print     *os.File
 	}
 
-	casosDeTestes,err := os.Create("casos de teste da funcao exibeErro")
+	casosDeTestes,err := os.Create("./testes/casos de teste da funcao exibeErro.txt")
 	if err != nil{
 		teste.Fatal(err)
 	}
