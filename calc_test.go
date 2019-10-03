@@ -109,10 +109,11 @@ func Test_validarEntradas(teste *testing.T) {
 		primeiroDigito string
 		segundoDigito  string
 		primeiraVez    bool
+		erro 		   error
 		print          *os.File
 	}
 
-	casosDeTestes,err := os.Create("casos de teste da funcao validarEntradas")
+	casosDeTestes,err := os.Create("./testes/casos de teste da funcao validarEntradas.txt")
 	if err != nil{
 		teste.Fatal(err)
 	}
@@ -124,10 +125,11 @@ func Test_validarEntradas(teste *testing.T) {
 		print                 *os.File
 		primeiroValorEsperado float64
 		segundoValorEsperado  float64
+		primeiraVez			  bool
 		erroEsperado          error
 	}{
 		{
-			mensagemDeIdentificação: "False deve ser identificada corretamente",
+			mensagemDeIdentificação: "caso de erro com valor false deve ser identificado corretamente",
 			parâmetrosRecebidos: func(*testing.T) parâmetrosRecebidos {
 				return parâmetrosRecebidos{
 					primeiroDigito: "",
@@ -137,25 +139,27 @@ func Test_validarEntradas(teste *testing.T) {
 			},
 			primeiroValorEsperado: 0.0,
 			segundoValorEsperado:  0.0,
-			erroEsperado:          nil,
+			primeiraVez: false,
 			print: casosDeTestes,
 		},
 		{
-			mensagemDeIdentificação: "True deve ser identificada corretamente",
+			mensagemDeIdentificação: "Inteiro deve ser identificado corretamente",
 			parâmetrosRecebidos: func(*testing.T) parâmetrosRecebidos {
 				return parâmetrosRecebidos{
 					primeiroDigito: "4",
 					segundoDigito:  "5",
 					primeiraVez:    true,
+					erro: nil,
 				}
 			},
 			primeiroValorEsperado: 4.0,
 			segundoValorEsperado:  5.0,
-			erroEsperado:          nil,
+			primeiraVez: true,
+			erroEsperado: nil,
 			print: casosDeTestes,
 		},
 		{
-			mensagemDeIdentificação: "mensagem de erro deve ser identificada corretamente",
+			mensagemDeIdentificação: "caso de erro com valor true deve ser identificado corretamente",
 			parâmetrosRecebidos: func(*testing.T) parâmetrosRecebidos {
 				return parâmetrosRecebidos{
 					primeiroDigito: "",
@@ -165,7 +169,7 @@ func Test_validarEntradas(teste *testing.T) {
 			},
 			primeiroValorEsperado: 0.0,
 			segundoValorEsperado:  0.0,
-			erroEsperado:          nil,
+			primeiraVez: true,
 			print: casosDeTestes,
 		},
 	}
