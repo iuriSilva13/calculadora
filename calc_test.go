@@ -187,13 +187,7 @@ func Test_validarEntradas(teste *testing.T) {
 	}
 }
 func Test_obterDadosDosInputs(teste *testing.T) {
-	type parâmetrosRecebidos struct {
-		primeiraVez bool
-		file        *bufio.Scanner
-		print       *os.File
-	}
-
-	casosDeTestes,err := os.Create("casos de teste da funcao obterDadosDosInputs")
+	casosDeTestes,err := os.Create("./testes/casos de teste da funcao obterDadosDosInputs.txt")
 	if err != nil{
 		teste.Fatal(err)
 	}
@@ -209,7 +203,7 @@ func Test_obterDadosDosInputs(teste *testing.T) {
 		print                   *os.File
 	}{
 		{
-			mensagemDeIdentificação: "Valores Float64,string e false devem ser identificados corretamente",
+			mensagemDeIdentificação: "Float64 deve ser identificado corretamente",
 			primeiraVez:             false,
 			primeiroDigito:          25.0,
 			segundoDigito:           4.0,
