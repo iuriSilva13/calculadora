@@ -243,15 +243,7 @@ func Test_obterDadosDosInputs(teste *testing.T) {
 	}
 }
 func Test_modoInterativo(teste *testing.T) {
-	type parâmetrosRecebidos struct {
-		primeiroDigito float64
-		segundoDigito  float64
-		operador       string
-		file           *bufio.Scanner
-		print          *os.File
-	}
-
-	casosDeTestes,err := os.Create("casos de teste da funcao modoInterativo")
+	casosDeTestes,err := os.Create("./testes/casos de teste da funcao modoInterativo.txt")
 	if err != nil{
 		teste.Fatal(err)
 	}
@@ -263,7 +255,6 @@ func Test_modoInterativo(teste *testing.T) {
 		segundoDigito           float64
 		operador                string
 		input                   string
-		file                    *bufio.Scanner
 		print                   *os.File
 	}{
 		{
@@ -277,6 +268,7 @@ func Test_modoInterativo(teste *testing.T) {
 		},
 		{
 			mensagemDeIdentificação: "Digitos inválidos devem ser identificados corretamente",
+			resultado:               0.0,
 			primeiroDigito:          0.0,
 			segundoDigito:           0.0,
 			operador:                "",
