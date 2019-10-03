@@ -539,7 +539,7 @@ func Test_tratarValor(teste *testing.T) {
 		print         *os.File
 	}
 
-	casosDeTestes,err := os.Create("casos de teste da funcao tratarValor")
+	casosDeTestes,err := os.Create("./testes/casos de teste da funcao tratarValor.txt")
 	if err != nil{
 		teste.Fatal(err)
 	}
@@ -589,7 +589,7 @@ func Test_tratarValor(teste *testing.T) {
 			print: casosDeTestes,
 		},
 		{
-			mensagemDeIdentificação: "Valores devem ser identificados corretamente",
+			mensagemDeIdentificação: "Digitos inválidos devem ser identificados corretamente",
 			parâmetrosRecebidos: func(*testing.T) parâmetrosRecebidos {
 				return parâmetrosRecebidos{
 					valorDigitado: "asdfasdfd2wqafdaq",
@@ -597,7 +597,6 @@ func Test_tratarValor(teste *testing.T) {
 				}
 			},
 			valorEsperado: 0.0,
-			erroEsperado:  nil,
 			print: casosDeTestes,
 		},
 	}
