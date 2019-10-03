@@ -16,7 +16,7 @@ func Test_calcularValores(teste *testing.T) {
 		operador      string
 	}
 
-	casosDeTestes,err := os.Create("casos de teste da funcao calcularValores")
+	casosDeTestes,err := os.Create("./testes/casos de teste da funcao calcularValores.txt")
 	if err != nil{
 		teste.Fatal(err)
 	}
@@ -39,7 +39,6 @@ func Test_calcularValores(teste *testing.T) {
 				}
 			},
 			valorEsperado: -15.0,
-			erroEsperado:  "primeiro digito invalido",
 			print: casosDeTestes,
 		},
 		{
@@ -52,7 +51,6 @@ func Test_calcularValores(teste *testing.T) {
 				}
 			},
 			valorEsperado: 19.119047619047617,
-			erroEsperado:  "primeiro digito invalido",
 			print: casosDeTestes,
 		},
 		{
@@ -65,7 +63,6 @@ func Test_calcularValores(teste *testing.T) {
 				}
 			},
 			valorEsperado: 10.0,
-			erroEsperado:  "primeiro digito invalido",
 			print: casosDeTestes,
 		},
 		{
@@ -78,7 +75,6 @@ func Test_calcularValores(teste *testing.T) {
 				}
 			},
 			valorEsperado: 50.0,
-			erroEsperado:  "primeiro digito invalido",
 			print: casosDeTestes,
 		},
 		{
@@ -113,10 +109,11 @@ func Test_validarEntradas(teste *testing.T) {
 		primeiroDigito string
 		segundoDigito  string
 		primeiraVez    bool
+		erro 		   error
 		print          *os.File
 	}
 
-	casosDeTestes,err := os.Create("casos de teste da funcao validarEntradas")
+	casosDeTestes,err := os.Create("./testes/casos de teste da funcao validarEntradas.txt")
 	if err != nil{
 		teste.Fatal(err)
 	}
@@ -128,10 +125,11 @@ func Test_validarEntradas(teste *testing.T) {
 		print                 *os.File
 		primeiroValorEsperado float64
 		segundoValorEsperado  float64
+		primeiraVez			  bool
 		erroEsperado          error
 	}{
 		{
-			mensagemDeIdentificação: "False deve ser identificada corretamente",
+			mensagemDeIdentificação: "caso de erro com valor false deve ser identificado corretamente",
 			parâmetrosRecebidos: func(*testing.T) parâmetrosRecebidos {
 				return parâmetrosRecebidos{
 					primeiroDigito: "",
@@ -141,25 +139,43 @@ func Test_validarEntradas(teste *testing.T) {
 			},
 			primeiroValorEsperado: 0.0,
 			segundoValorEsperado:  0.0,
-			erroEsperado:          nil,
+			primeiraVez: false,
 			print: casosDeTestes,
 		},
 		{
-			mensagemDeIdentificação: "True deve ser identificada corretamente",
+			mensagemDeIdentificação: "Inteiro deve ser identificado corretamente",
 			parâmetrosRecebidos: func(*testing.T) parâmetrosRecebidos {
 				return parâmetrosRecebidos{
 					primeiroDigito: "4",
 					segundoDigito:  "5",
 					primeiraVez:    true,
+					erro: nil,
 				}
 			},
 			primeiroValorEsperado: 4.0,
 			segundoValorEsperado:  5.0,
-			erroEsperado:          nil,
+			primeiraVez: true,
+			erroEsperado: nil,
 			print: casosDeTestes,
 		},
 		{
-			mensagemDeIdentificação: "mensagem de erro deve ser identificada corretamente",
+			mensagemDeIdentificação: "Inteiro deve ser identificado corretamente",
+			parâmetrosRecebidos: func(*testing.T) parâmetrosRecebidos {
+				return parâmetrosRecebidos{
+					primeiroDigito: "4",
+					segundoDigito:  "5",
+					primeiraVez:    false,
+					erro: nil,
+				}
+			},
+			primeiroValorEsperado: 4.0,
+			segundoValorEsperado:  5.0,
+			primeiraVez: false,
+			erroEsperado: nil,
+			print: casosDeTestes,
+		},
+		{
+			mensagemDeIdentificação: "caso de erro com valor true deve ser identificado corretamente",
 			parâmetrosRecebidos: func(*testing.T) parâmetrosRecebidos {
 				return parâmetrosRecebidos{
 					primeiroDigito: "",
@@ -169,7 +185,7 @@ func Test_validarEntradas(teste *testing.T) {
 			},
 			primeiroValorEsperado: 0.0,
 			segundoValorEsperado:  0.0,
-			erroEsperado:          nil,
+			primeiraVez: true,
 			print: casosDeTestes,
 		},
 	}
@@ -187,13 +203,7 @@ func Test_validarEntradas(teste *testing.T) {
 	}
 }
 func Test_obterDadosDosInputs(teste *testing.T) {
-	type parâmetrosRecebidos struct {
-		primeiraVez bool
-		file        *bufio.Scanner
-		print       *os.File
-	}
-
-	casosDeTestes,err := os.Create("casos de teste da funcao obterDadosDosInputs")
+	casosDeTestes,err := os.Create("./testes/casos de teste da funcao obterDadosDosInputs.txt")
 	if err != nil{
 		teste.Fatal(err)
 	}
@@ -209,7 +219,7 @@ func Test_obterDadosDosInputs(teste *testing.T) {
 		print                   *os.File
 	}{
 		{
-			mensagemDeIdentificação: "Valores Float64,string e false devem ser identificados corretamente",
+			mensagemDeIdentificação: "Float64 deve ser identificado corretamente",
 			primeiraVez:             false,
 			primeiroDigito:          25.0,
 			segundoDigito:           4.0,
@@ -249,15 +259,7 @@ func Test_obterDadosDosInputs(teste *testing.T) {
 	}
 }
 func Test_modoInterativo(teste *testing.T) {
-	type parâmetrosRecebidos struct {
-		primeiroDigito float64
-		segundoDigito  float64
-		operador       string
-		file           *bufio.Scanner
-		print          *os.File
-	}
-
-	casosDeTestes,err := os.Create("casos de teste da funcao modoInterativo")
+	casosDeTestes,err := os.Create("./testes/casos de teste da funcao modoInterativo.txt")
 	if err != nil{
 		teste.Fatal(err)
 	}
@@ -269,7 +271,6 @@ func Test_modoInterativo(teste *testing.T) {
 		segundoDigito           float64
 		operador                string
 		input                   string
-		file                    *bufio.Scanner
 		print                   *os.File
 	}{
 		{
@@ -283,6 +284,7 @@ func Test_modoInterativo(teste *testing.T) {
 		},
 		{
 			mensagemDeIdentificação: "Digitos inválidos devem ser identificados corretamente",
+			resultado:               0.0,
 			primeiroDigito:          0.0,
 			segundoDigito:           0.0,
 			operador:                "",
@@ -332,7 +334,7 @@ func Test_modoExecução(teste *testing.T) {
 		print      *os.File
 	}
 
-	casosDeTestes,err := os.Create("casos de teste da funcao modoEcecução")
+	casosDeTestes,err := os.Create("./testes/casos de teste da funcao modoExecução.txt")
 	if err != nil{
 		teste.Fatal(err)
 	}
@@ -435,13 +437,7 @@ func Test_modoExecução(teste *testing.T) {
 	}
 }
 func Test_lerInputs(teste *testing.T) {
-	type parâmetrosRecebidos struct {
-		digito string
-		file   *os.File
-		print  *os.File
-	}
-
-	casosDeTestes,err := os.Create("casos de teste da funcao lerInputs")
+	casosDeTestes,err := os.Create("./testes/casos de teste da funcao lerInputs.txt")
 	if err != nil{
 		teste.Fatal(err)
 	}
@@ -455,7 +451,7 @@ func Test_lerInputs(teste *testing.T) {
 		print                   *os.File
 	}{
 		{
-			mensagemDeIdentificação: "",
+			mensagemDeIdentificação: "Inteiro deve ser identificado corretamente",
 			primeiroDigito:          "8",
 			segundoDigito:           "2",
 			operador:                "+",
@@ -516,7 +512,7 @@ func Test_exibeErro(teste *testing.T) {
 		print     *os.File
 	}
 
-	casosDeTestes,err := os.Create("casos de teste da funcao exibeErro")
+	casosDeTestes,err := os.Create("./testes/casos de teste da funcao exibeErro.txt")
 	if err != nil{
 		teste.Fatal(err)
 	}
@@ -559,7 +555,7 @@ func Test_tratarValor(teste *testing.T) {
 		print         *os.File
 	}
 
-	casosDeTestes,err := os.Create("casos de teste da funcao tratarValor")
+	casosDeTestes,err := os.Create("./testes/casos de teste da funcao tratarValor.txt")
 	if err != nil{
 		teste.Fatal(err)
 	}
@@ -609,7 +605,7 @@ func Test_tratarValor(teste *testing.T) {
 			print: casosDeTestes,
 		},
 		{
-			mensagemDeIdentificação: "Valores devem ser identificados corretamente",
+			mensagemDeIdentificação: "Digitos inválidos devem ser identificados corretamente",
 			parâmetrosRecebidos: func(*testing.T) parâmetrosRecebidos {
 				return parâmetrosRecebidos{
 					valorDigitado: "asdfasdfd2wqafdaq",
@@ -617,7 +613,6 @@ func Test_tratarValor(teste *testing.T) {
 				}
 			},
 			valorEsperado: 0.0,
-			erroEsperado:  nil,
 			print: casosDeTestes,
 		},
 	}
