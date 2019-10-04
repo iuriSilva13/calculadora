@@ -9,6 +9,12 @@ import (
 	"testing"
 )
 
+func TestMain(m *testing.M) {
+	os.Mkdir("testes",0777)
+	output := m.Run()
+	os.RemoveAll("testes")
+	os.Exit(output)
+}
 func Test_calcularValores(teste *testing.T) {
 	type parâmetrosRecebidos struct {
 		primeiroValor float64
@@ -109,7 +115,7 @@ func Test_validarEntradas(teste *testing.T) {
 		primeiroDigito string
 		segundoDigito  string
 		primeiraVez    bool
-		erro 		   error
+		erro           error
 		print          *os.File
 	}
 
@@ -125,7 +131,7 @@ func Test_validarEntradas(teste *testing.T) {
 		print                 *os.File
 		primeiroValorEsperado float64
 		segundoValorEsperado  float64
-		primeiraVez			  bool
+		primeiraVez           bool
 		erroEsperado          error
 	}{
 		{
@@ -139,7 +145,7 @@ func Test_validarEntradas(teste *testing.T) {
 			},
 			primeiroValorEsperado: 0.0,
 			segundoValorEsperado:  0.0,
-			primeiraVez: false,
+			primeiraVez:		   false,
 			print: casosDeTestes,
 		},
 		{
@@ -149,13 +155,13 @@ func Test_validarEntradas(teste *testing.T) {
 					primeiroDigito: "4",
 					segundoDigito:  "5",
 					primeiraVez:    true,
-					erro: nil,
+					erro:           nil,
 				}
 			},
 			primeiroValorEsperado: 4.0,
 			segundoValorEsperado:  5.0,
-			primeiraVez: true,
-			erroEsperado: nil,
+			primeiraVez:           true,
+			erroEsperado:          nil,
 			print: casosDeTestes,
 		},
 		{
@@ -165,13 +171,13 @@ func Test_validarEntradas(teste *testing.T) {
 					primeiroDigito: "4",
 					segundoDigito:  "5",
 					primeiraVez:    false,
-					erro: nil,
+					erro:           nil,
 				}
 			},
 			primeiroValorEsperado: 4.0,
 			segundoValorEsperado:  5.0,
-			primeiraVez: false,
-			erroEsperado: nil,
+			primeiraVez:           false,
+			erroEsperado:          nil,
 			print: casosDeTestes,
 		},
 		{
@@ -185,7 +191,7 @@ func Test_validarEntradas(teste *testing.T) {
 			},
 			primeiroValorEsperado: 0.0,
 			segundoValorEsperado:  0.0,
-			primeiraVez: true,
+			primeiraVez:           true,
 			print: casosDeTestes,
 		},
 	}
@@ -289,7 +295,7 @@ func Test_modoInterativo(teste *testing.T) {
 			segundoDigito:           0.0,
 			operador:                "",
 			input:                   "0.0\nfdgdfg\n0.0\n",
-			print:			         casosDeTestes,
+			print: 					 casosDeTestes,
 		},
 	}
 
@@ -456,7 +462,7 @@ func Test_lerInputs(teste *testing.T) {
 			segundoDigito:           "2",
 			operador:                "+",
 			input:                   "8\n+\n2\nnao\n",
-			print:					 casosDeTestes,
+			print:                   casosDeTestes,
 		},
 	}
 
