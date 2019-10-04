@@ -27,6 +27,8 @@ func Test_calcularValores(teste *testing.T) {
 		teste.Fatal(err)
 	}
 
+	defer casosDeTestes.Close()
+
 	testes := []struct {
 		mensagemDeIdentificação string
 		parâmetrosRecebidos     func(teste *testing.T) parâmetrosRecebidos
@@ -124,6 +126,8 @@ func Test_validarEntradas(teste *testing.T) {
 		teste.Fatal(err)
 	}
 
+	defer casosDeTestes.Close()
+
 	testes := []struct {
 		mensagemDeIdentificação string
 		parâmetrosRecebidos     func(teste *testing.T) parâmetrosRecebidos
@@ -214,6 +218,8 @@ func Test_obterDadosDosInputs(teste *testing.T) {
 		teste.Fatal(err)
 	}
 
+	defer casosDeTestes.Close()
+
 	testes := []struct {
 		mensagemDeIdentificação string
 		primeiraVez             bool
@@ -269,6 +275,8 @@ func Test_modoInterativo(teste *testing.T) {
 	if err != nil{
 		teste.Fatal(err)
 	}
+
+	defer casosDeTestes.Close()
 
 	testes := []struct {
 		mensagemDeIdentificação string
@@ -344,6 +352,8 @@ func Test_modoExecução(teste *testing.T) {
 	if err != nil{
 		teste.Fatal(err)
 	}
+
+	defer casosDeTestes.Close()
 
 	testes := []struct {
 		mensagemDeIdentificação string
@@ -448,6 +458,8 @@ func Test_lerInputs(teste *testing.T) {
 		teste.Fatal(err)
 	}
 
+	defer casosDeTestes.Close()
+
 	testes := []struct {
 		mensagemDeIdentificação string
 		primeiroDigito          string
@@ -523,6 +535,8 @@ func Test_exibeErro(teste *testing.T) {
 		teste.Fatal(err)
 	}
 
+	defer casosDeTestes.Close()
+
 	testes := []struct {
 		mensagemDeIdentificação string
 		parâmetrosRecebidos     func(teste *testing.T) parâmetrosRecebidos
@@ -565,6 +579,8 @@ func Test_tratarValor(teste *testing.T) {
 	if err != nil{
 		teste.Fatal(err)
 	}
+
+	defer casosDeTestes.Close()
 
 	testes := []struct {
 		mensagemDeIdentificação string
