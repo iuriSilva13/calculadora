@@ -94,8 +94,8 @@ func lerInputs(file *bufio.Scanner, digito string,print io.Writer) string {
 	}
 	return ""
 }
-func validarEntradas(primeiroDigito, segundoDigito string, primeiraVez bool,print io.Writer) (float64, float64, error) {
-	var primeiroTratamento, segundoTratamento float64
+func validarEntradas(primeiroDigito,segundoDigito string,primeiraVez bool,print io.Writer)(float64,float64,error){
+	var primeiroTratamento,segundoTratamento float64
 	var err error
 
 	if primeiraVez {
@@ -104,11 +104,6 @@ func validarEntradas(primeiroDigito, segundoDigito string, primeiraVez bool,prin
 			return 0.0, 0.0, err
 		}
 	}
-	return texto
-}
-func validarEntradas(primeiroDigito,segundoDigito string,primeiraVez bool)(float64,float64,error){
-	var primeiroTratamento,segundoTratamento float64
-	var err error
 
 	segundoTratamento, err = tratarValor(segundoDigito, "segundo digito",print)
 	if err != nil {
