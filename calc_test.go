@@ -10,9 +10,9 @@ import (
 )
 
 func TestMain(m *testing.M) {
-	os.Mkdir("testes",0777)
+	os.Mkdir("output",0777)
 	output := m.Run()
-	os.RemoveAll("testes")
+	os.RemoveAll("output")
 	os.Exit(output)
 }
 func Test_calcularValores(teste *testing.T) {
@@ -22,7 +22,7 @@ func Test_calcularValores(teste *testing.T) {
 		operador      string
 	}
 
-	casosDeTestes,err := os.Create("./testes/casos de teste da funcao calcularValores.txt")
+	casosDeTestes,err := os.Create("./output/casos de teste da funcao calcularValores.txt")
 	if err != nil{
 		teste.Fatal(err)
 	}
@@ -121,7 +121,7 @@ func Test_validarEntradas(teste *testing.T) {
 		print          *os.File
 	}
 
-	casosDeTestes,err := os.Create("./testes/casos de teste da funcao validarEntradas.txt")
+	casosDeTestes,err := os.Create("./output/casos de teste da funcao validarEntradas.txt")
 	if err != nil{
 		teste.Fatal(err)
 	}
@@ -213,7 +213,7 @@ func Test_validarEntradas(teste *testing.T) {
 	}
 }
 func Test_obterDadosDosInputs(teste *testing.T) {
-	casosDeTestes,err := os.Create("./testes/casos de teste da funcao obterDadosDosInputs.txt")
+	casosDeTestes,err := os.Create("./output/casos de teste da funcao obterDadosDosInputs.txt")
 	if err != nil{
 		teste.Fatal(err)
 	}
@@ -271,7 +271,7 @@ func Test_obterDadosDosInputs(teste *testing.T) {
 	}
 }
 func Test_modoInterativo(teste *testing.T) {
-	casosDeTestes,err := os.Create("./testes/casos de teste da funcao modoInterativo.txt")
+	casosDeTestes,err := os.Create("./output/casos de teste da funcao modoInterativo.txt")
 	if err != nil{
 		teste.Fatal(err)
 	}
@@ -348,7 +348,7 @@ func Test_modoExecução(teste *testing.T) {
 		print      *os.File
 	}
 
-	casosDeTestes,err := os.Create("./testes/casos de teste da funcao modoExecução.txt")
+	casosDeTestes,err := os.Create("./output/casos de teste da funcao modoExecução.txt")
 	if err != nil{
 		teste.Fatal(err)
 	}
@@ -453,7 +453,7 @@ func Test_modoExecução(teste *testing.T) {
 	}
 }
 func Test_lerInputs(teste *testing.T) {
-	casosDeTestes,err := os.Create("./testes/casos de teste da funcao lerInputs.txt")
+	casosDeTestes,err := os.Create("./output/casos de teste da funcao lerInputs.txt")
 	if err != nil{
 		teste.Fatal(err)
 	}
@@ -530,7 +530,7 @@ func Test_exibeErro(teste *testing.T) {
 		print     *os.File
 	}
 
-	casosDeTestes,err := os.Create("./testes/casos de teste da funcao exibeErro.txt")
+	casosDeTestes,err := os.Create("./output/casos de teste da funcao exibeErro.txt")
 	if err != nil{
 		teste.Fatal(err)
 	}
@@ -575,7 +575,7 @@ func Test_tratarValor(teste *testing.T) {
 		print         *os.File
 	}
 
-	casosDeTestes,err := os.Create("./testes/casos de teste da funcao tratarValor.txt")
+	casosDeTestes,err := os.Create("./output/casos de teste da funcao tratarValor.txt")
 	if err != nil{
 		teste.Fatal(err)
 	}
