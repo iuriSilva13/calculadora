@@ -31,7 +31,7 @@ func Test_calcularValores(teste *testing.T) {
 
 	testes := []struct {
 		mensagemDeIdentificação string
-		parâmetrosRecebidos     func(teste *testing.T) parâmetrosRecebidos
+		dadosRecebidos     func(teste *testing.T) parâmetrosRecebidos
 
 		print         *os.File
 		valorEsperado float64
@@ -39,7 +39,7 @@ func Test_calcularValores(teste *testing.T) {
 	}{
 		{
 			mensagemDeIdentificação: "Inteiro deve ser identificado corretamente",
-			parâmetrosRecebidos: func(*testing.T) parâmetrosRecebidos {
+			dadosRecebidos: func(*testing.T) parâmetrosRecebidos {
 				return parâmetrosRecebidos{
 					primeiroValor: -10,
 					segundoValor:  -5,
@@ -51,7 +51,7 @@ func Test_calcularValores(teste *testing.T) {
 		},
 		{
 			mensagemDeIdentificação: "Float com . deve ser identificado corretamente",
-			parâmetrosRecebidos: func(*testing.T) parâmetrosRecebidos {
+			dadosRecebidos: func(*testing.T) parâmetrosRecebidos {
 				return parâmetrosRecebidos{
 					primeiroValor: -80.3,
 					segundoValor:  -4.2,
@@ -63,7 +63,7 @@ func Test_calcularValores(teste *testing.T) {
 		},
 		{
 			mensagemDeIdentificação: "Operador de subtração deve ser identificado corretamente",
-			parâmetrosRecebidos: func(*testing.T) parâmetrosRecebidos {
+			dadosRecebidos: func(*testing.T) parâmetrosRecebidos {
 				return parâmetrosRecebidos{
 					primeiroValor: 45,
 					segundoValor:  35,
@@ -75,7 +75,7 @@ func Test_calcularValores(teste *testing.T) {
 		},
 		{
 			mensagemDeIdentificação: "Operador de multiplicação deve ser identificado corretamente",
-			parâmetrosRecebidos: func(*testing.T) parâmetrosRecebidos {
+			dadosRecebidos: func(*testing.T) parâmetrosRecebidos {
 				return parâmetrosRecebidos{
 					primeiroValor: 10,
 					segundoValor:  5,
@@ -87,7 +87,7 @@ func Test_calcularValores(teste *testing.T) {
 		},
 		{
 			mensagemDeIdentificação: "Operador deve ser identificado corretamente",
-			parâmetrosRecebidos: func(*testing.T) parâmetrosRecebidos {
+			dadosRecebidos: func(*testing.T) parâmetrosRecebidos {
 				return parâmetrosRecebidos{
 					primeiroValor: 10,
 					segundoValor:  45,
@@ -102,7 +102,7 @@ func Test_calcularValores(teste *testing.T) {
 
 	for _, valorTeste := range testes {
 		teste.Run(valorTeste.mensagemDeIdentificação, func(teste *testing.T) {
-			testeCalcularValores := valorTeste.parâmetrosRecebidos(teste)
+			testeCalcularValores := valorTeste.dadosRecebidos(teste)
 
 			valorRecebido, err := calcularValores(testeCalcularValores.primeiroValor, testeCalcularValores.segundoValor, testeCalcularValores.operador, valorTeste.print)
 
@@ -130,7 +130,7 @@ func Test_validarEntradas(teste *testing.T) {
 
 	testes := []struct {
 		mensagemDeIdentificação string
-		parâmetrosRecebidos     func(teste *testing.T) parâmetrosRecebidos
+		dadosRecebidos     func(teste *testing.T) parâmetrosRecebidos
 
 		print                 *os.File
 		primeiroValorEsperado float64
@@ -140,7 +140,7 @@ func Test_validarEntradas(teste *testing.T) {
 	}{
 		{
 			mensagemDeIdentificação: "caso de erro com valor false deve ser identificado corretamente",
-			parâmetrosRecebidos: func(*testing.T) parâmetrosRecebidos {
+			dadosRecebidos: func(*testing.T) parâmetrosRecebidos {
 				return parâmetrosRecebidos{
 					primeiroDigito: "",
 					segundoDigito:  "",
@@ -154,7 +154,7 @@ func Test_validarEntradas(teste *testing.T) {
 		},
 		{
 			mensagemDeIdentificação: "Inteiro deve ser identificado corretamente",
-			parâmetrosRecebidos: func(*testing.T) parâmetrosRecebidos {
+			dadosRecebidos: func(*testing.T) parâmetrosRecebidos {
 				return parâmetrosRecebidos{
 					primeiroDigito: "4",
 					segundoDigito:  "5",
@@ -170,7 +170,7 @@ func Test_validarEntradas(teste *testing.T) {
 		},
 		{
 			mensagemDeIdentificação: "Inteiro deve ser identificado corretamente",
-			parâmetrosRecebidos: func(*testing.T) parâmetrosRecebidos {
+			dadosRecebidos: func(*testing.T) parâmetrosRecebidos {
 				return parâmetrosRecebidos{
 					primeiroDigito: "4",
 					segundoDigito:  "5",
@@ -186,7 +186,7 @@ func Test_validarEntradas(teste *testing.T) {
 		},
 		{
 			mensagemDeIdentificação: "caso de erro com valor true deve ser identificado corretamente",
-			parâmetrosRecebidos: func(*testing.T) parâmetrosRecebidos {
+			dadosRecebidos: func(*testing.T) parâmetrosRecebidos {
 				return parâmetrosRecebidos{
 					primeiroDigito: "",
 					segundoDigito:  "",
@@ -202,7 +202,7 @@ func Test_validarEntradas(teste *testing.T) {
 
 	for _, valorTeste := range testes {
 		teste.Run(valorTeste.mensagemDeIdentificação, func(teste *testing.T) {
-			testeValidarEntradas := valorTeste.parâmetrosRecebidos(teste)
+			testeValidarEntradas := valorTeste.dadosRecebidos(teste)
 
 			primeiroValor, segundoValor, err := validarEntradas(testeValidarEntradas.primeiroDigito, testeValidarEntradas.segundoDigito, testeValidarEntradas.primeiraVez, testeValidarEntradas.print)
 
@@ -357,13 +357,13 @@ func Test_modoExecução(teste *testing.T) {
 
 	testes := []struct {
 		mensagemDeIdentificação string
-		parâmetrosRecebidos     func(teste *testing.T) parâmetrosRecebidos
+		dadosRecebidos     func(teste *testing.T) parâmetrosRecebidos
 		print                   *os.File
 		resultado               float64
 	}{
 		{
 			mensagemDeIdentificação: "Inteiro deve ser identificado corretamente",
-			parâmetrosRecebidos: func(*testing.T) parâmetrosRecebidos {
+			dadosRecebidos: func(*testing.T) parâmetrosRecebidos {
 				return parâmetrosRecebidos{
 					numeros:    []string{"10"},
 					operadores: []string{"+"},
@@ -374,7 +374,7 @@ func Test_modoExecução(teste *testing.T) {
 		},
 		{
 			mensagemDeIdentificação: "Valor inteiro e negativo deve ser identificado corretamente",
-			parâmetrosRecebidos: func(*testing.T) parâmetrosRecebidos {
+			dadosRecebidos: func(*testing.T) parâmetrosRecebidos {
 				return parâmetrosRecebidos{
 					numeros:    []string{"-10"},
 					operadores: []string{"+"},
@@ -385,7 +385,7 @@ func Test_modoExecução(teste *testing.T) {
 		},
 		{
 			mensagemDeIdentificação: "Float com . deve ser identificado corretamente",
-			parâmetrosRecebidos: func(*testing.T) parâmetrosRecebidos {
+			dadosRecebidos: func(*testing.T) parâmetrosRecebidos {
 				return parâmetrosRecebidos{
 					numeros:    []string{"10.1"},
 					operadores: []string{"+"},
@@ -396,7 +396,7 @@ func Test_modoExecução(teste *testing.T) {
 		},
 		{
 			mensagemDeIdentificação: "Float com . e negativo deve ser identificado corretamente",
-			parâmetrosRecebidos: func(*testing.T) parâmetrosRecebidos {
+			dadosRecebidos: func(*testing.T) parâmetrosRecebidos {
 				return parâmetrosRecebidos{
 					numeros:    []string{"-10.1"},
 					operadores: []string{"+"},
@@ -407,7 +407,7 @@ func Test_modoExecução(teste *testing.T) {
 		},
 		{
 			mensagemDeIdentificação: "Float com , deve ser identificado corretamente",
-			parâmetrosRecebidos: func(*testing.T) parâmetrosRecebidos {
+			dadosRecebidos: func(*testing.T) parâmetrosRecebidos {
 				return parâmetrosRecebidos{
 					numeros:    []string{"10,1"},
 					operadores: []string{"+"},
@@ -418,7 +418,7 @@ func Test_modoExecução(teste *testing.T) {
 		},
 		{
 			mensagemDeIdentificação: "Digitos inválidos devem ser identificados corretamente",
-			parâmetrosRecebidos: func(*testing.T) parâmetrosRecebidos {
+			dadosRecebidos: func(*testing.T) parâmetrosRecebidos {
 				return parâmetrosRecebidos{
 					numeros:    []string{"dsjfjshgfhgdfhfd"},
 					operadores: []string{"+"},
@@ -429,7 +429,7 @@ func Test_modoExecução(teste *testing.T) {
 		},
 		{
 			mensagemDeIdentificação: "Operador inválido deve ser identificado corretamente",
-			parâmetrosRecebidos: func(*testing.T) parâmetrosRecebidos {
+			dadosRecebidos: func(*testing.T) parâmetrosRecebidos {
 				return parâmetrosRecebidos{
 					numeros:    []string{"0.0", "0,0"},
 					operadores: []string{"fdgfgdfg"},
@@ -442,7 +442,7 @@ func Test_modoExecução(teste *testing.T) {
 
 	for _, valorTeste := range testes {
 		teste.Run(valorTeste.mensagemDeIdentificação, func(teste *testing.T) {
-			testeModoExecução := valorTeste.parâmetrosRecebidos(teste)
+			testeModoExecução := valorTeste.dadosRecebidos(teste)
 
 			valorRecebido := modoExecução(testeModoExecução.numeros, testeModoExecução.operadores, testeModoExecução.print)
 
@@ -539,14 +539,14 @@ func Test_exibeErro(teste *testing.T) {
 
 	testes := []struct {
 		mensagemDeIdentificação string
-		parâmetrosRecebidos     func(teste *testing.T) parâmetrosRecebidos
+		dadosRecebidos     func(teste *testing.T) parâmetrosRecebidos
 
 		print                  *os.File
 		mensagemDeErroEsperada string
 	}{
 		{
 			mensagemDeIdentificação: "mensagem de erro deve ser identificada corretamente",
-			parâmetrosRecebidos: func(*testing.T) parâmetrosRecebidos {
+			dadosRecebidos: func(*testing.T) parâmetrosRecebidos {
 				return parâmetrosRecebidos{
 					textoErro: "Argumento inválido",
 				}
@@ -558,7 +558,7 @@ func Test_exibeErro(teste *testing.T) {
 
 	for _, valorTeste := range testes {
 		teste.Run(valorTeste.mensagemDeIdentificação, func(teste *testing.T) {
-			testeExibeErro := valorTeste.parâmetrosRecebidos(teste)
+			testeExibeErro := valorTeste.dadosRecebidos(teste)
 
 			mensagemRecebida := exibeErro(testeExibeErro.textoErro, testeExibeErro.print)
 
@@ -584,7 +584,7 @@ func Test_tratarValor(teste *testing.T) {
 
 	testes := []struct {
 		mensagemDeIdentificação string
-		parâmetrosRecebidos     func(teste *testing.T) parâmetrosRecebidos
+		dadosRecebidos     func(teste *testing.T) parâmetrosRecebidos
 
 		print         *os.File
 		valorEsperado float64
@@ -592,7 +592,7 @@ func Test_tratarValor(teste *testing.T) {
 	}{
 		{
 			mensagemDeIdentificação: "Inteiro deve ser identificado corretamente",
-			parâmetrosRecebidos: func(*testing.T) parâmetrosRecebidos {
+			dadosRecebidos: func(*testing.T) parâmetrosRecebidos {
 				return parâmetrosRecebidos{
 					valorDigitado: "10",
 					digito:        "primeiro digito",
@@ -604,7 +604,7 @@ func Test_tratarValor(teste *testing.T) {
 		},
 		{
 			mensagemDeIdentificação: "Float com , deve ser identificado corretamente",
-			parâmetrosRecebidos: func(*testing.T) parâmetrosRecebidos {
+			dadosRecebidos: func(*testing.T) parâmetrosRecebidos {
 				return parâmetrosRecebidos{
 					valorDigitado: "10,1",
 					digito:        "primeiro digito",
@@ -616,7 +616,7 @@ func Test_tratarValor(teste *testing.T) {
 		},
 		{
 			mensagemDeIdentificação: "Float com . deve ser identificado corretamente",
-			parâmetrosRecebidos: func(*testing.T) parâmetrosRecebidos {
+			dadosRecebidos: func(*testing.T) parâmetrosRecebidos {
 				return parâmetrosRecebidos{
 					valorDigitado: "10.1",
 					digito:        "primeiro digito",
@@ -628,7 +628,7 @@ func Test_tratarValor(teste *testing.T) {
 		},
 		{
 			mensagemDeIdentificação: "Digitos inválidos devem ser identificados corretamente",
-			parâmetrosRecebidos: func(*testing.T) parâmetrosRecebidos {
+			dadosRecebidos: func(*testing.T) parâmetrosRecebidos {
 				return parâmetrosRecebidos{
 					valorDigitado: "asdfasdfd2wqafdaq",
 					digito:        "primeiro digito",
@@ -641,7 +641,7 @@ func Test_tratarValor(teste *testing.T) {
 
 	for _, valorTeste := range testes {
 		teste.Run(valorTeste.mensagemDeIdentificação, func(teste *testing.T) {
-			testeTratarValor := valorTeste.parâmetrosRecebidos(teste)
+			testeTratarValor := valorTeste.dadosRecebidos(teste)
 
 			valorRecebido, err := tratarValor(testeTratarValor.valorDigitado, testeTratarValor.digito, testeTratarValor.print)
 
