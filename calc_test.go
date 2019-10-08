@@ -113,7 +113,7 @@ func Test_calcularValores(teste *testing.T) {
 	}
 }
 func Test_validarEntradas(teste *testing.T) {
-	type parâmetrosRecebidos struct {
+	type inputsRecebidos struct {
 		primeiroDigito string
 		segundoDigito  string
 		primeiraVez    bool
@@ -130,7 +130,7 @@ func Test_validarEntradas(teste *testing.T) {
 
 	testes := []struct {
 		mensagemDeIdentificação string
-		dadosRecebidos     func(teste *testing.T) parâmetrosRecebidos
+		dadosRecebidos     func(teste *testing.T) inputsRecebidos
 
 		w                 *os.File
 		primeiroValorEsperado float64
@@ -140,8 +140,8 @@ func Test_validarEntradas(teste *testing.T) {
 	}{
 		{
 			mensagemDeIdentificação: "caso de erro com valor false deve ser identificado corretamente",
-			dadosRecebidos: func(*testing.T) parâmetrosRecebidos {
-				return parâmetrosRecebidos{
+			dadosRecebidos: func(*testing.T) inputsRecebidos {
+				return inputsRecebidos{
 					primeiroDigito: "",
 					segundoDigito:  "",
 					primeiraVez:    false,
@@ -154,8 +154,8 @@ func Test_validarEntradas(teste *testing.T) {
 		},
 		{
 			mensagemDeIdentificação: "Inteiro deve ser identificado corretamente",
-			dadosRecebidos: func(*testing.T) parâmetrosRecebidos {
-				return parâmetrosRecebidos{
+			dadosRecebidos: func(*testing.T) inputsRecebidos {
+				return inputsRecebidos{
 					primeiroDigito: "4",
 					segundoDigito:  "5",
 					primeiraVez:    true,
@@ -170,8 +170,8 @@ func Test_validarEntradas(teste *testing.T) {
 		},
 		{
 			mensagemDeIdentificação: "Inteiro deve ser identificado corretamente",
-			dadosRecebidos: func(*testing.T) parâmetrosRecebidos {
-				return parâmetrosRecebidos{
+			dadosRecebidos: func(*testing.T) inputsRecebidos {
+				return inputsRecebidos{
 					primeiroDigito: "4",
 					segundoDigito:  "5",
 					primeiraVez:    false,
@@ -186,8 +186,8 @@ func Test_validarEntradas(teste *testing.T) {
 		},
 		{
 			mensagemDeIdentificação: "caso de erro com valor true deve ser identificado corretamente",
-			dadosRecebidos: func(*testing.T) parâmetrosRecebidos {
-				return parâmetrosRecebidos{
+			dadosRecebidos: func(*testing.T) inputsRecebidos {
+				return inputsRecebidos{
 					primeiroDigito: "",
 					segundoDigito:  "",
 					primeiraVez:    true,
