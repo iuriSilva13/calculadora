@@ -569,7 +569,7 @@ func Test_exibeErro(teste *testing.T) {
 	}
 }
 func Test_tratarValor(teste *testing.T) {
-	type parâmetrosRecebidos struct {
+	type digitosRecebidos struct {
 		valorDigitado string
 		digito        string
 		w         *os.File
@@ -584,7 +584,7 @@ func Test_tratarValor(teste *testing.T) {
 
 	testes := []struct {
 		mensagemDeIdentificação string
-		dadosRecebidos     func(teste *testing.T) parâmetrosRecebidos
+		dadosRecebidos     func(teste *testing.T) digitosRecebidos
 
 		w         *os.File
 		valorEsperado float64
@@ -592,8 +592,8 @@ func Test_tratarValor(teste *testing.T) {
 	}{
 		{
 			mensagemDeIdentificação: "Inteiro deve ser identificado corretamente",
-			dadosRecebidos: func(*testing.T) parâmetrosRecebidos {
-				return parâmetrosRecebidos{
+			dadosRecebidos: func(*testing.T) digitosRecebidos {
+				return digitosRecebidos{
 					valorDigitado: "10",
 					digito:        "primeiro digito",
 				}
@@ -604,8 +604,8 @@ func Test_tratarValor(teste *testing.T) {
 		},
 		{
 			mensagemDeIdentificação: "Float com , deve ser identificado corretamente",
-			dadosRecebidos: func(*testing.T) parâmetrosRecebidos {
-				return parâmetrosRecebidos{
+			dadosRecebidos: func(*testing.T) digitosRecebidos {
+				return digitosRecebidos{
 					valorDigitado: "10,1",
 					digito:        "primeiro digito",
 				}
@@ -616,8 +616,8 @@ func Test_tratarValor(teste *testing.T) {
 		},
 		{
 			mensagemDeIdentificação: "Float com . deve ser identificado corretamente",
-			dadosRecebidos: func(*testing.T) parâmetrosRecebidos {
-				return parâmetrosRecebidos{
+			dadosRecebidos: func(*testing.T) digitosRecebidos {
+				return digitosRecebidos{
 					valorDigitado: "10.1",
 					digito:        "primeiro digito",
 				}
@@ -628,8 +628,8 @@ func Test_tratarValor(teste *testing.T) {
 		},
 		{
 			mensagemDeIdentificação: "Digitos inválidos devem ser identificados corretamente",
-			dadosRecebidos: func(*testing.T) parâmetrosRecebidos {
-				return parâmetrosRecebidos{
+			dadosRecebidos: func(*testing.T) digitosRecebidos {
+				return digitosRecebidos{
 					valorDigitado: "asdfasdfd2wqafdaq",
 					digito:        "primeiro digito",
 				}
