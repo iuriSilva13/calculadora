@@ -16,7 +16,7 @@ func TestMain(m *testing.M) {
 	os.Exit(output)
 }
 func Test_calcularValores(teste *testing.T) {
-	type parâmetrosRecebidos struct {
+	type inputsRecebidos struct {
 		primeiroValor float64
 		segundoValor  float64
 		operador      string
@@ -31,7 +31,7 @@ func Test_calcularValores(teste *testing.T) {
 
 	testes := []struct {
 		mensagemDeIdentificação string
-		dadosRecebidos     func(teste *testing.T) parâmetrosRecebidos
+		dadosRecebidos     func(teste *testing.T) inputsRecebidos
 
 		w         *os.File
 		valorEsperado float64
@@ -39,8 +39,8 @@ func Test_calcularValores(teste *testing.T) {
 	}{
 		{
 			mensagemDeIdentificação: "Inteiro deve ser identificado corretamente",
-			dadosRecebidos: func(*testing.T) parâmetrosRecebidos {
-				return parâmetrosRecebidos{
+			dadosRecebidos: func(*testing.T) inputsRecebidos {
+				return inputsRecebidos{
 					primeiroValor: -10,
 					segundoValor:  -5,
 					operador:      "+",
@@ -51,8 +51,8 @@ func Test_calcularValores(teste *testing.T) {
 		},
 		{
 			mensagemDeIdentificação: "Float com . deve ser identificado corretamente",
-			dadosRecebidos: func(*testing.T) parâmetrosRecebidos {
-				return parâmetrosRecebidos{
+			dadosRecebidos: func(*testing.T) inputsRecebidos {
+				return inputsRecebidos{
 					primeiroValor: -80.3,
 					segundoValor:  -4.2,
 					operador:      "/",
@@ -63,8 +63,8 @@ func Test_calcularValores(teste *testing.T) {
 		},
 		{
 			mensagemDeIdentificação: "Operador de subtração deve ser identificado corretamente",
-			dadosRecebidos: func(*testing.T) parâmetrosRecebidos {
-				return parâmetrosRecebidos{
+			dadosRecebidos: func(*testing.T) inputsRecebidos {
+				return inputsRecebidos{
 					primeiroValor: 45,
 					segundoValor:  35,
 					operador:      "-",
@@ -75,8 +75,8 @@ func Test_calcularValores(teste *testing.T) {
 		},
 		{
 			mensagemDeIdentificação: "Operador de multiplicação deve ser identificado corretamente",
-			dadosRecebidos: func(*testing.T) parâmetrosRecebidos {
-				return parâmetrosRecebidos{
+			dadosRecebidos: func(*testing.T) inputsRecebidos {
+				return inputsRecebidos{
 					primeiroValor: 10,
 					segundoValor:  5,
 					operador:      "*",
@@ -87,8 +87,8 @@ func Test_calcularValores(teste *testing.T) {
 		},
 		{
 			mensagemDeIdentificação: "Operador deve ser identificado corretamente",
-			dadosRecebidos: func(*testing.T) parâmetrosRecebidos {
-				return parâmetrosRecebidos{
+			dadosRecebidos: func(*testing.T) inputsRecebidos {
+				return inputsRecebidos{
 					primeiroValor: 10,
 					segundoValor:  45,
 					operador:      "gfdgfdgfd",
