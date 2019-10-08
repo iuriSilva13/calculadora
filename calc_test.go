@@ -33,7 +33,7 @@ func Test_calcularValores(teste *testing.T) {
 		mensagemDeIdentificação string
 		dadosRecebidos     func(teste *testing.T) parâmetrosRecebidos
 
-		print         *os.File
+		w         *os.File
 		valorEsperado float64
 		erroEsperado  string
 	}{
@@ -47,7 +47,7 @@ func Test_calcularValores(teste *testing.T) {
 				}
 			},
 			valorEsperado: -15.0,
-			print: file,
+			w: file,
 		},
 		{
 			mensagemDeIdentificação: "Float com . deve ser identificado corretamente",
@@ -59,7 +59,7 @@ func Test_calcularValores(teste *testing.T) {
 				}
 			},
 			valorEsperado: 19.119047619047617,
-			print: file,
+			w: file,
 		},
 		{
 			mensagemDeIdentificação: "Operador de subtração deve ser identificado corretamente",
@@ -71,7 +71,7 @@ func Test_calcularValores(teste *testing.T) {
 				}
 			},
 			valorEsperado: 10.0,
-			print: file,
+			w: file,
 		},
 		{
 			mensagemDeIdentificação: "Operador de multiplicação deve ser identificado corretamente",
@@ -83,7 +83,7 @@ func Test_calcularValores(teste *testing.T) {
 				}
 			},
 			valorEsperado: 50.0,
-			print: file,
+			w: file,
 		},
 		{
 			mensagemDeIdentificação: "Operador deve ser identificado corretamente",
@@ -96,7 +96,7 @@ func Test_calcularValores(teste *testing.T) {
 			},
 			valorEsperado: 0.0,
 			erroEsperado:  "Argumento inválido",
-			print: file,
+			w: file,
 		},
 	}
 
@@ -104,7 +104,7 @@ func Test_calcularValores(teste *testing.T) {
 		teste.Run(valorTeste.mensagemDeIdentificação, func(teste *testing.T) {
 			testeCalcularValores := valorTeste.dadosRecebidos(teste)
 
-			valorRecebido, err := calcularValores(testeCalcularValores.primeiroValor, testeCalcularValores.segundoValor, testeCalcularValores.operador, valorTeste.print)
+			valorRecebido, err := calcularValores(testeCalcularValores.primeiroValor, testeCalcularValores.segundoValor, testeCalcularValores.operador, valorTeste.w)
 
 			if !reflect.DeepEqual(valorRecebido, valorTeste.valorEsperado) {
 				teste.Errorf("calcularValores erro = %v, valorRecebido = %v, valorEsperado: %v", err, valorRecebido, valorTeste.valorEsperado)
@@ -118,7 +118,7 @@ func Test_validarEntradas(teste *testing.T) {
 		segundoDigito  string
 		primeiraVez    bool
 		erro           error
-		print          *os.File
+		w          *os.File
 	}
 
 	file,err := os.Create("./output/validarEntradas.txt")
@@ -132,7 +132,7 @@ func Test_validarEntradas(teste *testing.T) {
 		mensagemDeIdentificação string
 		dadosRecebidos     func(teste *testing.T) parâmetrosRecebidos
 
-		print                 *os.File
+		w                 *os.File
 		primeiroValorEsperado float64
 		segundoValorEsperado  float64
 		primeiraVez           bool
@@ -150,7 +150,7 @@ func Test_validarEntradas(teste *testing.T) {
 			primeiroValorEsperado: 0.0,
 			segundoValorEsperado:  0.0,
 			primeiraVez:		   false,
-			print: file,
+			w: file,
 		},
 		{
 			mensagemDeIdentificação: "Inteiro deve ser identificado corretamente",
@@ -166,7 +166,7 @@ func Test_validarEntradas(teste *testing.T) {
 			segundoValorEsperado:  5.0,
 			primeiraVez:           true,
 			erroEsperado:          nil,
-			print: file,
+			w: file,
 		},
 		{
 			mensagemDeIdentificação: "Inteiro deve ser identificado corretamente",
@@ -182,7 +182,7 @@ func Test_validarEntradas(teste *testing.T) {
 			segundoValorEsperado:  5.0,
 			primeiraVez:           false,
 			erroEsperado:          nil,
-			print: file,
+			w: file,
 		},
 		{
 			mensagemDeIdentificação: "caso de erro com valor true deve ser identificado corretamente",
@@ -196,7 +196,7 @@ func Test_validarEntradas(teste *testing.T) {
 			primeiroValorEsperado: 0.0,
 			segundoValorEsperado:  0.0,
 			primeiraVez:           true,
-			print: file,
+			w: file,
 		},
 	}
 
@@ -204,7 +204,7 @@ func Test_validarEntradas(teste *testing.T) {
 		teste.Run(valorTeste.mensagemDeIdentificação, func(teste *testing.T) {
 			testeValidarEntradas := valorTeste.dadosRecebidos(teste)
 
-			primeiroValor, segundoValor, err := validarEntradas(testeValidarEntradas.primeiroDigito, testeValidarEntradas.segundoDigito, testeValidarEntradas.primeiraVez, testeValidarEntradas.print)
+			primeiroValor, segundoValor, err := validarEntradas(testeValidarEntradas.primeiroDigito, testeValidarEntradas.segundoDigito, testeValidarEntradas.primeiraVez, testeValidarEntradas.w)
 
 			if !reflect.DeepEqual(segundoValor, valorTeste.segundoValorEsperado) {
 				teste.Errorf("validarEntradas primeiroValorRecebido = %v,segundoValorRecebido = %v,primeiroCalculoRecebido = %v,primeiroValorEsperado = %v,segundoValorEsperado = %v, erroEsperado = %v", primeiroValor, segundoValor, err, valorTeste.primeiroValorEsperado, valorTeste.segundoValorEsperado, valorTeste.erroEsperado)
@@ -228,7 +228,7 @@ func Test_obterDadosDosInputs(teste *testing.T) {
 		operador                string
 		err                     error
 		input                   string
-		print                   *os.File
+		w                   *os.File
 	}{
 		{
 			mensagemDeIdentificação: "Float64 deve ser identificado corretamente",
@@ -238,7 +238,7 @@ func Test_obterDadosDosInputs(teste *testing.T) {
 			operador:                "+",
 			err:                     nil,
 			input:                   "25.0\n+\n4.0\n",
-			print: file,
+			w: file,
 		},
 	}
 
@@ -262,7 +262,7 @@ func Test_obterDadosDosInputs(teste *testing.T) {
 			}
 			input := bufio.NewScanner(file)
 
-			primeiroDigito, segundoDigito, operador, err := obterDadosDosInputs(valorTeste.primeiraVez, input, valorTeste.print)
+			primeiroDigito, segundoDigito, operador, err := obterDadosDosInputs(valorTeste.primeiraVez, input, valorTeste.w)
 
 			if valorTeste.primeiraVez != false {
 				teste.Errorf("primeiro digito recebido = %v ,segundo digito recebido = %v,operador recebido = %v, primeiro digito esperado = %v, segundo digito esperado = %v,operador esperado = %v ", primeiroDigito, segundoDigito, operador, valorTeste.primeiroDigito, valorTeste.segundoDigito, valorTeste.operador)
@@ -285,7 +285,7 @@ func Test_modoInterativo(teste *testing.T) {
 		segundoDigito           float64
 		operador                string
 		input                   string
-		print                   *os.File
+		w                   *os.File
 	}{
 		{
 			mensagemDeIdentificação: "Float64 deve ser identificado corretamente",
@@ -294,7 +294,7 @@ func Test_modoInterativo(teste *testing.T) {
 			segundoDigito:           20.0,
 			operador:                "+",
 			input:                   "10.0\n+\n20.0\nsim\n+\n20\nnao\n",
-			print: 					 file,
+			w: 					 file,
 		},
 		{
 			mensagemDeIdentificação: "Digitos inválidos devem ser identificados corretamente",
@@ -303,7 +303,7 @@ func Test_modoInterativo(teste *testing.T) {
 			segundoDigito:           0.0,
 			operador:                "",
 			input:                   "0.0\nfdgdfg\n0.0\n",
-			print: 					 file,
+			w: 					 file,
 		},
 	}
 
@@ -327,13 +327,13 @@ func Test_modoInterativo(teste *testing.T) {
 			}
 			input := bufio.NewScanner(file)
 
-			resultado, err := modoInterativo(valorTeste.primeiroDigito, valorTeste.segundoDigito, valorTeste.operador, input, valorTeste.print)
+			resultado, err := modoInterativo(valorTeste.primeiroDigito, valorTeste.segundoDigito, valorTeste.operador, input, valorTeste.w)
 
 			if resultado != valorTeste.resultado {
 				teste.Errorf("resultado recebido = %v , resultado esperado = %v", resultado, 50.0)
 			}
 
-			_, erro := modoInterativo(valorTeste.primeiroDigito, valorTeste.segundoDigito, valorTeste.operador, input, valorTeste.print)
+			_, erro := modoInterativo(valorTeste.primeiroDigito, valorTeste.segundoDigito, valorTeste.operador, input, valorTeste.w)
 
 			if erro == nil {
 				teste.Errorf("erro recebido = %v , erro esperado = %v", erro, nil)
@@ -345,7 +345,7 @@ func Test_modoExecução(teste *testing.T) {
 	type parâmetrosRecebidos struct {
 		numeros    []string
 		operadores []string
-		print      *os.File
+		w      *os.File
 	}
 
 	file,err := os.Create("./output/modoExecução.txt")
@@ -358,7 +358,7 @@ func Test_modoExecução(teste *testing.T) {
 	testes := []struct {
 		mensagemDeIdentificação string
 		dadosRecebidos     func(teste *testing.T) parâmetrosRecebidos
-		print                   *os.File
+		w                   *os.File
 		resultado               float64
 	}{
 		{
@@ -370,7 +370,7 @@ func Test_modoExecução(teste *testing.T) {
 				}
 			},
 			resultado: 10.0,
-			print: file,
+			w: file,
 		},
 		{
 			mensagemDeIdentificação: "Valor inteiro e negativo deve ser identificado corretamente",
@@ -381,7 +381,7 @@ func Test_modoExecução(teste *testing.T) {
 				}
 			},
 			resultado: -10.0,
-			print: file,
+			w: file,
 		},
 		{
 			mensagemDeIdentificação: "Float com . deve ser identificado corretamente",
@@ -392,7 +392,7 @@ func Test_modoExecução(teste *testing.T) {
 				}
 			},
 			resultado: 10.1,
-			print: file,
+			w: file,
 		},
 		{
 			mensagemDeIdentificação: "Float com . e negativo deve ser identificado corretamente",
@@ -403,7 +403,7 @@ func Test_modoExecução(teste *testing.T) {
 				}
 			},
 			resultado: -10.1,
-			print: file,
+			w: file,
 		},
 		{
 			mensagemDeIdentificação: "Float com , deve ser identificado corretamente",
@@ -414,7 +414,7 @@ func Test_modoExecução(teste *testing.T) {
 				}
 			},
 			resultado: 10.1,
-			print: file,
+			w: file,
 		},
 		{
 			mensagemDeIdentificação: "Digitos inválidos devem ser identificados corretamente",
@@ -425,7 +425,7 @@ func Test_modoExecução(teste *testing.T) {
 				}
 			},
 			resultado: 0.0,
-			print: file,
+			w: file,
 		},
 		{
 			mensagemDeIdentificação: "Operador inválido deve ser identificado corretamente",
@@ -436,7 +436,7 @@ func Test_modoExecução(teste *testing.T) {
 				}
 			},
 			resultado: 0.0,
-			print: file,
+			w: file,
 		},
 	}
 
@@ -444,7 +444,7 @@ func Test_modoExecução(teste *testing.T) {
 		teste.Run(valorTeste.mensagemDeIdentificação, func(teste *testing.T) {
 			testeModoExecução := valorTeste.dadosRecebidos(teste)
 
-			valorRecebido := modoExecução(testeModoExecução.numeros, testeModoExecução.operadores, testeModoExecução.print)
+			valorRecebido := modoExecução(testeModoExecução.numeros, testeModoExecução.operadores, testeModoExecução.w)
 
 			if !reflect.DeepEqual(valorRecebido, valorTeste.resultado) {
 				teste.Errorf("modoExecução valorRecebido = %v,valorEsperado = %v", valorRecebido, valorTeste.resultado)
@@ -466,7 +466,7 @@ func Test_lerInputs(teste *testing.T) {
 		segundoDigito           string
 		operador                string
 		input                   string
-		print                   *os.File
+		w                   *os.File
 	}{
 		{
 			mensagemDeIdentificação: "Inteiro deve ser identificado corretamente",
@@ -474,7 +474,7 @@ func Test_lerInputs(teste *testing.T) {
 			segundoDigito:           "2",
 			operador:                "+",
 			input:                   "8\n+\n2\nnao\n",
-			print:                   file,
+			w:                   file,
 		},
 	}
 
@@ -498,25 +498,25 @@ func Test_lerInputs(teste *testing.T) {
 			}
 			input := bufio.NewScanner(file)
 
-			primeiroDigito := lerInputs(input, "Digite o primeiro numero:", valorTeste.print)
+			primeiroDigito := lerInputs(input, "Digite o primeiro numero:", valorTeste.w)
 
 			if primeiroDigito != valorTeste.primeiroDigito {
 				teste.Errorf("digito recebido = %v ,digito esperado = %v ", primeiroDigito, valorTeste.primeiroDigito)
 			}
 
-			operador := lerInputs(input, "Digite o operador:", valorTeste.print)
+			operador := lerInputs(input, "Digite o operador:", valorTeste.w)
 
 			if operador != valorTeste.operador {
 				teste.Errorf("digito recebido = %v ,digito esperado = %v ", operador, valorTeste.operador)
 			}
 
-			segundoDigito := lerInputs(input, "Digite o segundo numero:", valorTeste.print)
+			segundoDigito := lerInputs(input, "Digite o segundo numero:", valorTeste.w)
 
 			if segundoDigito != valorTeste.segundoDigito {
 				teste.Errorf("digito recebido = %v ,digito esperado = %v ", segundoDigito, valorTeste.segundoDigito)
 			}
 
-			novoCalculo := lerInputs(input, "Deseja fazer um novo calculo?", valorTeste.print)
+			novoCalculo := lerInputs(input, "Deseja fazer um novo calculo?", valorTeste.w)
 
 			if novoCalculo != "nao" {
 				teste.Errorf("digito recebido = %v ,digito esperado = %v ", novoCalculo, "nao")
@@ -527,7 +527,7 @@ func Test_lerInputs(teste *testing.T) {
 func Test_exibeErro(teste *testing.T) {
 	type parâmetrosRecebidos struct {
 		textoErro string
-		print     *os.File
+		w     *os.File
 	}
 
 	file,err := os.Create("./output/exibeErro.txt")
@@ -541,7 +541,7 @@ func Test_exibeErro(teste *testing.T) {
 		mensagemDeIdentificação string
 		dadosRecebidos     func(teste *testing.T) parâmetrosRecebidos
 
-		print                  *os.File
+		w                  *os.File
 		mensagemDeErroEsperada string
 	}{
 		{
@@ -552,7 +552,7 @@ func Test_exibeErro(teste *testing.T) {
 				}
 			},
 			mensagemDeErroEsperada: "Argumento inválido",
-			print: file,
+			w: file,
 		},
 	}
 
@@ -560,7 +560,7 @@ func Test_exibeErro(teste *testing.T) {
 		teste.Run(valorTeste.mensagemDeIdentificação, func(teste *testing.T) {
 			testeExibeErro := valorTeste.dadosRecebidos(teste)
 
-			mensagemRecebida := exibeErro(testeExibeErro.textoErro, testeExibeErro.print)
+			mensagemRecebida := exibeErro(testeExibeErro.textoErro, testeExibeErro.w)
 
 			if !reflect.DeepEqual(mensagemRecebida, valorTeste.mensagemDeErroEsperada) {
 				teste.Errorf("exibeErro mensagemRecebida = %v,mensagemEsperada = %v", mensagemRecebida, valorTeste.mensagemDeErroEsperada)
@@ -572,7 +572,7 @@ func Test_tratarValor(teste *testing.T) {
 	type parâmetrosRecebidos struct {
 		valorDigitado string
 		digito        string
-		print         *os.File
+		w         *os.File
 	}
 
 	file,err := os.Create("./output/tratarValor.txt")
@@ -586,7 +586,7 @@ func Test_tratarValor(teste *testing.T) {
 		mensagemDeIdentificação string
 		dadosRecebidos     func(teste *testing.T) parâmetrosRecebidos
 
-		print         *os.File
+		w         *os.File
 		valorEsperado float64
 		erroEsperado  error
 	}{
@@ -600,7 +600,7 @@ func Test_tratarValor(teste *testing.T) {
 			},
 			valorEsperado: 10.0,
 			erroEsperado:  nil,
-			print: file,
+			w: file,
 		},
 		{
 			mensagemDeIdentificação: "Float com , deve ser identificado corretamente",
@@ -612,7 +612,7 @@ func Test_tratarValor(teste *testing.T) {
 			},
 			valorEsperado: 10.1,
 			erroEsperado:  nil,
-			print: file,
+			w: file,
 		},
 		{
 			mensagemDeIdentificação: "Float com . deve ser identificado corretamente",
@@ -624,7 +624,7 @@ func Test_tratarValor(teste *testing.T) {
 			},
 			valorEsperado: 10.1,
 			erroEsperado:  nil,
-			print: file,
+			w: file,
 		},
 		{
 			mensagemDeIdentificação: "Digitos inválidos devem ser identificados corretamente",
@@ -635,7 +635,7 @@ func Test_tratarValor(teste *testing.T) {
 				}
 			},
 			valorEsperado: 0.0,
-			print: file,
+			w: file,
 		},
 	}
 
@@ -643,7 +643,7 @@ func Test_tratarValor(teste *testing.T) {
 		teste.Run(valorTeste.mensagemDeIdentificação, func(teste *testing.T) {
 			testeTratarValor := valorTeste.dadosRecebidos(teste)
 
-			valorRecebido, err := tratarValor(testeTratarValor.valorDigitado, testeTratarValor.digito, testeTratarValor.print)
+			valorRecebido, err := tratarValor(testeTratarValor.valorDigitado, testeTratarValor.digito, testeTratarValor.w)
 
 			if !reflect.DeepEqual(valorRecebido, valorTeste.valorEsperado) {
 				teste.Errorf("tratarValor erro = %v, valorRecebido = %v, valorEsperado: %v", err, valorRecebido, valorTeste.valorEsperado)
