@@ -342,7 +342,7 @@ func Test_modoInterativo(teste *testing.T) {
 	}
 }
 func Test_modoExecução(teste *testing.T) {
-	type parâmetrosRecebidos struct {
+	type digitosRecebidos struct {
 		numeros    []string
 		operadores []string
 		w      *os.File
@@ -357,14 +357,14 @@ func Test_modoExecução(teste *testing.T) {
 
 	testes := []struct {
 		mensagemDeIdentificação string
-		dadosRecebidos     func(teste *testing.T) parâmetrosRecebidos
+		dadosRecebidos     func(teste *testing.T) digitosRecebidos
 		w                   *os.File
 		resultado               float64
 	}{
 		{
 			mensagemDeIdentificação: "Inteiro deve ser identificado corretamente",
-			dadosRecebidos: func(*testing.T) parâmetrosRecebidos {
-				return parâmetrosRecebidos{
+			dadosRecebidos: func(*testing.T) digitosRecebidos {
+				return digitosRecebidos{
 					numeros:    []string{"10"},
 					operadores: []string{"+"},
 				}
@@ -374,8 +374,8 @@ func Test_modoExecução(teste *testing.T) {
 		},
 		{
 			mensagemDeIdentificação: "Valor inteiro e negativo deve ser identificado corretamente",
-			dadosRecebidos: func(*testing.T) parâmetrosRecebidos {
-				return parâmetrosRecebidos{
+			dadosRecebidos: func(*testing.T) digitosRecebidos {
+				return digitosRecebidos{
 					numeros:    []string{"-10"},
 					operadores: []string{"+"},
 				}
@@ -385,8 +385,8 @@ func Test_modoExecução(teste *testing.T) {
 		},
 		{
 			mensagemDeIdentificação: "Float com . deve ser identificado corretamente",
-			dadosRecebidos: func(*testing.T) parâmetrosRecebidos {
-				return parâmetrosRecebidos{
+			dadosRecebidos: func(*testing.T) digitosRecebidos {
+				return digitosRecebidos{
 					numeros:    []string{"10.1"},
 					operadores: []string{"+"},
 				}
@@ -396,8 +396,8 @@ func Test_modoExecução(teste *testing.T) {
 		},
 		{
 			mensagemDeIdentificação: "Float com . e negativo deve ser identificado corretamente",
-			dadosRecebidos: func(*testing.T) parâmetrosRecebidos {
-				return parâmetrosRecebidos{
+			dadosRecebidos: func(*testing.T) digitosRecebidos {
+				return digitosRecebidos{
 					numeros:    []string{"-10.1"},
 					operadores: []string{"+"},
 				}
@@ -407,8 +407,8 @@ func Test_modoExecução(teste *testing.T) {
 		},
 		{
 			mensagemDeIdentificação: "Float com , deve ser identificado corretamente",
-			dadosRecebidos: func(*testing.T) parâmetrosRecebidos {
-				return parâmetrosRecebidos{
+			dadosRecebidos: func(*testing.T) digitosRecebidos {
+				return digitosRecebidos{
 					numeros:    []string{"10,1"},
 					operadores: []string{"+"},
 				}
@@ -418,8 +418,8 @@ func Test_modoExecução(teste *testing.T) {
 		},
 		{
 			mensagemDeIdentificação: "Digitos inválidos devem ser identificados corretamente",
-			dadosRecebidos: func(*testing.T) parâmetrosRecebidos {
-				return parâmetrosRecebidos{
+			dadosRecebidos: func(*testing.T) digitosRecebidos {
+				return digitosRecebidos{
 					numeros:    []string{"dsjfjshgfhgdfhfd"},
 					operadores: []string{"+"},
 				}
@@ -429,8 +429,8 @@ func Test_modoExecução(teste *testing.T) {
 		},
 		{
 			mensagemDeIdentificação: "Operador inválido deve ser identificado corretamente",
-			dadosRecebidos: func(*testing.T) parâmetrosRecebidos {
-				return parâmetrosRecebidos{
+			dadosRecebidos: func(*testing.T) digitosRecebidos {
+				return digitosRecebidos{
 					numeros:    []string{"0.0", "0,0"},
 					operadores: []string{"fdgfgdfg"},
 				}
