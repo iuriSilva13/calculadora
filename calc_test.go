@@ -525,7 +525,7 @@ func Test_lerInputs(teste *testing.T) {
 	}
 }
 func Test_exibeErro(teste *testing.T) {
-	type parâmetrosRecebidos struct {
+	type textoRecebido struct {
 		textoErro string
 		w     *os.File
 	}
@@ -539,15 +539,15 @@ func Test_exibeErro(teste *testing.T) {
 
 	testes := []struct {
 		mensagemDeIdentificação string
-		dadosRecebidos     func(teste *testing.T) parâmetrosRecebidos
+		dadosRecebidos     func(teste *testing.T) textoRecebido
 
 		w                  *os.File
 		mensagemDeErroEsperada string
 	}{
 		{
 			mensagemDeIdentificação: "mensagem de erro deve ser identificada corretamente",
-			dadosRecebidos: func(*testing.T) parâmetrosRecebidos {
-				return parâmetrosRecebidos{
+			dadosRecebidos: func(*testing.T) textoRecebido {
+				return textoRecebido{
 					textoErro: "Argumento inválido",
 				}
 			},
