@@ -10,9 +10,9 @@ import (
 )
 
 func TestMain(m *testing.M) {
+	os.RemoveAll("output")
 	os.Mkdir("output",0777)
 	output := m.Run()
-	os.RemoveAll("output")
 	os.Exit(output)
 }
 func Test_calcularValores(teste *testing.T) {
