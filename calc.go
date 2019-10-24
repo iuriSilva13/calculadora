@@ -8,6 +8,8 @@ import (
 	"strconv"
 	"strings"
 	"io"
+	"net/http"
+	"net/url"
 )
 
 func main() {
@@ -15,6 +17,7 @@ func main() {
 	var operador string
 	var numeros []string
 	var operadores []string
+	webServer := flag.Bool("w", false, "calcula no browser")
 	execução := flag.Bool("e", false, "calcula na linha de comando")
 	interativo := flag.Bool("i", false, "calcula no modo interativo")
 	help := flag.Bool("help", false, "mostra uma descrição dos comandos")
@@ -48,7 +51,13 @@ func main() {
 	file := bufio.NewScanner(os.Stdin)
 
 	if *help == true {
-		fmt.Fprintln(w,"-i:Entra no modo interativo\n-e =:Você pode fazer o calculo na linha de comando digitando -e =(seu calculo)\n-help:comando de ajuda")
+		fmt.Fprintln(w,"-i:Entra no modo interativo\n-e =:Você pode fazer o calculo na linha de comando digitando -e =(seu calculo)\n-w:Você pode fazer o calculo no browser digitando http://localhost:8080/calculadora?v1=(primeiro valor)&operador=(operador)&v2=(segundo valor)\n-help:comando de ajuda")
+		return
+	}
+
+	if *webServer == true {
+		http.HandleFunc("/calculadora", calculadoraWeb)
+		http.ListenAndServe(":8080", nil)
 		return
 	}
 
@@ -63,9 +72,43 @@ func main() {
 	}
 
 	if len(numeros)-1 != len(operadores) {
-		fmt.Fprintln(w,"Você pode usar a calculadora usando os comandos\n-i e -e =, para saber mais detalhes sobre estes\ncomandos digite -help.")
+		fmt.Fprintln(w,"Você pode usar a calculadora usando os comandos\n-i,-e = e -w, para saber mais detalhes sobre estes\ncomandos digite -help.")
 		return
 	}
+}
+func calculadoraWeb(w http.ResponseWriter, request *http.Request) {
+	parâmetros,err := url.ParseQuery(request.URL.RawQuery)
+	if err != nil{
+		fmt.Println(err)
+		return
+	}
+
+	v1 := parâmetros.Get("v1")
+	v2 := parâmetros.Get("v2")
+	operador := parâmetros.Get("operador")
+
+	campos := []string{}
+
+	if v1 == "" {
+		campos = append(campos, "Primeiro valor não digitado")
+	}
+	if v2 == "" {
+		campos = append(campos, "Segundo valor não digitado")
+	}
+	if operador == "" {
+		campos = append(campos, "Operador não digitado")
+	}
+
+	numeros := []string{v1,v2}
+	operadores := []string{operador}
+
+	if len(campos) == 0{
+		modoExecução(numeros, operadores, w)
+		return
+	}
+
+	fmt.Fprintln(w,strings.Join(campos, ","))
+	return
 }
 func modoExecução(numeros, operadores []string,w io.Writer) float64 {
 	resultado := float64(0)
