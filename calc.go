@@ -90,13 +90,13 @@ func calculadoraWeb(w http.ResponseWriter, request *http.Request) {
 	campos := []string{}
 
 	if v1 == "" {
-		campos = append(campos, "Primeiro valor não digitado")
+		campos = append(campos, v1)
 	}
 	if v2 == "" {
-		campos = append(campos, "Segundo valor não digitado")
+		campos = append(campos, v2)
 	}
 	if operador == "" {
-		campos = append(campos, "Operador não digitado")
+		campos = append(campos, operador)
 	}
 
 	numeros := []string{v1,v2}
@@ -107,7 +107,7 @@ func calculadoraWeb(w http.ResponseWriter, request *http.Request) {
 		return
 	}
 
-	fmt.Fprintln(w,strings.Join(campos, ","))
+	w.WriteHeader(http.StatusExpectationFailed)
 	return
 }
 func modoExecução(numeros, operadores []string,w io.Writer) float64 {
