@@ -134,6 +134,13 @@ func Test_calculadoraWeb(t *testing.T) {
 			status:					 http.StatusOK,
 			respostaEsperada:        "O resultado é: 7",
 		},
+		{
+			mensagemDeIdentificação: "Float64 com , deve ser identificado corretamente",
+			url:                     "http://localhost:8080/calculadora?v1=2,0&operador=%2B&v2=5,0",
+			w:                       httptest.NewRecorder(),
+			status:					 http.StatusOK,
+			respostaEsperada:        "O resultado é: 7",
+		},
 	}
 
 	for _, valorTeste := range testes {
