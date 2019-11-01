@@ -79,7 +79,7 @@ func main() {
 func calculadoraWeb(w http.ResponseWriter, request *http.Request) {
 	parâmetros,err := url.ParseQuery(request.URL.RawQuery)
 	if err != nil{
-		fmt.Println(err)
+		w.WriteHeader(http.StatusNotFound)
 		return
 	}
 
