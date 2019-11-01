@@ -127,7 +127,7 @@ func modoExecução(numeros, operadores []string,w io.Writer) float64 {
 			operador = operadores[i]
 		}
 	}
-	fmt.Fprintln(w,"O resultado é:", resultado)
+	fmt.Fprint(w,"O resultado é: ", resultado)
 	return resultado
 }
 func lerInputs(file *bufio.Scanner, digito string,w io.Writer) string {
