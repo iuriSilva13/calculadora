@@ -162,6 +162,12 @@ func Test_calculadoraWeb(t *testing.T) {
 			status:					 http.StatusOK,
 			respostaEsperada:        "O resultado é: 3",
 		},
+		{
+			mensagemDeIdentificação: "Parâmetros em branco devem ser identificados corretamente",
+			url:                     "http://localhost:8080/calculadora?v1=&operador=&v2=",
+			w:                       httptest.NewRecorder(),
+			status:                  http.StatusExpectationFailed,
+		},
 	}
 
 	for _, valorTeste := range testes {
@@ -172,6 +178,9 @@ func Test_calculadoraWeb(t *testing.T) {
 
 			if valorTeste.respostaEsperada != valorTeste.w.Body.String() {
 				t.Errorf("Resposta Recebida = %v, resposta esperada = %v ", valorTeste.w.Body.String(), valorTeste.respostaEsperada)
+			}
+			if valorTeste.status != valorTeste.w.Code {
+				t.Errorf("Resposta Recebida = %v, resposta esperada = %v ", valorTeste.w.Code, valorTeste.status)
 			}
 		})
 	}
