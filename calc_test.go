@@ -155,6 +155,13 @@ func Test_calculadoraWeb(t *testing.T) {
 			status:					 http.StatusOK,
 			respostaEsperada:        "O resultado é: 2",
 		},
+		{
+			mensagemDeIdentificação: "Operador de divisão deve ser identificado corretamente",
+			url:                     "http://localhost:8080/calculadora?v1=15.0&operador=/&v2=5.0",
+			w:                       httptest.NewRecorder(),
+			status:					 http.StatusOK,
+			respostaEsperada:        "O resultado é: 3",
+		},
 	}
 
 	for _, valorTeste := range testes {
