@@ -4,6 +4,8 @@ import (
 	"bufio"
 	"io"
 	"io/ioutil"
+	"net/http"
+	"net/http/httptest"
 	"os"
 	"reflect"
 	"testing"
@@ -103,11 +105,124 @@ func Test_calcularValores(teste *testing.T) {
 	for _, valorTeste := range testes {
 		teste.Run(valorTeste.mensagemDeIdentificação, func(teste *testing.T) {
 			testeCalcularValores := valorTeste.dadosRecebidos(teste)
-
 			valorRecebido, err := calcularValores(testeCalcularValores.primeiroValor, testeCalcularValores.segundoValor, testeCalcularValores.operador, valorTeste.w)
-
 			if !reflect.DeepEqual(valorRecebido, valorTeste.valorEsperado) {
 				teste.Errorf("calcularValores erro = %v, valorRecebido = %v, valorEsperado: %v", err, valorRecebido, valorTeste.valorEsperado)
+			}
+		})
+	}
+}
+func Test_calculadoraWeb(t *testing.T) {
+	file, err := os.Create("./output/calculadoraWeb.txt")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	defer file.Close()
+
+	testes := []struct {
+		mensagemDeIdentificação string
+		url                     string
+		status                  int
+		w                       *httptest.ResponseRecorder
+		respostaEsperada        string
+	}{
+		{
+			mensagemDeIdentificação: "Float64 com . deve ser identificado corretamente",
+			url:                     "http://localhost:8080/calculadora?v1=2.0&operador=%2B&v2=5.0",
+			w:                       httptest.NewRecorder(),
+			status:					 http.StatusOK,
+			respostaEsperada:        "O resultado é: 7",
+		},
+		{
+			mensagemDeIdentificação: "Float64 com , deve ser identificado corretamente",
+			url:                     "http://localhost:8080/calculadora?v1=2,0&operador=%2B&v2=5,0",
+			w:                       httptest.NewRecorder(),
+			status:					 http.StatusOK,
+			respostaEsperada:        "O resultado é: 7",
+		},
+		{
+			mensagemDeIdentificação: "Operador de multiplicação deve ser identificado corretamente",
+			url:                     "http://localhost:8080/calculadora?v1=2.0&operador=*&v2=5.0",
+			w:                       httptest.NewRecorder(),
+			status:					 http.StatusOK,
+			respostaEsperada:        "O resultado é: 10",
+		},
+		{
+			mensagemDeIdentificação: "Operador de subtração deve ser identificado corretamente",
+			url:                     "http://localhost:8080/calculadora?v1=7.0&operador=-&v2=5.0",
+			w:                       httptest.NewRecorder(),
+			status:					 http.StatusOK,
+			respostaEsperada:        "O resultado é: 2",
+		},
+		{
+			mensagemDeIdentificação: "Operador de divisão deve ser identificado corretamente",
+			url:                     "http://localhost:8080/calculadora?v1=15.0&operador=/&v2=5.0",
+			w:                       httptest.NewRecorder(),
+			status:					 http.StatusOK,
+			respostaEsperada:        "O resultado é: 3",
+		},
+		{
+			mensagemDeIdentificação: "Parâmetros em branco devem ser identificados corretamente",
+			url:                     "http://localhost:8080/calculadora?v1=&operador=&v2=",
+			w:                       httptest.NewRecorder(),
+			status:                  http.StatusExpectationFailed,
+		},
+		{
+			mensagemDeIdentificação: "Parâmetro em branco do primeiro valor deve ser identificado corretamente",
+			url:                     "http://localhost:8080/calculadora?v1=&operador=*&v2=2",
+			w:                       httptest.NewRecorder(),
+			status:                  http.StatusExpectationFailed,
+		},
+		{
+			mensagemDeIdentificação: "Parâmetros em branco do primeiro valor e operador devem ser identificados corretamente",
+			url:                     "http://localhost:8080/calculadora?v1=&operador=&v2=6",
+			w:                       httptest.NewRecorder(),
+			status:                  http.StatusExpectationFailed,
+		},
+		{
+			mensagemDeIdentificação: "Parâmetro em branco do operador deve ser identificado corretamente",
+			url:                     "http://localhost:8080/calculadora?v1=2&operador=&v2=6",
+			w:                       httptest.NewRecorder(),
+			status:                  http.StatusExpectationFailed,
+		},
+		{
+			mensagemDeIdentificação: "Parâmetros em branco do primeiro valor e segundo valor devem ser identificados corretamente",
+			url:                     "http://localhost:8080/calculadora?v1=&operador=*&v2=",
+			w:                       httptest.NewRecorder(),
+			status:                  http.StatusExpectationFailed,
+		},
+		{
+			mensagemDeIdentificação: "Parâmetros em branco do operador e do segundo valor devem ser identificados corretamente",
+			url:                     "http://localhost:8080/calculadora?v1=2&operador=&v2=",
+			w:                       httptest.NewRecorder(),
+			status:                  http.StatusExpectationFailed,
+		},
+		{
+			mensagemDeIdentificação: "Parâmetro em branco do segundo valor deve ser identificado corretamente",
+			url:                     "http://localhost:8080/calculadora?v1=2&operador=*&v2=",
+			w:                       httptest.NewRecorder(),
+			status:                  http.StatusExpectationFailed,
+		},
+		{
+			mensagemDeIdentificação: "Parâmetros não passados na url deve ser identificado corretamente",
+			url:                     "http://localhost:8080/calculadora",
+			w:                       httptest.NewRecorder(),
+			status:                  http.StatusExpectationFailed,
+		},
+	}
+
+	for _, valorTeste := range testes {
+		t.Run(valorTeste.mensagemDeIdentificação, func(t *testing.T) {
+			req, _ := http.NewRequest("GET", valorTeste.url, nil)
+
+			calculadoraWeb(valorTeste.w, req)
+
+			if valorTeste.respostaEsperada != valorTeste.w.Body.String() {
+				t.Errorf("Resposta Recebida = %v, resposta esperada = %v ", valorTeste.w.Body.String(), valorTeste.respostaEsperada)
+			}
+			if valorTeste.status != valorTeste.w.Code {
+				t.Errorf("Resposta Recebida = %v, resposta esperada = %v ", valorTeste.w.Code, valorTeste.status)
 			}
 		})
 	}
@@ -149,7 +264,7 @@ func Test_validarEntradas(teste *testing.T) {
 			},
 			primeiroValorEsperado: 0.0,
 			segundoValorEsperado:  0.0,
-			primeiraVez:		   false,
+			primeiraVez:               false,
 			w: file,
 		},
 		{
@@ -294,7 +409,7 @@ func Test_modoInterativo(teste *testing.T) {
 			segundoDigito:           20.0,
 			operador:                "+",
 			input:                   "10.0\n+\n20.0\nsim\n+\n20\nnao\n",
-			w: 					 file,
+			w:                                       file,
 		},
 		{
 			mensagemDeIdentificação: "Digitos inválidos devem ser identificados corretamente",
@@ -303,7 +418,7 @@ func Test_modoInterativo(teste *testing.T) {
 			segundoDigito:           0.0,
 			operador:                "",
 			input:                   "0.0\nfdgdfg\n0.0\n",
-			w: 					 file,
+			w:                                       file,
 		},
 	}
 
