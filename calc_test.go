@@ -180,6 +180,12 @@ func Test_calculadoraWeb(t *testing.T) {
 			w:                       httptest.NewRecorder(),
 			status:                  http.StatusExpectationFailed,
 		},
+		{
+			mensagemDeIdentificação: "Parâmetro em branco do operador deve ser identificado corretamente",
+			url:                     "http://localhost:8080/calculadora?v1=2&operador=&v2=6",
+			w:                       httptest.NewRecorder(),
+			status:                  http.StatusExpectationFailed,
+		},
 	}
 
 	for _, valorTeste := range testes {
