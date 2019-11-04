@@ -148,6 +148,13 @@ func Test_calculadoraWeb(t *testing.T) {
 			status:					 http.StatusOK,
 			respostaEsperada:        "O resultado é: 10",
 		},
+		{
+			mensagemDeIdentificação: "Operador de subtração deve ser identificado corretamente",
+			url:                     "http://localhost:8080/calculadora?v1=7.0&operador=-&v2=5.0",
+			w:                       httptest.NewRecorder(),
+			status:					 http.StatusOK,
+			respostaEsperada:        "O resultado é: 2",
+		},
 	}
 
 	for _, valorTeste := range testes {
