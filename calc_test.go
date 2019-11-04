@@ -204,6 +204,12 @@ func Test_calculadoraWeb(t *testing.T) {
 			w:                       httptest.NewRecorder(),
 			status:                  http.StatusExpectationFailed,
 		},
+		{
+			mensagemDeIdentificação: "Parâmetros não passados na url deve ser identificado corretamente",
+			url:                     "http://localhost:8080/calculadora",
+			w:                       httptest.NewRecorder(),
+			status:                  http.StatusExpectationFailed,
+		},
 	}
 
 	for _, valorTeste := range testes {
