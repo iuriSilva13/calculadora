@@ -77,38 +77,24 @@ func main() {
 	}
 }
 func calculadoraWeb(w http.ResponseWriter, request *http.Request) {
-	parâmetros,err := url.ParseQuery(request.URL.RawQuery)
+	var numeros,operadores,valor []string
+	parametros,err := url.ParseQuery(request.URL.RawQuery)
 	if err != nil{
 		w.WriteHeader(http.StatusNotFound)
 		return
 	}
 
-	v1 := parâmetros.Get("v1")
-	v2 := parâmetros.Get("v2")
-	operador := parâmetros.Get("operador")
+	valor = parametros["calculo"]
 
-	campos := []string{}
-
-	if v1 == "" {
-		campos = append(campos, v1)
-	}
-	if v2 == "" {
-		campos = append(campos, v2)
-	}
-	if operador == "" {
-		campos = append(campos, operador)
+	for i,_ := range valor{
+		if i%2 == 0 {
+			numeros = append(numeros,valor[i])
+		}else{
+			operadores = append(operadores,valor[i])
+		}
 	}
 
-	numeros := []string{v1,v2}
-	operadores := []string{operador}
-
-	if len(campos) == 0{
-		modoExecução(numeros, operadores, w)
-		return
-	}
-
-	w.WriteHeader(http.StatusExpectationFailed)
-	return
+	modoExecução(numeros, operadores, w)
 }
 func modoExecução(numeros, operadores []string,w io.Writer) float64 {
 	resultado := float64(0)
