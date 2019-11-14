@@ -86,6 +86,11 @@ func calculadoraWeb(w http.ResponseWriter, request *http.Request) {
 
 	valor = parametros["calculo"]
 
+	if len(parametros["calculo"])%2 == 0 {
+		w.WriteHeader(http.StatusExpectationFailed)
+		return
+	}
+
 	for i,_ := range valor{
 		if i%2 == 0 {
 			numeros = append(numeros,valor[i])
