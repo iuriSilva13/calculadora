@@ -77,36 +77,44 @@ func main() {
 	}
 }
 func calculadoraWeb(w http.ResponseWriter, request *http.Request) {
-	var numeros,operadores,valor []string
 	parametros,err := url.ParseQuery(request.URL.RawQuery)
 	if err != nil{
 		w.WriteHeader(http.StatusNotFound)
 		return
 	}
 
-	valor = parametros["calculo"]
+	argumentos := parametros.Get("calculo")
+	listaDeArgumentos := strings.Split(argumentos," ")
 
-	if len(parametros["calculo"])%2 == 0 {
+	// verificar se o usuario digitou a sequencia de argumentos corretamente, se o numero de argumentos for par entao mostra o status 417.
+	if len(listaDeArgumentos)%2 == 0 {
 		w.WriteHeader(http.StatusExpectationFailed)
 		return
 	}
 
-	for parametro,_ := range parametros{
-		if parametro != "calculo"{
-			w.WriteHeader(http.StatusExpectationFailed)
-			return
-		}
-	}
-
-	for i,_ := range valor{
-		if i%2 == 0 {
-			numeros = append(numeros,valor[i])
-		}else{
-			operadores = append(operadores,valor[i])
-		}
-	}
+	numeros,operadores := identificarArgumentosDoParametro(listaDeArgumentos,w)
 
 	modoExecução(numeros, operadores, w)
+}
+func identificarArgumentosDoParametro(listaDeArgumentos []string,w http.ResponseWriter)([]string,[]string){
+	var numeros,operadores []string
+
+	for _,argumento := range listaDeArgumentos {
+		switch string(argumento) {
+		case "+":
+			operadores = append(operadores,string(argumento))
+		case "-":
+			operadores = append(operadores,string(argumento))
+		case "*":
+			operadores = append(operadores,string(argumento))
+		case "/":
+			operadores = append(operadores,string(argumento))
+		default:
+			numeros = append(numeros,string(argumento))
+		}
+	}
+
+	return numeros,operadores
 }
 func modoExecução(numeros, operadores []string,w io.Writer) float64 {
 	resultado := float64(0)
